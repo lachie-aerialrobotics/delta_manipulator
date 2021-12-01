@@ -13,11 +13,12 @@ class cfg:
         self.nozzle = nozzle
         self.base_offset = base_offset
         self.delta_init = delta_init
+
     @staticmethod
     def config_callback(config, level): 
-        cfg.nozzle = np.asarray([0.0, 0.0, -config.nozzle])
-        cfg.base_offset = np.asarray([0.0, -config.drone2basey, config.drone2basez])
-        cfg.delta_init = np.array([0.0, 0.0, -config.base2tip])
+        cfg.nozzle = np.asarray([0.0, 0.0, config.nozzle])
+        cfg.base_offset = np.asarray([config.drone2basex, 0.0, config.drone2basez])
+        cfg.delta_init = np.array([config.base2tipx, config.base2tipy, config.base2tipz])
         return config    
 
 class quat:
@@ -48,7 +49,7 @@ class Stabilize:
         position, orientation = PoseStampedMsg().read(sub_drone_pose)
         position_sp, orientation_sp = PoseStampedMsg().read(sub_drone_setpoint)
         self.p = position - position_sp
-        self.q = quat.q_mult(orientation,quat.q_conjugate(orientation_sp))
+        self.q = quat.q_mult(orientation,quat.q_conjugate(orientation_sp)) # this line is probably wrong... or maybe not :o
         self.qinv = quat.q_conjugate(self.q)
     
     def callback(self):
@@ -80,9 +81,7 @@ class PoseStampedMsg:
 class Controller: #init publishers and subscribers
     def __init__(self):
         robot_name = rospy.get_param('/namespace') 
-
         self.pub_pos_tip = rospy.Publisher(robot_name+'/tip_position_local', PointStamped, queue_size=1)
-
         self.sub_drone_pose = message_filters.Subscriber('/mavros/local_position/pose', PoseStamped) #drone measured pose subscriber
         self.sub_drone_setpoint = message_filters.Subscriber('/mavros/setpoint_position/local', PoseStamped) #drone setpoint position subscriber
     
