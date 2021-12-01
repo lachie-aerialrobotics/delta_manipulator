@@ -134,9 +134,9 @@ class delta:
 
     def torque2current(self,T):
         #calculate servo current limit to achieve desired torque (taken from datasheet graph)
-        I = int((0.66733 * abs(T) + 0.05492) *1000 / 2.69)
-        if I > 648:
-            I = 648 #do not let current exceed limit
+        I = int((-0.99861 * abs(T) - 0.0286) *1000 / 2.69)
+        if I > 2047:
+            I = 2047 #do not let current exceed limit
         return I
 
 class cache: #save most recent valid values of servo angles in case inverse kinematics breaks
