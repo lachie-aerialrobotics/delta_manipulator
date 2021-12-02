@@ -37,7 +37,7 @@ def Initialise():
 
     # Initialize GroupSyncWrite instances
     groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION)
-    #groupSyncWrite_crnt = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_CURRENT, LEN_PRO_GOAL_CURRENT)
+    groupSyncWrite_crnt = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_CURRENT, LEN_PRO_GOAL_CURRENT)
 
     # Open port
     if portHandler.openPort():
@@ -70,7 +70,7 @@ def Initialise():
     #        print("[ID:%03d] groupSyncRead addparam failed" % DXL_ID[i])
     #        quit()
 
-    return groupSyncWrite, portHandler, packetHandler
+    return groupSyncWrite, groupSyncWrite_crnt, portHandler, packetHandler
 
 def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
     # Allocate goal position value into byte array
@@ -96,18 +96,17 @@ def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
     #Clear Syncwrite parameter storage
     groupSyncWrite.clearParam()
 
-    # dxl_current_lim = [None] * 3
-    # param_current_lim = [None] * 3
-    # dxl_current_lim[0] = servo_current_sub.theta1
-    # dxl_current_lim[1] = servo_current_sub.theta1
-    # dxl_current_lim[2] = servo_current_sub.theta1
+    dxl_current_lim = [None] * 3
+    dxl_current_lim[0] = servo_current_sub.theta1
+    dxl_current_lim[1] = servo_current_sub.theta1
+    dxl_current_lim[2] = servo_current_sub.theta1
 
-    # for i in range(3):
-    #     dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID[i], ADDR_PRO_GOAL_CURRENT, dxl_current_lim[i])
-    #     if dxl_comm_result != COMM_SUCCESS:
-    #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    #     elif dxl_error != 0:
-    #         print("%s" % packetHandler.getRxPacketError(dxl_error))
+    for i in range(3):
+        dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID[i], ADDR_PRO_GOAL_CURRENT, dxl_current_lim[i])
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+        elif dxl_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl_error))
     
 if __name__ == '__main__':
     # Control table address
@@ -131,7 +130,7 @@ if __name__ == '__main__':
     DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
 
 
-    groupSyncWrite, portHandler, packetHandler = Initialise()
+    groupSyncWrite, groupSyncWrite_crnt, portHandler, packetHandler = Initialise()
 
     rospy.init_node('Servo_writer', anonymous=True)
     robot_name = rospy.get_param('/namespace')
