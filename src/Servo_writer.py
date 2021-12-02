@@ -37,7 +37,6 @@ def Initialise():
 
     # Initialize GroupSyncWrite instances
     groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION)
-    groupSyncWrite_crnt = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_CURRENT, LEN_PRO_GOAL_CURRENT)
 
     # Open port
     if portHandler.openPort():
@@ -70,7 +69,7 @@ def Initialise():
     #        print("[ID:%03d] groupSyncRead addparam failed" % DXL_ID[i])
     #        quit()
 
-    return groupSyncWrite, groupSyncWrite_crnt, portHandler, packetHandler
+    return groupSyncWrite, portHandler, packetHandler
 
 def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
     # Allocate goal position value into byte array
@@ -130,7 +129,7 @@ if __name__ == '__main__':
     DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
 
 
-    groupSyncWrite, groupSyncWrite_crnt, portHandler, packetHandler = Initialise()
+    groupSyncWrite, portHandler, packetHandler = Initialise()
 
     rospy.init_node('Servo_writer', anonymous=True)
     robot_name = rospy.get_param('/namespace')
