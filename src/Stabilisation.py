@@ -48,11 +48,16 @@ class Stabilize:
         orientation_sp_inv = quat().q_conjugate(orientation_sp)
         self.q = quat().q_mult(orientation, orientation_sp_inv) # this line is probably wrong... or maybe not :o
         self.qinv = quat().q_conjugate(self.q)
+
+        drone2delta = 
     
     def callback(self):
-        delta_target = cfg.base_offset + cfg.delta_init + cfg.nozzle - quat().qv_mult(self.q,cfg.base_offset+cfg.nozzle) - self.p 
-        delta_target = np.asarray(quat().qv_mult(self.qinv,delta_target))
-        pos_msg = PointStampedMsg().write(delta_target[0], delta_target[1], delta_target[2])
+        delta_target = cfg.base_offset + cfg.delta_init + cfg.nozzle - quat().qv_mult(self.q,cfg.base_offset+cfg.nozzle) - self.p #delta target in world coordinates
+        delta_target = quat().qv_mult(self.qinv,delta_target) #delta target in drone body coordinates
+        delta_target_drone_x = delta_target[1]
+        delta_target_drone_y = delta_target[2]
+        delta_target_drone_z = delta_target[0]
+        pos_msg = PointStampedMsg().write(delta_target_drone_x, delta_target_drone_y, delta_target_drone_z)
         return pos_msg
 
 class PointStampedMsg:
