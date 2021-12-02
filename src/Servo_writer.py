@@ -70,7 +70,7 @@ def Initialise():
     #        print("[ID:%03d] groupSyncRead addparam failed" % DXL_ID[i])
     #        quit()
 
-    return groupSyncWrite_pstn, groupSyncWrite_crnt, groupSyncRead, portHandler, packetHandler
+    return groupSyncWrite_pstn, groupSyncRead, portHandler, packetHandler
 
 def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
     # Allocate goal position value into byte array
