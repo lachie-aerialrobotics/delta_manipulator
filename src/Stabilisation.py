@@ -48,8 +48,6 @@ class Stabilize:
         orientation_sp_inv = quat().q_conjugate(orientation_sp)
         self.q = quat().q_mult(orientation, orientation_sp_inv) # this line is probably wrong... or maybe not :o
         self.qinv = quat().q_conjugate(self.q)
-
-        drone2delta = 
     
     def callback(self):
         delta_target = cfg.base_offset + cfg.delta_init + cfg.nozzle - quat().qv_mult(self.q,cfg.base_offset+cfg.nozzle) - self.p #delta target in world coordinates
