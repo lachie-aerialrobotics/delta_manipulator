@@ -36,7 +36,7 @@ def Initialise():
     packetHandler = PacketHandler(PROTOCOL_VERSION)
 
     # Initialize GroupSyncWrite instances
-    groupSyncWrite_pstn = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION)
+    groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION)
     #groupSyncWrite_crnt = GroupSyncWrite(portHandler, packetHandler, ADDR_PRO_GOAL_CURRENT, LEN_PRO_GOAL_CURRENT)
 
     # Open port
@@ -70,7 +70,7 @@ def Initialise():
     #        print("[ID:%03d] groupSyncRead addparam failed" % DXL_ID[i])
     #        quit()
 
-    return groupSyncWrite_pstn, portHandler, packetHandler
+    return groupSyncWrite, portHandler, packetHandler
 
 def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
     # Allocate goal position value into byte array
@@ -83,18 +83,18 @@ def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
     for i in range(3):
         param_goal_position[i] = [DXL_LOBYTE(DXL_LOWORD(dxl_goal_position[i])), DXL_HIBYTE(DXL_LOWORD(dxl_goal_position[i])), DXL_LOBYTE(DXL_HIWORD(dxl_goal_position[i])), DXL_HIBYTE(DXL_HIWORD(dxl_goal_position[i]))]
         # Add Dynamixel goal position value to the Syncwrite parameter storage
-        dxl_addparam_result_pstn = groupSyncWrite_pstn.addParam(DXL_ID[i], param_goal_position[i])
-        if dxl_addparam_result_pstn != True:
+        dxl_addparam_result= groupSyncWrite.addParam(DXL_ID[i], param_goal_position[i])
+        if dxl_addparam_result != True:
             print("[ID:%03d] groupSyncWrite addparam failed" % DXL_ID[i])
             #quit()
         
     #SyncWrite goal position    
-    dxl_comm_result_pstn = groupSyncWrite_pstn.txPacket()
-    if dxl_comm_result_pstn != COMM_SUCCESS:
+    dxl_comm_result = groupSyncWrite.txPacket()
+    if dxl_comm_result != COMM_SUCCESS:
         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
 
     #Clear Syncwrite parameter storage
-    # groupSyncWrite_pstn.clearParam()
+    groupSyncWrite.clearParam()
 
     # dxl_current_lim = [None] * 3
     # param_current_lim = [None] * 3
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
 
 
-    groupSyncWrite_pstn, portHandler, packetHandler = Initialise()
+    groupSyncWrite, portHandler, packetHandler = Initialise()
 
     rospy.init_node('Servo_writer', anonymous=True)
     robot_name = rospy.get_param('/namespace')
