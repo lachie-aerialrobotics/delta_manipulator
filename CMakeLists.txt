@@ -55,7 +55,6 @@ find_package(catkin REQUIRED COMPONENTS
 generate_dynamic_reconfigure_options(
    cfg/delta_config.cfg
    cfg/trajectory_config.cfg
-   cfg/servo_config.cfg
    cfg/mounting_config.cfg
 )
 
