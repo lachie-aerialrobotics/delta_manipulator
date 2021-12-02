@@ -48,9 +48,14 @@ class delta:
             cache.thetb2 = self.thetb2
             cache.thetb3 = self.thetb3
         else:
-            self.thetb1 = cache.thetb1
-            self.thetb2 = cache.thetb2
-            self.thetb3 = cache.thetb3
+            try:
+                self.thetb1 = cache.thetb1
+                self.thetb2 = cache.thetb2
+                self.thetb3 = cache.thetb3
+            except:
+                self.thetb1 = 2048
+                self.thetb2 = 2048
+                self.thetb3 = 2048
 
         ang_msg = ServoMsg(self.thetb1,self.thetb2,self.thetb3).msg
         return ang_msg
@@ -140,10 +145,10 @@ class delta:
         return I
 
 class cache: #save most recent valid values of servo angles in case inverse kinematics breaks
-    def __init__(self, theta1, theta2, theta3):
-        self.theta1 = theta1
-        self.theta2 = theta2
-        self.theta3 = theta3
+    def __init__(self, thetb1, thetb2, thetb3):
+        self.thetb1 = thetb1
+        self.thetb2 = thetb2
+        self.thetb3 = thetb3
 
 class ServoMsg: #class to assign values to servo_angles message format  
     def __init__(self, Theta1, Theta2, Theta3): 

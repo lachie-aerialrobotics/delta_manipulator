@@ -4,11 +4,13 @@
   <arg name="namespace"                  default="delta_1"/> 
   <param name="namespace"                 value="$(arg namespace)"/>
 
+  <node name="Fake_drone_publisher" pkg="delta_manipulator" type="drone_publisher.py" required="true" output="screen"/>
   <node name="Trajectory_publisher" pkg="delta_manipulator" type="trajectory_pub.py" required="true" output="screen"/>
+  <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
   <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
-  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
-
+  
+  <!-- <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>  !-->
   <!-- <node name="angle_plot" pkg="rqt_plot" type="rqt_plot" args="/delta_1/servo_angles /delta_1/servo_angles_read" /> !-->
 
 
