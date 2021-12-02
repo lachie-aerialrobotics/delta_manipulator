@@ -97,8 +97,8 @@ def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
 
     dxl_current_lim = [None] * 3
     dxl_current_lim[0] = servo_current_sub.theta1
-    dxl_current_lim[1] = servo_current_sub.theta1
-    dxl_current_lim[2] = servo_current_sub.theta1
+    dxl_current_lim[1] = servo_current_sub.theta2
+    dxl_current_lim[2] = servo_current_sub.theta3
 
     for i in range(3):
         dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID[i], ADDR_PRO_GOAL_CURRENT, dxl_current_lim[i])
