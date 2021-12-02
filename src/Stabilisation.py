@@ -15,9 +15,9 @@ class cfg: #class to store variables from dynamic reconfigure
 
     @staticmethod
     def config_callback(config, level): 
-        cfg.nozzle = np.asarray([0.0, 0.0, config.nozzle])
-        cfg.base_offset = np.asarray([config.drone2basex, 0.0, config.drone2basez])
-        cfg.delta_init = np.array([config.base2tipx, config.base2tipy, config.base2tipz])
+        cfg.nozzle = np.asarray([config.nozzle, 0.0, 0.0]) #in drone coordinates
+        cfg.base_offset = np.asarray([config.drone2basex, 0.0, config.drone2basez]) #in drone coordinates
+        cfg.delta_init = np.array([config.base2tipx, config.base2tipy, config.base2tipz]) #in drone coordinates
         return config    
 
 class quat: #the methods in this class are useful quaternion/vector operations
@@ -44,13 +44,13 @@ class Stabilize:
     def __init__(self, sub_drone_pose, sub_drone_setpoint):
         position, orientation = PoseStampedMsg().read(sub_drone_pose)
         position_sp, orientation_sp = PoseStampedMsg().read(sub_drone_setpoint)
-        self.p = position - position_sp
+        self.p = position - position_sp #error position vector in drone coordinates
         orientation_sp_inv = quat().q_conjugate(orientation_sp)
-        self.q = quat().q_mult(orientation, orientation_sp_inv) # this line is probably wrong... or maybe not :o
+        self.q = quat().q_mult(orientation, orientation_sp_inv) #error quaternion in drone coordinates
         self.qinv = quat().q_conjugate(self.q)
     
     def callback(self):
-        delta_target = cfg.base_offset + cfg.delta_init + cfg.nozzle - quat().qv_mult(self.q,cfg.base_offset+cfg.nozzle) - self.p #delta target in world coordinates
+        delta_target = cfg.base_offset + cfg.delta_init + cfg.nozzle - quat().qv_mult(self.q,cfg.base_offset+cfg.nozzle) - self.p #delta target in drone coordinates
         delta_target = quat().qv_mult(self.qinv,delta_target) #delta target in drone body coordinates
         delta_target_drone_x = delta_target[1]
         delta_target_drone_y = delta_target[2]
