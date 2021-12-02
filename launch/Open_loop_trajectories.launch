@@ -4,7 +4,7 @@
   <arg name="namespace"                  default="delta_1"/> 
   <param name="namespace"                 value="$(arg namespace)"/>
 
-  <node name="Fake_drone_publisher" pkg="delta_manipulator" type="drone_publisher.py" required="true" output="screen"/>
+  <!-- <node name="Fake_drone_publisher" pkg="delta_manipulator" type="drone_publisher.py" required="true" output="screen"/> !-->
   <node name="Trajectory_publisher" pkg="delta_manipulator" type="trajectory_pub.py" required="true" output="screen"/>
   <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
