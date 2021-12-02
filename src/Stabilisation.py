@@ -17,7 +17,7 @@ class cfg: #class to store variables from dynamic reconfigure
     def config_callback(config, level): 
         cfg.nozzle = np.asarray([config.nozzle, 0.0, 0.0]) #in drone coordinates
         cfg.base_offset = np.asarray([config.drone2basex, 0.0, config.drone2basez]) #in drone coordinates
-        cfg.delta_init = np.array([config.base2tipx, config.base2tipy, config.base2tipz]) #in drone coordinates
+        cfg.delta_init = np.array([config.base2tipx, config.base2tipy, config.base2tipz]) #in world coordinates
         return config    
 
 class quat: #the methods in this class are useful quaternion/vector operations
@@ -45,8 +45,9 @@ class Stabilize:
         position, orientation = PoseStampedMsg().read(sub_drone_pose)
         position_sp, orientation_sp = PoseStampedMsg().read(sub_drone_setpoint)
         self.p = position - position_sp #error position vector in drone coordinates
-        orientation_sp_inv = quat().q_conjugate(orientation_sp)
-        self.q = quat().q_mult(orientation, orientation_sp_inv) #error quaternion in drone coordinates
+        self.q = orientation #temporary simplification
+        #orientation_sp_inv = quat().q_conjugate(orientation_sp)
+        #self.q = quat().q_mult(orientation, orientation_sp_inv) #error quaternion in drone coordinates
         self.qinv = quat().q_conjugate(self.q)
     
     def callback(self):
