@@ -131,7 +131,7 @@ if __name__ == '__main__':
     DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
 
 
-    groupSyncWrite_pstn, groupSyncWrite_crnt, groupSyncRead, portHandler, packetHandler = Initialise()
+    groupSyncWrite_pstn, groupSyncRead, portHandler, packetHandler = Initialise()
 
     rospy.init_node('Servo_writer', anonymous=True)
     robot_name = rospy.get_param('/namespace')
