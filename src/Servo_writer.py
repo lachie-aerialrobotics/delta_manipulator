@@ -61,6 +61,18 @@ def Initialise():
             print("%s" % packetHandler.getRxPacketError(dxl_error))
         else:
             print("Dynamixel#%d has been successfully connected" % DXL_ID[i])
+
+    # dxl_current_lim = [None] * 3
+    # dxl_current_lim[0] = servo_current_sub.theta1
+    # dxl_current_lim[1] = servo_current_sub.theta2
+    # dxl_current_lim[2] = servo_current_sub.theta3
+
+    # for i in range(3):
+    #     dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID[i], ADDR_PRO_GOAL_CURRENT, dxl_current_lim[i])
+    #     if dxl_comm_result != COMM_SUCCESS:
+    #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    #     elif dxl_error != 0:
+    #         print("%s" % packetHandler.getRxPacketError(dxl_error))
     
     # # Add parameter storage for present positions
     # for i in range(3):
@@ -94,18 +106,6 @@ def ServoCallback(servo_angle_sub, servo_current_sub): #servo_current_sub):
 
     #Clear Syncwrite parameter storage
     groupSyncWrite.clearParam()
-
-    # dxl_current_lim = [None] * 3
-    # dxl_current_lim[0] = servo_current_sub.theta1
-    # dxl_current_lim[1] = servo_current_sub.theta2
-    # dxl_current_lim[2] = servo_current_sub.theta3
-
-    # for i in range(3):
-    #     dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID[i], ADDR_PRO_GOAL_CURRENT, dxl_current_lim[i])
-    #     if dxl_comm_result != COMM_SUCCESS:
-    #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    #     elif dxl_error != 0:
-    #         print("%s" % packetHandler.getRxPacketError(dxl_error))
     
 if __name__ == '__main__':
     # Control table address
