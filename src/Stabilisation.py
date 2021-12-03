@@ -83,15 +83,15 @@ class Controller: #init publishers and subscribers
     def __init__(self):
         robot_name = rospy.get_param('/namespace') 
         self.pub_pos_tip = rospy.Publisher(robot_name+'/tip_position_local', PointStamped, queue_size=1) #delta target position publisher
-        self.sub_drone_pose = rospy.Subscriber('/mavros/local_position/pose', PoseStamped) #drone measured pose subscriber
-        self.sub_drone_setpoint = rospy.Subscriber('/mavros/setpoint_position/local', PoseStamped) #drone setpoint position subscriber
+        self.sub_drone_pose = message_filters.Subscriber('/mavros/local_position/pose', PoseStamped) #drone measured pose subscriber
+        self.sub_drone_setpoint = message_filters.Subscriber('/mavros/setpoint_position/local', PoseStamped) #drone setpoint position subscriber
     
     def loop(self):
-    #     ts = message_filters.ApproximateTimeSynchronizer([self.sub_drone_pose, self.sub_drone_setpoint], 1, 100)
-    #     ts.registerCallback(self.tip_callback)
+        ts = message_filters.ApproximateTimeSynchronizer([self.sub_drone_pose, self.sub_drone_setpoint], 1, 30, allow_headerless=True)
+        ts.registerCallback(self.tip_callback)
         
-    # def tip_callback(self, sub_drone_pose, sub_drone_setpoint): #callback calculates servo angles/torques
-        pos = Stabilize(self.sub_drone_pose, self.sub_drone_setpoint).callback()
+    def tip_callback(self, sub_drone_pose, sub_drone_setpoint): #callback calculates servo angles/torques
+        pos = Stabilize(sub_drone_pose, sub_drone_setpoint).callback()
         self.pub_pos_tip.publish(pos)
         
 if __name__ == '__main__': #initialise node and run loop
