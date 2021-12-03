@@ -25,7 +25,7 @@ class Controller: #init publishers and subscribers
     def __init__(self):
         robot_name = rospy.get_param('/namespace') 
         self.pub_pos_tip = rospy.Publisher(robot_name+'/tip_position_local', PointStamped, queue_size=1) #delta target position publisher
-        self.sub_drone_setpoint = message_filters.Subscriber('/mavros/setpoint_position/local', PoseStamped) #drone setpoint position subscriber
+        self.sub_drone_setpoint = message_filters.Subscriber('/mavros/setpoint_position/dummy', PoseStamped) #drone setpoint position subscriber
     
     def loop(self):
         ts = message_filters.ApproximateTimeSynchronizer([self.sub_drone_setpoint], 1, 100)
