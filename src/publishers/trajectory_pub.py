@@ -7,12 +7,12 @@ from dynamic_reconfigure.server import Server
 from delta_manipulator.cfg import TrajectoryConfig
 
 class Trajectory:
-    ros_rate = 100
+    ros_rate = 30
     
     def __init__(self):
         robot_name = rospy.get_param('/namespace')
         srv = Server(TrajectoryConfig, cfg.config_callback)
-        self.pub_pos = rospy.Publisher('/mavros/setpoint_position/dummy', PoseStamped, queue_size=1)
+        self.pub_pos = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=1)
         # self.pub_drone = rospy.Publisher('/mavros/local_position/pose', PoseStamped, queue_size=1)
         self.pub_force = rospy.Publisher(robot_name+'/tip_force', PointStamped, queue_size=1)
         rate = rospy.Rate(self.ros_rate) # in Hz
