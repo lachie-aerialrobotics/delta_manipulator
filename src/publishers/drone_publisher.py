@@ -22,7 +22,7 @@ class callback_pos:
         pass
     def write(self,x,y,z,yaw):
         self.pos_msg = PoseStamped()
-        self.pos_msg.header.frame_id = "/world"
+        self.pos_msg.header.frame_id = "/tf"
         self.pos_msg.header.stamp = rospy.Time.now()
 
         self.pos_msg.pose.orientation.w = np.cos(yaw/2)

@@ -46,8 +46,8 @@ class Trajectory:
 class callback_pos: 
     def __init__(self):
         self.pos_msg = PoseStamped()
-        self.pos_msg.header.frame_id = "/world"
-        self.pos_msg.header.stamp = rospy.Time.now()
+        #self.pos_msg.header.frame_id = "/tf"
+        #self.pos_msg.header.stamp = rospy.Time.now()
 
         self.pos_msg.pose.orientation.w = 1.0
         self.pos_msg.pose.orientation.x = 0.0
