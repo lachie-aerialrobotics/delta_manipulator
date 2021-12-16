@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<launch>
+  <rosparam file="$(find delta_manipulator)/cfg/Sim_config.yaml" />
+  <include file="$(find px4)/launch/mavros_posix_sitl.launch" />
+  <node name="joystick" pkg="joy" type="joy_node" required="true" output="screen"/>
+</launch>

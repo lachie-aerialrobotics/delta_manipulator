@@ -7,14 +7,13 @@ from dynamic_reconfigure.server import Server
 from delta_manipulator.cfg import TrajectoryConfig
 
 class Trajectory:
-    ros_rate = 30
+    ros_rate = 100
     
     def __init__(self):
-        robot_name = rospy.get_param('/namespace')
+        self.robot_name = rospy.get_param('/namespace')
         srv = Server(TrajectoryConfig, cfg.config_callback)
         self.pub_pos = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=1)
-        # self.pub_drone = rospy.Publisher('/mavros/local_position/pose', PoseStamped, queue_size=1)
-        self.pub_force = rospy.Publisher(robot_name+'/tip_force', PointStamped, queue_size=1)
+        self.pub_force = rospy.Publisher(self.robot_name+'/tip/force', PointStamped, queue_size=1)
         rate = rospy.Rate(self.ros_rate) # in Hz
         
         while not rospy.is_shutdown():
@@ -22,32 +21,13 @@ class Trajectory:
             force = callback_force().force_msg
             self.pub_pos.publish(pos)
             self.pub_force.publish(force)
-
-            # drone = callback_drone().drone_msg
-            # self.pub_drone.publish(drone)
-
             rate.sleep()
-
-# class callback_drone:
-#     def __init__(self):
-#         self.drone_msg = PoseStamped()
-#         self.drone_msg.header.frame_id = "/world"
-#         self.drone_msg.header.stamp = rospy.Time.now()
-
-#         self.drone_msg.pose.orientation.w = 1.0
-#         self.drone_msg.pose.orientation.x = 0.0
-#         self.drone_msg.pose.orientation.y = 0.0
-#         self.drone_msg.pose.orientation.z = 0.0
-
-#         self.drone_msg.pose.position.x = 0.0
-#         self.drone_msg.pose.position.y = 0.0
-#         self.drone_msg.pose.position.z = 0.0
 
 class callback_pos: 
     def __init__(self):
         self.pos_msg = PoseStamped()
-        #self.pos_msg.header.frame_id = "/tf"
-        #self.pos_msg.header.stamp = rospy.Time.now()
+        self.pos_msg.header.frame_id = "base"
+        self.pos_msg.header.stamp = rospy.Time.now()
 
         self.pos_msg.pose.orientation.w = 1.0
         self.pos_msg.pose.orientation.x = 0.0
@@ -85,7 +65,7 @@ class callback_pos:
 class callback_force:
     def __init__(self):
         self.force_msg = PointStamped()
-        self.force_msg.header.frame_id = "/fcu"
+        self.force_msg.header.frame_id = "servos"
         self.force_msg.header.stamp = rospy.Time.now()
         self.force_msg.point.x = cfg.T1
         self.force_msg.point.y = cfg.T2
@@ -102,7 +82,6 @@ class cfg:
         self.T2 = T2
         self.T3 = T3
         self.mode = mode
-    
     @staticmethod
     def config_callback(config, level): 
         cfg.r = config.r
@@ -120,7 +99,6 @@ if __name__ == '__main__':
     rospy.init_node('talker_target', anonymous=True)
     global t
     t = 0.0
-    
     try:
         Trajectory()
     except rospy.ROSInterruptException:

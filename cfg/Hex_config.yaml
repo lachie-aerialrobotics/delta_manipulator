@@ -1,0 +1,25 @@
+#config file for Hexacopter with sideways delta_arm
+namespace:          "delta_1"       #robot name
+rate:               100             #ros rate in [Hz]
+
+#manipulator geometry parameters:
+sp:                 0.06            #size of platform (see kinematics paper) in [m]
+sb:                 0.34            #size of base (see kinematics paper) in [m]
+l:                  0.47            #distal joint length in [m]
+L:                  0.2             #proximal joint length in [m]
+
+#dynamixel servo parameters
+dir1:               false           #reverse servo 1 rotation direction?
+dir2:               true            #reverse servo 2 rotation direction?
+dir3:               false           #reverse servo 3 rotation direction?
+
+#uav geometry parameters (in fcu coordinate frame):
+drone2basex:        0.3             #offset of base of delta from CoM of drone in [m]
+drone2basez:        0.05            #offset of base of delta from CoM of drone in [m]
+nozzle:             0.15            #length of appendage from delta platform in [m]
+base_pitch:         90              #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
+
+#tf stuff
+use_sim_time:       false
+tf_wait:            2.0             #how long to wait for tf frames to initialise on startup in [s]
+tf_buffer_wait:     0.01             #how long to wait for tf frames while running [s]

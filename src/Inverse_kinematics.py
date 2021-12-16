@@ -4,34 +4,21 @@ import numpy as np
 import message_filters
 from geometry_msgs.msg import PointStamped
 from delta_manipulator.msg import servo_angles
-from dynamic_reconfigure.server import Server
-from delta_manipulator.cfg import DeltaConfig
-
-class geom: #data from dynamic reconfigure
-    def __init__(self, sp, sb, l, L, dir1, dir2, dir3):
-        self.sp = sp
-        self.sb = sb
-        self.l = l
-        self.L = L
-        self.dir1 = dir1
-        self.dir2 = dir2
-        self.dir3 = dir3
-
-    @staticmethod
-    def config_callback(config, level): 
-        wb = np.sqrt(3)/6 * config.sb
-        wp = np.sqrt(3)/6 * config.sp
-        up = np.sqrt(3)/3 * config.sp
-        geom.a = wb - up
-        geom.b = config.sp / 2 - np.sqrt(3)/2 * wb
-        geom.c = wp - 0.5 * wb   
-        geom.l = config.l
-        geom.L = config.L
-
-        geom.dir1 = config.dir1
-        geom.dir2 = config.dir2
-        geom.dir3 = config.dir3
-        return config
+class cfg:
+    robot_name = rospy.get_param('/namespace')
+    sp = rospy.get_param('/sp')
+    sb = rospy.get_param('/sb')
+    l = rospy.get_param('/l')
+    L = rospy.get_param('/L')
+    dir1 = rospy.get_param('/dir1')
+    dir2 = rospy.get_param('/dir2')
+    dir3 = rospy.get_param('/dir3')
+    wb = np.sqrt(3)/6 * sb
+    wp = np.sqrt(3)/6 * sp
+    up = np.sqrt(3)/3 * sp
+    a = wb - up
+    b = sp / 2 - np.sqrt(3)/2 * wb
+    c = wp - 0.5 * wb 
 
 class delta:
     def __init__(self):
@@ -41,9 +28,9 @@ class delta:
         self.theta1, self.theta2, self.theta3, issolved = self.inverse_kinematics(pos.point.x, pos.point.y, pos.point.z)
         
         if issolved == True:
-            self.thetb1 = self.rads2bits(self.theta1,geom.dir1)
-            self.thetb2 = self.rads2bits(self.theta2,geom.dir2)
-            self.thetb3 = self.rads2bits(self.theta3,geom.dir3)
+            self.thetb1 = self.rads2bits(self.theta1,cfg.dir1)
+            self.thetb2 = self.rads2bits(self.theta2,cfg.dir2)
+            self.thetb3 = self.rads2bits(self.theta3,cfg.dir3)
             cache.thetb1 = self.thetb1
             cache.thetb2 = self.thetb2
             cache.thetb3 = self.thetb3
@@ -72,17 +59,17 @@ class delta:
 
     def inverse_kinematics(self, x, y, z):
         #Solve position kinematics
-        E1 = 2 * geom.L * (y + geom.a) 
-        E2 = -geom.L * (np.sqrt(3) * (x + geom.b) + y + geom.c)
-        E3 = geom.L * (np.sqrt(3) * (x - geom.b) - y - geom.c)
+        E1 = 2 * cfg.L * (y + cfg.a) 
+        E2 = -cfg.L * (np.sqrt(3) * (x + cfg.b) + y + cfg.c)
+        E3 = cfg.L * (np.sqrt(3) * (x - cfg.b) - y - cfg.c)
 
-        F1 = 2 * z * geom.L
-        F2 = 2 * z * geom.L
-        F3 = 2 * z * geom.L
+        F1 = 2 * z * cfg.L
+        F2 = 2 * z * cfg.L
+        F3 = 2 * z * cfg.L
 
-        G1 = x**2 + y**2 + z**2 + geom.a**2 + geom.L**2 + 2 * y * geom.a - geom.l**2
-        G2 = x**2 + y**2 + z**2 + geom.b**2 + geom.c**2 + geom.L**2 + 2 * (x * geom.b + y * geom.c) - geom.l**2
-        G3 = x**2 + y**2 + z**2 + geom.b**2 + geom.c**2 + geom.L**2 + 2 * (-x * geom.b + y * geom.c) - geom.l**2
+        G1 = x**2 + y**2 + z**2 + cfg.a**2 + cfg.L**2 + 2 * y * cfg.a - cfg.l**2
+        G2 = x**2 + y**2 + z**2 + cfg.b**2 + cfg.c**2 + cfg.L**2 + 2 * (x * cfg.b + y * cfg.c) - cfg.l**2
+        G3 = x**2 + y**2 + z**2 + cfg.b**2 + cfg.c**2 + cfg.L**2 + 2 * (-x * cfg.b + y * cfg.c) - cfg.l**2
 
         E = np.array([E1,E2,E3])
         F = np.array([F1,F2,F3])
@@ -154,7 +141,7 @@ class ServoMsg: #class to assign values to servo_angles message format
     def __init__(self, Theta1, Theta2, Theta3): 
         self.msg = servo_angles()
         self.msg.header.stamp = rospy.Time.now() 
-        self.msg.header.frame_id = "/servos"
+        self.msg.header.frame_id = "servos"
         self.msg.theta1 = Theta1
         self.msg.theta2 = Theta2
         self.msg.theta3 = Theta3  
@@ -162,11 +149,11 @@ class ServoMsg: #class to assign values to servo_angles message format
 class Controller: #init publishers and subscribers
     def __init__(self):
         robot_name = rospy.get_param('/namespace') 
-        self.pub_ang = rospy.Publisher(robot_name+'/servo_angles_setpoint', servo_angles, queue_size=1) # servo angle publisher
-        self.pub_crrnt = rospy.Publisher(robot_name+'/servo_current_lims', servo_angles, queue_size=1) # servo current publisher
+        self.pub_ang = rospy.Publisher(robot_name+'/servo/setpoint_angles', servo_angles, queue_size=1) # servo angle publisher
+        self.pub_crrnt = rospy.Publisher(robot_name+'/servo/setpoint_currents', servo_angles, queue_size=1) # servo current publisher
 
-        self.sub_pos = message_filters.Subscriber(robot_name+'/tip_position_local', PointStamped) #target angle subscriber
-        self.sub_force = message_filters.Subscriber(robot_name+'/tip_force', PointStamped) #target force subscriber
+        self.sub_pos = message_filters.Subscriber(robot_name+'/tip/local_position', PointStamped) #target angle subscriber
+        self.sub_force = message_filters.Subscriber(robot_name+'/servo/torques', PointStamped) #target force subscriber
     
     def loop(self):
         ts = message_filters.ApproximateTimeSynchronizer([self.sub_pos, self.sub_force], 1, 100)
@@ -180,6 +167,5 @@ class Controller: #init publishers and subscribers
         
 if __name__ == '__main__': #initialise node and run loop
     rospy.init_node('delta_main_node', anonymous=True)
-    srv = Server(DeltaConfig, geom.config_callback)
     Controller().loop()
     rospy.spin()

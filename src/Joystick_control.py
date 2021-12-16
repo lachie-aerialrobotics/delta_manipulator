@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 import rospy
 import numpy as np
-import tf2_ros
-import tf2_geometry_msgs
 from geometry_msgs.msg import PointStamped, PoseStamped
 
 #script calculates required end-effector position of manipulator to stabilise base perturbations using tf2 frames
@@ -35,9 +33,6 @@ class Controller():
 if __name__ == '__main__': #initialise node
     rospy.init_node('delta_stabilisation_node', anonymous=True)
     robot_name = rospy.get_param('/namespace')
-    #rospy.sleep(rospy.get_param('/tf_wait')) #sleep gives time for tf frames to initialise and prevents non-fatal (but ugly) time_sync error
-    tfBuffer = tf2_ros.Buffer()
-    listener = tf2_ros.TransformListener(tfBuffer)
     c = Controller()
     rospy.spin()
 
