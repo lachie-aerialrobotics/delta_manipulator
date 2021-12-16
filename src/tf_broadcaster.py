@@ -10,8 +10,8 @@ from geometry_msgs.msg import PoseStamped, PointStamped, TransformStamped
 class cfg: #values loaded from ros parameter server
     robot_name = rospy.get_param('/namespace')
     nozzlex = rospy.get_param('/nozzle')
-    drone2basex = rospy.get_param('/drone2basex')  
-    drone2basez = rospy.get_param('/drone2basez')  
+    drone2basex = rospy.get_param('/drone2base_x')  
+    drone2basez = rospy.get_param('/drone2base_z')  
     nozzle = np.asarray([0.0, 0.0, -nozzlex])
     base_offset = np.asarray([drone2basex, 0.0, drone2basez])
     base_pitch = rospy.get_param('/base_pitch')
@@ -43,14 +43,14 @@ def drone_pose_callback(drone_pose_msg): #broadcast fcu frame
     br_map2fcu.sendTransform(tf_map2fcu)
 
 
-def tip_pos_callback(tip_pos_msg): #broadcast manipulator tip frame 
-    br_base2platform = tf2_ros.TransformBroadcaster()
-    tf_base2platform = transform_msg(
-        "base", "platform",
-        tip_pos_msg.point.x, tip_pos_msg.point.y, tip_pos_msg.point.z,
-        0.0, 0.0, 0.0, 1.0
-    )
-    br_base2platform.sendTransform(tf_base2platform)
+# def tip_pos_callback(tip_pos_msg): #broadcast manipulator tip frame 
+#     br_base2platform = tf2_ros.TransformBroadcaster()
+#     tf_base2platform = transform_msg(
+#         "base", "platform",
+#         tip_pos_msg.point.x, tip_pos_msg.point.y, tip_pos_msg.point.z,
+#         0.0, 0.0, 0.0, 1.0
+#     )
+#     br_base2platform.sendTransform(tf_base2platform)
 
 
 if __name__ == '__main__':
@@ -73,6 +73,6 @@ if __name__ == '__main__':
     
     #subscribe to drone pose and end_effector location
     drone_pose_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, drone_pose_callback)
-    tip_pos_sub = rospy.Subscriber(cfg.robot_name+'/tip/local_position', PointStamped, tip_pos_callback)
+    # tip_pos_sub = rospy.Subscriber(cfg.robot_name+'/tip/local_position', PointStamped, tip_pos_callback)
 
     rospy.spin()

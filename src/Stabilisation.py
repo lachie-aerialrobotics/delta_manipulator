@@ -3,7 +3,7 @@ import rospy
 import numpy as np
 import tf2_ros
 import tf2_geometry_msgs
-from geometry_msgs.msg import PointStamped, PoseStamped
+from geometry_msgs.msg import PointStamped, PoseStamped, TransformStamped
 
 #script calculates required end-effector position of manipulator to stabilise base perturbations using tf2 frames
 class Controller():
@@ -18,9 +18,7 @@ class Controller():
 
         #perform successive transforms to get delta-arm target in base coordinates (and including offset for nozzle)
         self.target = tf2_geometry_msgs.do_transform_pose(tip_sp_msg, tf_base2map)
-        self.target = tf2_geometry_msgs.do_transform_pose(self.target, tf_tip2plat)  
-         
-        q_inv * (tf_base2map + tip_sp_msg + q * tf_tip2plat)  
+        self.target = tf2_geometry_msgs.do_transform_pose(self.target, tf_tip2plat)   
 
         #publish PointStamped message representing target of delta-manipulator relative to base
         pos_msg = PointStamped()
@@ -31,6 +29,27 @@ class Controller():
         pos_msg.point.z = self.target.pose.position.z
         self.pub_tip_pos.publish(pos_msg) 
 
+        br_base2platform = tf2_ros.TransformBroadcaster()
+        tf_base2platform = transform_msg(
+            "base", "platform",
+            pos_msg.point.x, pos_msg.point.y, pos_msg.point.z,
+            0.0, 0.0, 0.0, 1.0
+        )
+        br_base2platform.sendTransform(tf_base2platform)
+
+def transform_msg(header, child, tx, ty, tz, rx, ry, rz, rw): #function populates transformStamped message
+    t =  TransformStamped()
+    t.header.stamp = rospy.Time.now()
+    t.header.frame_id = header
+    t.child_frame_id = child
+    t.transform.translation.x = tx
+    t.transform.translation.y = ty
+    t.transform.translation.z = tz
+    t.transform.rotation.x = rx
+    t.transform.rotation.y = ry
+    t.transform.rotation.z = rz
+    t.transform.rotation.w = rw
+    return t
 
 if __name__ == '__main__': #initialise node
     rospy.init_node('delta_stabilisation_node', anonymous=True)

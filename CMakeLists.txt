@@ -54,6 +54,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
 generate_dynamic_reconfigure_options(
    cfg/trajectory_config.cfg
+   cfg/joystick_trajectory_config.cfg
 )
 
 add_message_files(
