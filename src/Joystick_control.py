@@ -49,8 +49,8 @@ class Controller:
         self.fcu2tip_init = self.fcu2tip
 
         # srv = Server(JoystickConfig, cfg.config_callback)
-        self.drone_pose_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=1)
-        self.tip_sp_pub = rospy.Publisher(robot_name+'/tip/setpoint_position', PointStamped, queue_size=1)
+        self.drone_pose_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=1, tcp_nodelay=True)
+        self.tip_sp_pub = rospy.Publisher(robot_name+'/tip/setpoint_position/global', PointStamped, queue_size=1, tcp_nodelay=True)
         self.joy_sub = rospy.Subscriber('/joy', Joy, self.joy_callback)
         rospy.Timer(rospy.Duration(1.0/rate), self.pose_callback)
 

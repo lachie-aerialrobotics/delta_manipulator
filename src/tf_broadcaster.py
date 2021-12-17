@@ -43,14 +43,14 @@ def drone_pose_callback(drone_pose_msg): #broadcast fcu frame
     br_map2fcu.sendTransform(tf_map2fcu)
 
 
-# def tip_pos_callback(tip_pos_msg): #broadcast manipulator tip frame 
-#     br_base2platform = tf2_ros.TransformBroadcaster()
-#     tf_base2platform = transform_msg(
-#         "base", "platform",
-#         tip_pos_msg.point.x, tip_pos_msg.point.y, tip_pos_msg.point.z,
-#         0.0, 0.0, 0.0, 1.0
-#     )
-#     br_base2platform.sendTransform(tf_base2platform)
+def tip_pos_callback(tip_pos_msg): #broadcast manipulator tip frame 
+    br_base2platform = tf2_ros.TransformBroadcaster()
+    tf_base2platform = transform_msg(
+        "base", "platform",
+        tip_pos_msg.point.x, tip_pos_msg.point.y, tip_pos_msg.point.z,
+        0.0, 0.0, 0.0, 1.0
+    )
+    br_base2platform.sendTransform(tf_base2platform)
 
 
 if __name__ == '__main__':
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     br_static.sendTransform([tf_fcu2base, tf_platform2tooltip])
     
     #subscribe to drone pose and end_effector location
-    drone_pose_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, drone_pose_callback)
-    # tip_pos_sub = rospy.Subscriber(cfg.robot_name+'/tip/local_position', PointStamped, tip_pos_callback)
+    drone_pose_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, drone_pose_callback, tcp_nodelay=True)
+    tip_pos_sub = rospy.Subscriber(cfg.robot_name+'/tip/setpoint_position/local', PointStamped, tip_pos_callback)
 
     rospy.spin()

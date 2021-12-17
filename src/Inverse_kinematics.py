@@ -152,8 +152,8 @@ class Controller: #init publishers and subscribers
         self.pub_ang = rospy.Publisher(robot_name+'/servo/setpoint_angles', servo_angles, queue_size=1) # servo angle publisher
         self.pub_crrnt = rospy.Publisher(robot_name+'/servo/setpoint_currents', servo_angles, queue_size=1) # servo current publisher
 
-        self.sub_pos = message_filters.Subscriber(robot_name+'/tip/local_position', PointStamped) #target angle subscriber
-        self.sub_force = message_filters.Subscriber(robot_name+'/servo/torques', PointStamped) #target force subscriber
+        self.sub_pos = message_filters.Subscriber(robot_name+'/tip/setpoint_position/local', PointStamped) #target angle subscriber
+        self.sub_force = message_filters.Subscriber(robot_name+'/servo/setpoint_torques', PointStamped) #target force subscriber
     
     def loop(self):
         ts = message_filters.ApproximateTimeSynchronizer([self.sub_pos, self.sub_force], 1, 100)
