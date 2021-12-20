@@ -19,6 +19,8 @@ class button_state:
     flight_mode_switch = 0
     delta_reset_switch = 0
     delta_control_mode = 0
+    origin_reset_switch = 0
+
 class Controller:
     def __init__(self): #init publishers and subscribers
         self.scaling_param = 0.01
@@ -36,6 +38,7 @@ class Controller:
         self.flight_mode = 0
         self.delta_control_mode = 0
         self.reset_delta = 0
+        self.reset_origin = 0
 
         robot_name = rospy.get_param('/namespace')
         rate = rospy.get_param('/rate')
@@ -49,10 +52,14 @@ class Controller:
         self.fcu2tip_init = self.fcu2tip
 
         # srv = Server(JoystickConfig, cfg.config_callback)
-        self.drone_pose_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=1, tcp_nodelay=True)
+        self.drone_sp_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=1, tcp_nodelay=True)
         self.tip_sp_pub = rospy.Publisher(robot_name+'/tip/setpoint_position/global', PointStamped, queue_size=1, tcp_nodelay=True)
-        self.joy_sub = rospy.Subscriber('/joy', Joy, self.joy_callback)
-        rospy.Timer(rospy.Duration(1.0/rate), self.pose_callback)
+        self.drone_pose_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.pose_callback ,tcp_nodelay=True)
+        self.joy_sub = rospy.Subscriber('/joy', Joy, self.joy_callback, tcp_nodelay=True)
+        rospy.Timer(rospy.Duration(1.0/rate), self.setpoint_callback)
+
+    def pose_callback(self, pose_msg):
+        self.current_pose = pose_msg
 
     def joy_callback(self, joy_msg):
         self.yaw_cmd = joy_msg.axes[0]
@@ -83,20 +90,32 @@ class Controller:
                 rospy.loginfo(["DELTA CONTROL DISENGAGED"])
                   
         delta_reset_switch = joy_msg.buttons[5]
+
         if delta_reset_switch != button_state.delta_reset_switch:
+            button_state.delta_reset_switch = delta_reset_switch
             if delta_reset_switch == 1:
                 self.reset_delta = 1
                 rospy.loginfo(["DELTA ORIGIN RESET"])
+            elif delta_reset_switch == 0:
+                self.reset_delta = 0
 
-        function_B = joy_msg.buttons[1]
+        origin_reset_switch = joy_msg.buttons[1]
+
+        if origin_reset_switch != button_state.origin_reset_switch:
+            button_state.origin_reset_switch = origin_reset_switch
+            if origin_reset_switch == 1:
+                self.reset_origin == 1
+                rospy.loginfo("SETPOINT RESET TO DRONE POSITION")
+            elif origin_reset_switch == 0:
+                self.reset_origin = 0
+
         function_X = joy_msg.buttons[2]
         function_Y = joy_msg.buttons[3]
 
-    def pose_callback(self, event):
+    def setpoint_callback(self, event):
         p = PoseStamped()
         p.header.stamp = rospy.Time.now()
         p.header.frame_id = "map"
-
 
         if self.flight_mode == 0:
             # calculate setpoint from joystick inputs
@@ -107,16 +126,31 @@ class Controller:
                                     self.roll_cmd * self.scaling_param,
                                     self.throt_cmd * self.scaling_param]))
 
+                if self.reset_origin == 1:
+                    print("made it to drone reset loop!")
+                    self.p_vec = np.asarray([self.current_pose.pose.position.x,
+                                                self.current_pose.pose.position.y,
+                                                self.current_pose.pose.position.z])
+
+                    self.yaw_quat = np.asarray([self.current_pose.pose.orientation.w,
+                                                self.current_pose.pose.orientation.x,
+                                                self.current_pose.pose.orientation.y,
+                                                self.current_pose.pose.orientation.z])
+
             elif self.delta_control_mode == 1:
                 self.fcu2tip += np.asarray([self.delta_scaling_param * self.pitch_cmd,
                                                 self.delta_scaling_param * self.roll_cmd,
                                                 self.delta_scaling_param * self.throt_cmd])
+            
             if self.reset_delta == 1:
+                print("made it to delta reset loop!")
                 self.fcu2tip = self.fcu2tip_init
+                print(self.fcu2tip_init)
                 self.reset_delta = 0
             
         elif self.flight_mode == 1:
             pass
+
         
         p.pose.position.x = self.p_vec[0]
         p.pose.position.y = self.p_vec[1]
@@ -136,7 +170,7 @@ class Controller:
         tip.point.y = tip_pos_vec[1]
         tip.point.z = tip_pos_vec[2]
 
-        self.drone_pose_pub.publish(p)
+        self.drone_sp_pub.publish(p)
         self.tip_sp_pub.publish(tip)
 
 def qv_mult(q1, v1):

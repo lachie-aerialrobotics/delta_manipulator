@@ -73,6 +73,6 @@ if __name__ == '__main__':
     
     #subscribe to drone pose and end_effector location
     drone_pose_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, drone_pose_callback, tcp_nodelay=True)
-    tip_pos_sub = rospy.Subscriber(cfg.robot_name+'/tip/setpoint_position/local', PointStamped, tip_pos_callback)
+    tip_pos_sub = rospy.Subscriber(cfg.robot_name+'/tip/detected_position/local', PointStamped, tip_pos_callback)
 
     rospy.spin()

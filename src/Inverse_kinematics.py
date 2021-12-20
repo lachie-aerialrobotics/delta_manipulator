@@ -24,10 +24,10 @@ class delta:
     def __init__(self):
         pass
 
-    def callback_ang(self, pos):  #return servo angle message         
+    def callback_ang(self, pos):  #return servo angle message       
         self.theta1, self.theta2, self.theta3, issolved = self.inverse_kinematics(pos.point.x, pos.point.y, pos.point.z)
         
-        if issolved == True:
+        if issolved == True and pos.point.z <= 0:
             self.thetb1 = self.rads2bits(self.theta1,cfg.dir1)
             self.thetb2 = self.rads2bits(self.theta2,cfg.dir2)
             self.thetb3 = self.rads2bits(self.theta3,cfg.dir3)
@@ -35,6 +35,7 @@ class delta:
             cache.thetb2 = self.thetb2
             cache.thetb3 = self.thetb3
         else:
+            rospy.logwarn("Workspace of manipulator exceeded!")
             try:
                 self.thetb1 = cache.thetb1
                 self.thetb2 = cache.thetb2
@@ -104,7 +105,6 @@ class delta:
         if (disc[0] >= 0) and (disc[1] >= 0) and (disc[2] >= 0):
             issolved = True
         else:
-            rospy.logwarn("Workspace of manipulator exceeded!")
             issolved = False
         return issolved
     
@@ -150,22 +150,24 @@ class Controller: #init publishers and subscribers
     def __init__(self):
         robot_name = rospy.get_param('/namespace') 
         self.pub_ang = rospy.Publisher(robot_name+'/servo/setpoint_angles', servo_angles, queue_size=1) # servo angle publisher
-        self.pub_crrnt = rospy.Publisher(robot_name+'/servo/setpoint_currents', servo_angles, queue_size=1) # servo current publisher
+        # self.pub_crrnt = rospy.Publisher(robot_name+'/servo/setpoint_currents', servo_angles, queue_size=1) # servo current publisher
 
         self.sub_pos = message_filters.Subscriber(robot_name+'/tip/setpoint_position/local', PointStamped) #target angle subscriber
-        self.sub_force = message_filters.Subscriber(robot_name+'/servo/setpoint_torques', PointStamped) #target force subscriber
+        # self.sub_force = message_filters.Subscriber(robot_name+'/servo/setpoint_torques', PointStamped) #target force subscriber
     
     def loop(self):
-        ts = message_filters.ApproximateTimeSynchronizer([self.sub_pos, self.sub_force], 1, 100)
+        ts = message_filters.ApproximateTimeSynchronizer([self.sub_pos#, self.sub_force
+            ], 1, 100)
         ts.registerCallback(self.tip_callback)
         
-    def tip_callback(self, sub_pos, sub_force): #callback calculates servo angles/torques
+    def tip_callback(self, sub_pos#, sub_force
+            ): #callback calculates servo angles/torques
         ang = delta().callback_ang(sub_pos)
         self.pub_ang.publish(ang)
-        crrnt = delta().callback_crrnt(sub_force)
-        self.pub_crrnt.publish(crrnt)
+        # crrnt = delta().callback_crrnt(sub_force)
+        # self.pub_crrnt.publish(crrnt)
         
 if __name__ == '__main__': #initialise node and run loop
-    rospy.init_node('delta_main_node', anonymous=True)
+    rospy.init_node('delta_inverse_kinematics', anonymous=True)
     Controller().loop()
     rospy.spin()

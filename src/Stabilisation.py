@@ -7,7 +7,7 @@ from quaternion_functions import q_conjugate, qv_mult, q_mult
 from geometry_msgs.msg import PointStamped, PoseStamped
 
 #script calculates required end-effector position of manipulator to stabilise base perturbations using tf2 frames
-class Controller():
+class Controller:
     def __init__(self): #init params and publishers and subscribers
         robot_name = rospy.get_param('/namespace')
         nozzlex = rospy.get_param('/nozzle')
@@ -19,7 +19,7 @@ class Controller():
         self.p_fcu2base = np.asarray([drone2basex, 0.0, drone2basez])
         self.q_fcu2base = quaternion_from_euler(np.deg2rad(base_pitch) , 0.0, -np.pi/2)
 
-        self.pub_tip_pos = rospy.Publisher(robot_name+'/tip/setpoint_position/local', PointStamped, tcp_nodelay=True) 
+        self.pub_tip_pos = rospy.Publisher(robot_name+'/tip/setpoint_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
 
         self.tip_sp_sub = message_filters.Subscriber(robot_name+'/tip/setpoint_position/global', PointStamped, tcp_nodelay=True) 
         self.drone_pose_sub = message_filters.Subscriber('/mavros/local_position/pose', PoseStamped, tcp_nodelay=True)

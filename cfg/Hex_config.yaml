@@ -1,5 +1,5 @@
 #config file for Hexacopter with sideways delta_arm
-namespace:          "delta_1"       #robot name
+namespace:          "hex"       #robot name
 rate:               100             #ros rate in [Hz]
 
 #manipulator geometry parameters:
@@ -14,7 +14,7 @@ dir2:               true            #reverse servo 2 rotation direction?
 dir3:               false           #reverse servo 3 rotation direction?
 
 #uav geometry parameters (in fcu coordinate frame):
-tip_init_x:         0.4             #initial x offset of delta tip from base in [m]
+tip_init_x:         0.6             #initial x offset of delta tip from base in [m]
 tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
 tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
 drone2base_x:       0.3             #offset of base of delta from CoM of drone in [m]
