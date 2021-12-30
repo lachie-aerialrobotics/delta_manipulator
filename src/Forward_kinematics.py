@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import rospy
 import numpy as np
-from geometry_msgs.msg import PointStamped
+import tf2_ros
+from geometry_msgs.msg import PointStamped, TransformStamped
 from delta_manipulator.msg import servo_angles
 
 class Controller:
@@ -31,12 +32,27 @@ class Controller:
         solve, x, y, z = self.forwardKinematics(thetb1, thetb2, thetb3)
         if solve == True:
             tip_pos_msg = PointStamped()
-            tip_pos_msg.header.frame_id = "base"
+            tip_pos_msg.header.frame_id = "manipulator"
             tip_pos_msg.header.stamp = rospy.Time.now()
             tip_pos_msg.point.x = x
             tip_pos_msg.point.y = y
             tip_pos_msg.point.z = z
             self.pub_tip_pos.publish(tip_pos_msg)
+
+            #broadcast tranform between platform and manipulator
+            br_base2platform = tf2_ros.TransformBroadcaster()
+            tf_base2platform = TransformStamped()
+            tf_base2platform.header.stamp = rospy.Time.now()
+            tf_base2platform.header.frame_id = "manipulator"
+            tf_base2platform.child_frame_id = "platform"
+            tf_base2platform.transform.translation.x = tip_pos_msg.point.x
+            tf_base2platform.transform.translation.y = tip_pos_msg.point.y
+            tf_base2platform.transform.translation.z = tip_pos_msg.point.z
+            tf_base2platform.transform.rotation.x = 0.0
+            tf_base2platform.transform.rotation.y = 0.0
+            tf_base2platform.transform.rotation.z = 0.0
+            tf_base2platform.transform.rotation.w = 1.0
+            br_base2platform.sendTransform(tf_base2platform)
         else:
             rospy.loginfo("Forward Kinematics Solve Failed")
 

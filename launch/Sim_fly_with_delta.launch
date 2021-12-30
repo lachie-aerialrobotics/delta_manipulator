@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <launch>
+
+  <include file="$(find px4)/launch/mavros_posix_sitl.launch" />
+
   <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
   <rosparam file="$(find delta_manipulator)/cfg/Sim_config.yaml" />
  
   <node name="joystick_input_node" pkg="joy" type="joy_node" required="true" output="screen"/>
   <node name="joystick_trajectory_node" pkg="delta_manipulator" type="Joystick_control.py" required="true" output="screen"/>
-
-  <node name="tf_broadcaster_node" pkg="delta_manipulator" type="tf_broadcaster.py" required="true" output="screen"/>
   
   <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
@@ -16,5 +17,4 @@
 
   <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn = "false" output = "screen" args = "--perspective-file $(find delta_manipulator)/rqt/test.perspective"/>
 
-   <include file="$(find px4)/launch/mavros_posix_sitl.launch" />
 </launch>

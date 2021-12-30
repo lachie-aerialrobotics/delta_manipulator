@@ -28,15 +28,20 @@ class delta:
         self.theta1, self.theta2, self.theta3, issolved = self.inverse_kinematics(pos.point.x, pos.point.y, pos.point.z)
         
         if issolved == True and pos.point.z <= 0:
+            if cache.issolved == False:
+                rospy.loginfo("TIP SETPOINT RETURNED TO WORKSPACE")
+            cache.issolved = True
             self.thetb1 = self.rads2bits(self.theta1,cfg.dir1)
             self.thetb2 = self.rads2bits(self.theta2,cfg.dir2)
             self.thetb3 = self.rads2bits(self.theta3,cfg.dir3)
             cache.thetb1 = self.thetb1
             cache.thetb2 = self.thetb2
-            cache.thetb3 = self.thetb3
+            cache.thetb3 = self.thetb3    
         else:
-            rospy.logwarn("Workspace of manipulator exceeded!")
             try:
+                if cache.issolved == True:
+                    rospy.logwarn("TIP SETPOINT EXCEEDS WORKSPACE")
+                cache.issolved = False
                 self.thetb1 = cache.thetb1
                 self.thetb2 = cache.thetb2
                 self.thetb3 = cache.thetb3
@@ -132,10 +137,12 @@ class delta:
         return I
 
 class cache: #save most recent valid values of servo angles in case inverse kinematics breaks
-    def __init__(self, thetb1, thetb2, thetb3):
+    issolved = True
+    def __init__(self, thetb1, thetb2, thetb3, issolved):
         self.thetb1 = thetb1
         self.thetb2 = thetb2
         self.thetb3 = thetb3
+        self.issolved = issolved
 
 class ServoMsg: #class to assign values to servo_angles message format  
     def __init__(self, Theta1, Theta2, Theta3): 
