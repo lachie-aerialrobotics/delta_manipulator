@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 import rospy
 import numpy as np
-from quaternion_functions import qv_mult, q_mult
+from quaternion_functions import qv_mult, q_mult, q_conjugate
 from geometry_msgs.msg import PoseStamped, PointStamped
 from sensor_msgs.msg import Joy
 from nav_msgs.msg import Path
@@ -94,6 +94,10 @@ class Setpoint:
         #retrieve params from parameter server
         rate = rospy.get_param('/rate')
 
+        self.moving_on_trajectory = False
+        self.done_yawing = False
+        self.done_translating = False
+
         self.drone2base_x = rospy.get_param('/manipulator/geometry/drone2base_x')
         self.drone2base_z = rospy.get_param('/manipulator/geometry/drone2base_z')
         self.tip_init_x = rospy.get_param('/manipulator/tooltip/tip_init_x')
@@ -119,7 +123,10 @@ class Setpoint:
 
     def setpoint_callback(self, event):
         if self.j.perform_trajectory:
-            self.trajectory_generator()
+            if self.moving_on_trajectory:
+                self.trajectory_follower() 
+            else:
+                self.move_to_trajectory()
         else:
             if self.j.control_delta_arm:
                 self.delta_joystick_control()
@@ -188,8 +195,59 @@ class Setpoint:
         if self.p[2] < 0.0:
             self.p[2] = 0.0
 
-    def trajectory_generator(self):
-        if self.w <= len(self.path_msg.poses):
+    def move_to_trajectory(self):
+        rate = rospy.get_param('/rate')
+        drone2base_x = rospy.get_param('/manipulator/geometry/drone2base_x')
+        drone2base_z = rospy.get_param('/manipulator/geometry/drone2base_z')
+        tip_init_x = rospy.get_param('/manipulator/tooltip/tip_init_x')
+        tip_init_y = rospy.get_param('/manipulator/tooltip/tip_init_y')
+        tip_init_z = rospy.get_param('/manipulator/tooltip/tip_init_z')
+        fcu2tip = np.asarray([drone2base_x + tip_init_x, tip_init_y, drone2base_z + tip_init_z])
+
+        p_traj_start = np.asarray([self.path_msg.poses[0].pose.position.x,
+                                    self.path_msg.poses[0].pose.position.y,
+                                    self.path_msg.poses[0].pose.position.z])
+
+        q_traj_start = np.asarray([self.path_msg.poses[0].pose.orientation.x,
+                                    self.path_msg.poses[0].pose.orientation.y,
+                                    self.path_msg.poses[0].pose.orientation.z,
+                                    self.path_msg.poses[0].pose.orientation.w])
+
+        drone2traj = p_traj_start - self.p
+
+        drone2traj_norm = drone2traj / np.linalg.norm(drone2traj)
+
+        q_diff = q_mult(self.q, q_conjugate(q_traj_start))
+
+        if np.arcsin(q_diff[2]) > self.yaw_scaling_param:
+            self.q = q_mult(np.asarray([0.0, 
+                                        0.0, 
+                                        np.sin(-self.yaw_scaling_param), 
+                                        np.cos(-self.yaw_scaling_param)]), self.q)
+            
+        elif np.arcsin(q_diff[2]) < self.yaw_scaling_param:
+            self.q = q_mult(np.asarray([0.0, 
+                                        0.0, 
+                                        np.sin(self.yaw_scaling_param), 
+                                        np.cos(self.yaw_scaling_param)]), self.q)
+
+        else:
+            self.done_yawing = True
+
+        if np.linalg.norm(p_traj_start - self.p) > self.v_traj_drone / rate:
+            self.p += drone2traj_norm * self.v_traj_drone / rate  
+        else:
+            self.done_translating = True
+
+        self.tip_p = self.p + qv_mult(self.q, self.tip_p + fcu2tip)
+
+        if self.done_yawing and self.done_translating == True:
+            self.moving_on_trajectory = True
+            self.done_yawing = False
+            self.done_translating = False
+
+    def trajectory_follower(self):  
+        if self.w < len(self.path_msg.poses):
             self.p[0] = self.path_msg.poses[self.w].pose.position.x  
             self.p[1] = self.path_msg.poses[self.w].pose.position.y  
             self.p[2] = self.path_msg.poses[self.w].pose.position.z 
@@ -202,11 +260,13 @@ class Setpoint:
             self.tip_p[0] = self.delta_path_msg.poses[self.w].pose.position.x 
             self.tip_p[1] = self.delta_path_msg.poses[self.w].pose.position.y
             self.tip_p[2] = self.delta_path_msg.poses[self.w].pose.position.z
-
             self.w += 1
+        else:
+            self.w = 0
+            self.j.perform_trajectory = False
+            self.moving_on_trajectory = False
 
-def config_callback(config, level):
-    
+def config_callback(config, level): 
     rate = rospy.get_param('/rate')
     drone2base_x = rospy.get_param('/manipulator/geometry/drone2base_x')
     drone2base_z = rospy.get_param('/manipulator/geometry/drone2base_z')
@@ -218,11 +278,6 @@ def config_callback(config, level):
     Setpoint.vel_scaling_param = config.v_max_fcu/rate
     Setpoint.yaw_scaling_param = config.yaw_max_fcu/rate
     Setpoint.delta_scaling_param = config.v_max_tooltip/rate
-    
-    Setpoint.delta_mode = config.delta_mode
-    Setpoint.v_traj_delta = config.v_traj_delta
-    Setpoint.delta_increment = config.v_traj_delta / (config.r_traj_delta * rate)
-    Setpoint.delta_r = config.r_traj_delta
 
     Setpoint.x_max_pos = config.x_max_pos
     Setpoint.x_max_neg = -config.x_max_neg
@@ -279,27 +334,27 @@ def config_callback(config, level):
             if config.drone_mode == 0: #static position hold
                 p[0] = 0.0
                 p[1] = 0.0
-                p[2] = 0.0
+                p[2] = config.h_traj_drone
             elif config.drone_mode == 1: #line in z
                 p[0] = 0.0
                 p[1] = 0.0
-                p[2] = a * np.sin(t)
+                p[2] = a * np.sin(t) + config.h_traj_drone
             elif config.drone_mode == 2: #line in y
                 p[0] = 0.0
                 p[1] = a * np.sin(t)
-                p[2] = 0.0
+                p[2] = config.h_traj_drone
             elif config.drone_mode == 3: #line in x
                 p[0] = a * np.sin(t)
                 p[1] = 0.0
-                p[2] = 0.0
+                p[2] = config.h_traj_drone
             elif config.drone_mode == 4: #circle in xy
                 p[0] = a * np.sin(t)
                 p[1] = a * np.cos(t)
-                p[2] = 0.0
+                p[2] = config.h_traj_drone
             elif config.drone_mode == 5: #figure 8 in xy
                 p[0] = a * np.sin(t) * np.cos(t)
                 p[1] = a * np.sin(t)
-                p[2] = 0.0
+                p[2] = config.h_traj_drone
 
             pose.pose.position.x = p[0]
             pose.pose.position.y = p[1]
@@ -357,6 +412,10 @@ def config_callback(config, level):
         Setpoint.v_traj_drone = config.v_traj_drone
         Setpoint.drone_increment = config.v_traj_drone / (config.r_traj_drone * rate)
         Setpoint.drone_r = config.r_traj_drone
+
+        Setpoint.delta_mode = config.delta_mode
+        Setpoint.v_traj_delta = config.v_traj_delta
+        Setpoint.delta_r = config.r_traj_delta
 
     return config
 
