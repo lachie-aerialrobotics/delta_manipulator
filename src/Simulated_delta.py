@@ -5,9 +5,8 @@ from delta_manipulator.msg import servo_angles
 #simple script to simulate pinging angles to dynamixel servos
 class Controller:
     def __init__(self): #init params and publishers and subscribers
-        robot_name = rospy.get_param('/namespace')
-        self.sub_servo_angles_sp = rospy.Subscriber(robot_name+'/servo/setpoint_angles', servo_angles, self.callback, tcp_nodelay=True) 
-        self.pub_servo_angles_read = rospy.Publisher(robot_name+'/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) 
+        self.sub_servo_angles_sp = rospy.Subscriber('/servo/setpoint_angles', servo_angles, self.callback, tcp_nodelay=True) 
+        self.pub_servo_angles_read = rospy.Publisher('/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) 
 
     def callback(self, servo_sp_msg):
         d = rospy.Duration(0.005, 0)

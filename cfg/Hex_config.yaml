@@ -1,48 +1,40 @@
 #config file for Hexacopter with sideways delta_arm
-namespace:          "hex"           #robot name
-rate:               100             #ros rate in [Hz]
+rate:                         100             #ros rate in [Hz]
 
 #manipulator geometry parameters:
-sp:                 0.06            #size of platform (see kinematics paper) in [m]
-sb:                 0.34            #size of base (see kinematics paper) in [m]
-l:                  0.47            #distal joint length in [m]
-L:                  0.2             #proximal joint length in [m]
+manipulator:
+  geometry/sp:                0.06            #size of platform (see kinematics paper) in [m]
+  geometry/sb:                0.34            #size of base (see kinematics paper) in [m]
+  geometry/l:                 0.47            #distal joint length in [m]
+  geometry/L:                 0.2             #proximal joint length in [m]
+
+  geometry/nozzle:             0.15            #length of appendage from delta platform in [m]
+  geometry/drone2base_x:       0.3             #offset of base of delta from CoM of drone in [m]
+  geometry/drone2base_z:       0.05            #offset of base of delta from CoM of drone in [m]
+  geometry/base_pitch:         90              #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
 
 #dynamixel servo parameters
-dir1:               false           #reverse servo 1 rotation direction?
-dir2:               true            #reverse servo 2 rotation direction?
-dir3:               false           #reverse servo 3 rotation direction?
+  servo/dir1:                 false           #reverse servo 1 rotation direction?
+  servo/dir2:                 true            #reverse servo 2 rotation direction?
+  servo/dir3:                 false           #reverse servo 3 rotation direction?
 
 #uav geometry parameters (in fcu coordinate frame):
-tip_init_x:         0.6             #initial x offset of delta tip from base in [m]
-tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
-tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
-drone2base_x:       0.3             #offset of base of delta from CoM of drone in [m]
-drone2base_z:       0.05            #offset of base of delta from CoM of drone in [m]
-nozzle:             0.15            #length of appendage from delta platform in [m]
-base_pitch:         90              #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
-
-#tf stuff
-tf_wait:            2.0             #how long to wait for tf frames to initialise on startup in [s]
-tf_buffer_wait:     0.1             #how long to wait for tf frames while running [s]
+  tooltip/tip_init_x:         0.6             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
+  tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
 
 #mavros
-# mavros:
-#   setpoint_position/frame_id:             "map"
-#   setpoint_position/tf/frame_id:          "map"
-#   setpoint_position/tf/child_frame_id:    "fcu"
-  
-#   local_position/frame_id:             "map"
-#   local_position/tf/frame_id:             "map"
-#   local_position/tf/child_frame_id:       "fcu"
-  # global_position/tf/frame_id:            "map"
-  # global_position/tf/child_frame_id:      "fcu"
-
 mavros:
-  local_position/tf/send: true
+  local_position/tf/send:     true            #send tf data from drone
+  fcu_url:                    "udp://:14540@localhost:14557"
+  #gcs_url:                    "udp://:14540@localhost:14557"
 
+#dynamixels
+# dynamixel:
+#   port:
 
-#TODO: Setup mavros to publish tf frames!
+#todo: set servo params from this launch file
+#rewrite dynamixel code with config options
 
 
 

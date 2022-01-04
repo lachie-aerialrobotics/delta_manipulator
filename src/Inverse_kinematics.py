@@ -5,14 +5,13 @@ import message_filters
 from geometry_msgs.msg import PointStamped
 from delta_manipulator.msg import servo_angles
 class cfg:
-    robot_name = rospy.get_param('/namespace')
-    sp = rospy.get_param('/sp')
-    sb = rospy.get_param('/sb')
-    l = rospy.get_param('/l')
-    L = rospy.get_param('/L')
-    dir1 = rospy.get_param('/dir1')
-    dir2 = rospy.get_param('/dir2')
-    dir3 = rospy.get_param('/dir3')
+    sp = rospy.get_param('/manipulator/geometry/sp')
+    sb = rospy.get_param('/manipulator/geometry/sb')
+    l = rospy.get_param('/manipulator/geometry/l')
+    L = rospy.get_param('/manipulator/geometry/L')
+    dir1 = rospy.get_param('/manipulator/servo/dir1')
+    dir2 = rospy.get_param('/manipulator/servo/dir2')
+    dir3 = rospy.get_param('/manipulator/servo/dir3')
     wb = np.sqrt(3)/6 * sb
     wp = np.sqrt(3)/6 * sp
     up = np.sqrt(3)/3 * sp
@@ -29,7 +28,7 @@ class delta:
         
         if issolved == True and pos.point.z <= 0:
             if cache.issolved == False:
-                rospy.loginfo("TIP SETPOINT RETURNED TO WORKSPACE")
+                rospy.loginfo("TOOLTIP SETPOINT RETURNED TO WORKSPACE")
             cache.issolved = True
             self.thetb1 = self.rads2bits(self.theta1,cfg.dir1)
             self.thetb2 = self.rads2bits(self.theta2,cfg.dir2)
@@ -40,7 +39,7 @@ class delta:
         else:
             try:
                 if cache.issolved == True:
-                    rospy.logwarn("TIP SETPOINT EXCEEDS WORKSPACE")
+                    rospy.logwarn("TOOLTIP SETPOINT EXCEEDS WORKSPACE")
                 cache.issolved = False
                 self.thetb1 = cache.thetb1
                 self.thetb2 = cache.thetb2
@@ -155,11 +154,10 @@ class ServoMsg: #class to assign values to servo_angles message format
 
 class Controller: #init publishers and subscribers
     def __init__(self):
-        robot_name = rospy.get_param('/namespace') 
-        self.pub_ang = rospy.Publisher(robot_name+'/servo/setpoint_angles', servo_angles, queue_size=1) # servo angle publisher
+        self.pub_ang = rospy.Publisher('/servo/setpoint_angles', servo_angles, queue_size=1) # servo angle publisher
         # self.pub_crrnt = rospy.Publisher(robot_name+'/servo/setpoint_currents', servo_angles, queue_size=1) # servo current publisher
 
-        self.sub_pos = message_filters.Subscriber(robot_name+'/tip/setpoint_position/local', PointStamped) #target angle subscriber
+        self.sub_pos = message_filters.Subscriber('/tooltip/setpoint_position/local', PointStamped) #target angle subscriber
         # self.sub_force = message_filters.Subscriber(robot_name+'/servo/setpoint_torques', PointStamped) #target force subscriber
     
     def loop(self):

@@ -7,14 +7,13 @@ from delta_manipulator.msg import servo_angles
 
 class Controller:
     def __init__(self): #init params and publishers and subscribers
-        self.robot_name = rospy.get_param('/namespace')
-        self.sp = rospy.get_param('/sp')
-        self.sb = rospy.get_param('/sb')
-        self.l = rospy.get_param('/l')
-        self.L = rospy.get_param('/L')
-        self.dir1 = rospy.get_param('/dir1')
-        self.dir2 = rospy.get_param('/dir2')
-        self.dir3 = rospy.get_param('/dir3')
+        self.sp = rospy.get_param('/manipulator/geometry/sp')
+        self.sb = rospy.get_param('/manipulator/geometry/sb')
+        self.l = rospy.get_param('/manipulator/geometry/l')
+        self.L = rospy.get_param('/manipulator/geometry/L')
+        self.dir1 = rospy.get_param('/manipulator/servo/dir1')
+        self.dir2 = rospy.get_param('/manipulator/servo/dir2')
+        self.dir3 = rospy.get_param('/manipulator/servo/dir3')
         self.wb = np.sqrt(3)/6 * self.sb
         self.wp = np.sqrt(3)/6 * self.sp
         self.up = np.sqrt(3)/3 * self.sp
@@ -22,14 +21,28 @@ class Controller:
         self.b = self.sp / 2 - np.sqrt(3)/2 * self.wb
         self.c = self.wp - 0.5 * self.wb 
 
-        self.sub_servo_angles_sp = rospy.Subscriber(self.robot_name+'/servo/detected_angles', servo_angles, self.callback, tcp_nodelay=True) 
-        self.pub_tip_pos = rospy.Publisher(self.robot_name+'/tip/detected_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
+        self.sub_servo_angles_sp = rospy.Subscriber('/servo/detected_angles', servo_angles, self.callback, tcp_nodelay=True) 
+        self.pub_tip_pos = rospy.Publisher('/tooltip/detected_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
+
+        self.pubBaseJoint1Point = rospy.Publisher('/manipulator/joint/base/1', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.pubBaseJoint2Point = rospy.Publisher('/manipulator/joint/base/2', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.pubBaseJoint3Point = rospy.Publisher('/manipulator/joint/base/3', PointStamped, queue_size=1, tcp_nodelay=True)
+
+        self.pubElbowJoint1Point = rospy.Publisher('/manipulator/joint/elbow/1', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.pubElbowJoint2Point = rospy.Publisher('/manipulator/joint/elbow/2', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.pubElbowJoint3Point = rospy.Publisher('/manipulator/joint/elbow/3', PointStamped, queue_size=1, tcp_nodelay=True)
+
+        self.pubPlatJoint1Point = rospy.Publisher('/manipulator/joint/platform/1', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.pubPlatJoint2Point = rospy.Publisher('/manipulator/joint/platform/2', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.pubPlatJoint3Point = rospy.Publisher('/manipulator/joint/platform/3', PointStamped, queue_size=1, tcp_nodelay=True)
 
     def callback(self, servo_sp_msg):
         thetb1 = servo_sp_msg.theta1
         thetb2 = servo_sp_msg.theta2
         thetb3 = servo_sp_msg.theta3
+
         solve, x, y, z = self.forwardKinematics(thetb1, thetb2, thetb3)
+
         if solve == True:
             tip_pos_msg = PointStamped()
             tip_pos_msg.header.frame_id = "manipulator"
@@ -53,6 +66,9 @@ class Controller:
             tf_base2platform.transform.rotation.z = 0.0
             tf_base2platform.transform.rotation.w = 1.0
             br_base2platform.sendTransform(tf_base2platform)
+
+            self.publish_joint_locations(thetb1, thetb2, thetb3, x, y, z)
+
         else:
             rospy.loginfo("Forward Kinematics Solve Failed")
 
@@ -162,6 +178,123 @@ class Controller:
         elif dir == False:
             theta = float((thetb - 2048)/-1024 * np.pi/2)
         return theta
+
+    def publish_joint_locations(self, thetb1, thetb2, thetb3, x, y, z):
+        #convert servo angles to radians
+        theta1 = self.bits2rads(thetb1, self.dir1)
+        theta2 = self.bits2rads(thetb2, self.dir2)
+        theta3 = self.bits2rads(thetb3, self.dir3)
+
+        #Base joint locations:
+        Bx1 = 0.0
+        By1 = -self.wb
+        Bz1 = 0.0
+
+        Bx2 = np.sqrt(3)/2 * self.wb
+        By2 = 0.5 * self.wb
+        Bz2 = 0.0
+
+        Bx3 = -np.sqrt(3)/2 * self.wb
+        By3 = 0.5 * self.wb
+        Bz3 = 0.0
+
+        baseJoint1PointMsg = PointStamped()
+        baseJoint1PointMsg.header.frame_id = "manipulator"
+        baseJoint1PointMsg.header.stamp = rospy.Time.now()
+        baseJoint1PointMsg.point.x = Bx1
+        baseJoint1PointMsg.point.y = By1
+        baseJoint1PointMsg.point.z = Bz1
+        self.pubBaseJoint1Point.publish(baseJoint1PointMsg)
+
+        baseJoint2PointMsg = PointStamped()
+        baseJoint2PointMsg.header.frame_id = "manipulator"
+        baseJoint2PointMsg.header.stamp = rospy.Time.now()
+        baseJoint2PointMsg.point.x = Bx2
+        baseJoint2PointMsg.point.y = By2
+        baseJoint2PointMsg.point.z = Bz2
+        self.pubBaseJoint2Point.publish(baseJoint2PointMsg)
+
+        baseJoint3PointMsg = PointStamped()
+        baseJoint3PointMsg.header.frame_id = "manipulator"
+        baseJoint3PointMsg.header.stamp = rospy.Time.now()
+        baseJoint3PointMsg.point.x = Bx3
+        baseJoint3PointMsg.point.y = By3
+        baseJoint3PointMsg.point.z = Bz3
+        self.pubBaseJoint3Point.publish(baseJoint3PointMsg)
+
+        #Elbow locations:
+        Ex1 = 0
+        Ey1 = -self.wb - self.L * np.cos(theta1) + self.up
+        Ez1 = -self.L * np.sin(theta1)
+            
+        Ex2 = np.sqrt(3)/2 * (self.wb + self.L * np.cos(theta2)) - self.sp/2
+        Ey2 = 0.5 * (self.wb + self.L * np.cos(theta2)) - self.wp
+        Ez2 = - self.L * np.sin(theta2)
+
+        Ex3 = -np.sqrt(3)/2 * (self.wb + self.L * np.cos(theta3)) + self.sp/2
+        Ey3 = 0.5 * (self.wb + self.L * np.cos(theta3)) - self.wp
+        Ez3 = - self.L * np.sin(theta3)
+        
+        elbowJoint1PointMsg = PointStamped()
+        elbowJoint1PointMsg.header.frame_id = "manipulator"
+        elbowJoint1PointMsg.header.stamp = rospy.Time.now()
+        elbowJoint1PointMsg.point.x = Ex1
+        elbowJoint1PointMsg.point.y = Ey1
+        elbowJoint1PointMsg.point.z = Ez1
+        self.pubElbowJoint1Point.publish(elbowJoint1PointMsg)
+
+        elbowJoint2PointMsg = PointStamped()
+        elbowJoint2PointMsg.header.frame_id = "manipulator"
+        elbowJoint2PointMsg.header.stamp = rospy.Time.now()
+        elbowJoint2PointMsg.point.x = Ex2
+        elbowJoint2PointMsg.point.y = Ey2
+        elbowJoint2PointMsg.point.z = Ez2
+        self.pubElbowJoint2Point.publish(elbowJoint2PointMsg)
+
+        elbowJoint3PointMsg = PointStamped()
+        elbowJoint3PointMsg.header.frame_id = "manipulator"
+        elbowJoint3PointMsg.header.stamp = rospy.Time.now()
+        elbowJoint3PointMsg.point.x = Ex3
+        elbowJoint3PointMsg.point.y = Ey3
+        elbowJoint3PointMsg.point.z = Ez3
+        self.pubElbowJoint3Point.publish(elbowJoint3PointMsg)
+
+        #Platform link locations:
+        Px1 = x
+        Py1 = y - self.up
+        Pz1 = z
+
+        Px2 = x + self.sp/2
+        Py2 = y + self.wp
+        Pz2 = z
+
+        Px3 = x -self.sp/2
+        Py3 = y + self.wp
+        Pz3 = z
+
+        platJoint1PointMsg = PointStamped()
+        platJoint1PointMsg.header.frame_id = "manipulator"
+        platJoint1PointMsg.header.stamp = rospy.Time.now()
+        platJoint1PointMsg.point.x = Px1
+        platJoint1PointMsg.point.y = Py1
+        platJoint1PointMsg.point.z = Pz1
+        self.pubPlatJoint1Point.publish(platJoint1PointMsg)
+
+        platJoint2PointMsg = PointStamped()
+        platJoint2PointMsg.header.frame_id = "manipulator"
+        platJoint2PointMsg.header.stamp = rospy.Time.now()
+        platJoint2PointMsg.point.x = Px2
+        platJoint2PointMsg.point.y = Py2
+        platJoint2PointMsg.point.z = Pz2
+        self.pubPlatJoint2Point.publish(platJoint2PointMsg)
+
+        platJoint3PointMsg = PointStamped()
+        platJoint3PointMsg.header.frame_id = "manipulator"
+        platJoint3PointMsg.header.stamp = rospy.Time.now()
+        platJoint3PointMsg.point.x = Px3
+        platJoint3PointMsg.point.y = Py3
+        platJoint3PointMsg.point.z = Pz3
+        self.pubPlatJoint3Point.publish(platJoint3PointMsg)
 
 if __name__ == '__main__': #initialise node
     rospy.init_node('delta_forward_kinematics', anonymous=True)

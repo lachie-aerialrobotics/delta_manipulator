@@ -11,11 +11,10 @@ from geometry_msgs.msg import PointStamped, PoseStamped, TransformStamped
 class Controller:
     def __init__(self):
         #get params from parameter server
-        robot_name = rospy.get_param('/namespace')
-        nozzlex = rospy.get_param('/nozzle')
-        drone2basex = rospy.get_param('/drone2base_x')  
-        drone2basez = rospy.get_param('/drone2base_z')   
-        base_pitch = rospy.get_param('/base_pitch')
+        nozzlex = rospy.get_param('/manipulator/geometry/nozzle')
+        drone2basex = rospy.get_param('/manipulator/geometry/drone2base_x')  
+        drone2basez = rospy.get_param('/manipulator/geometry/drone2base_z')   
+        base_pitch = rospy.get_param('/manipulator/geometry/base_pitch')
 
         #initialise variables
         self.p_tooltip = np.asarray([0.0, 0.0, -nozzlex])
@@ -30,18 +29,30 @@ class Controller:
             self.q_fcu2base[0], self.q_fcu2base[1], self.q_fcu2base[2], self.q_fcu2base[3]
         )
 
+        tf_odom2lidar = transform_msg(
+            "odom", "rplidar_link",
+            0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 1.0
+        )
+
+        tf_fcu2odom = transform_msg(
+            "base_link", "odom",
+            0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 1.0
+        )
+
         tf_platform2tooltip = transform_msg(
             "platform", "tooltip",
             self.p_tooltip[0], self.p_tooltip[1], self.p_tooltip[2],
             0.0, 0.0, 0.0, 1.0
         )    
-        br_static.sendTransform([tf_fcu2base, tf_platform2tooltip])
+        br_static.sendTransform([tf_fcu2base, tf_platform2tooltip, tf_fcu2odom, tf_odom2lidar])
 
         #publish platform setpoint
-        self.pub_tip_pos = rospy.Publisher(robot_name+'/tip/setpoint_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
+        self.pub_tip_pos = rospy.Publisher('/tooltip/setpoint_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
 
         #subscribe to tooltip and drone setpoints
-        self.tip_sp_sub = message_filters.Subscriber(robot_name+'/tip/setpoint_position/global', PointStamped, tcp_nodelay=True) 
+        self.tip_sp_sub = message_filters.Subscriber('/tooltip/setpoint_position/global', PointStamped, tcp_nodelay=True) 
         self.drone_pose_sub = message_filters.Subscriber('/mavros/local_position/pose', PoseStamped, tcp_nodelay=True)
         ts = message_filters.ApproximateTimeSynchronizer([self.tip_sp_sub, self.drone_pose_sub], 1, 0.1)
         ts.registerCallback(self.callback)
