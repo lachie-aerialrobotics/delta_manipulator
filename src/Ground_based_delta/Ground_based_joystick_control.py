@@ -124,7 +124,7 @@ class Setpoint:
             else:
                 self.move_to_trajectory()
         else:
-            self.drone_joystick_control()
+            self.delta_joystick_control()
 
         #assign tip position to PointStamped message
         tip_msg = PointStamped()
@@ -137,25 +137,14 @@ class Setpoint:
         #publish messages
         self.tip_sp_pub.publish(tip_msg)
 
-
-    def drone_joystick_control(self):
-        self.q = q_mult(np.asarray([0.0, 
-                                    0.0, 
-                                    np.sin(self.j.Yaw_axis * self.yaw_scaling_param), 
-                                    np.cos(self.j.Yaw_axis * self.yaw_scaling_param)]), self.q)
-
-        self.p += qv_mult(self.q, np.asarray([self.j.Pitch_axis * self.vel_scaling_param,
-                                                self.j.Roll_axis * self.vel_scaling_param,
-                                                self.j.Throt_axis * self.vel_scaling_param]))
-
     def delta_joystick_control(self):
-        self.fcu2tip += np.asarray([self.delta_scaling_param * self.j.Pitch_axis,
-                                        self.delta_scaling_param * self.j.Roll_axis,
-                                        self.delta_scaling_param * self.j.Throt_axis])
+        self.p += qv_mult(self.q, np.asarray([self.j.Pitch_axis * self.vel_scaling_param,
+                                        self.j.Roll_axis * self.vel_scaling_param,
+                                        self.j.Throt_axis * self.vel_scaling_param]))
 
         if self.j.reset_delta_arm:
-            if not np.array_equal(self.fcu2tip,np.asarray([self.drone2base_x + self.tip_init_x, self.tip_init_y, self.drone2base_z + self.tip_init_z])):
-                self.fcu2tip = np.asarray([self.drone2base_x + self.tip_init_x, self.tip_init_y, self.drone2base_z + self.tip_init_z])                           
+            if not np.array_equal(self.p, np.asarray([self.tip_init_x, self.tip_init_y, self.tip_init_z])):
+                self.p = np.asarray([self.tip_init_x, self.tip_init_y, self.tip_init_z])                           
                 rospy.loginfo("TOOLTIP POSITION RESET")
 
     def move_to_trajectory(self):
@@ -192,9 +181,6 @@ class Setpoint:
             self.q[2] = self.path_msg.poses[self.w].pose.orientation.z 
             self.q[3] = self.path_msg.poses[self.w].pose.orientation.w 
 
-            self.tip_p[0] = self.delta_path_msg.poses[self.w].pose.position.x 
-            self.tip_p[1] = self.delta_path_msg.poses[self.w].pose.position.y
-            self.tip_p[2] = self.delta_path_msg.poses[self.w].pose.position.z
             self.w += 1
         else:
             self.w = 0
