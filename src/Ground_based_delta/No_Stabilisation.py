@@ -3,7 +3,7 @@ import rospy
 import numpy as np
 
 import tf2_ros
-import tf2_geometry_msgs
+from tf2_geometry_msgs import do_transform_point
 
 from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import PointStamped, PoseStamped, TransformStamped
@@ -38,7 +38,7 @@ class Controller:
 
     def callback(self, tip_sp_msg):        
         trans = self.tfBuffer.lookup_transform('map', 'manipulator', rospy.Time(), rospy.Duration(0.5))
-        tf2_geometry_msgs.do_transform_point(tip_sp_msg, trans)
+        do_transform_point(tip_sp_msg, trans)
         #publish PointStamped message representing target of delta-manipulator relative to base
         pos_msg = PointStamped()
         pos_msg.header.frame_id = "manipulator"
