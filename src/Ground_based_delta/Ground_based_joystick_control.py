@@ -93,7 +93,8 @@ class Setpoint:
         self.q = np.asarray([0.0, 0.0, 0.0, 1.0])
         self.p = np.asarray([self.tip_init_x, self.tip_init_y, self.tip_init_z])
         self.w = 0
-        self.v_traj = 0.05
+        self.count = 0
+        self.v_traj = 0.1
 
         #retrieve params from parameter server
         rate = rospy.get_param('/rate')
@@ -164,19 +165,23 @@ class Setpoint:
             self.moving_on_trajectory = True
 
     def trajectory_follower(self):  
-        if self.w < len(self.path_msg.poses):
-            self.p[0] = self.path_msg.poses[self.w].pose.position.x  
-            self.p[1] = self.path_msg.poses[self.w].pose.position.y  
-            self.p[2] = self.path_msg.poses[self.w].pose.position.z 
+        if self.count < self.loop_count:
+            if self.w < len(self.path_msg.poses):
+                self.p[0] = self.path_msg.poses[self.w].pose.position.x  
+                self.p[1] = self.path_msg.poses[self.w].pose.position.y  
+                self.p[2] = self.path_msg.poses[self.w].pose.position.z 
 
-            self.q[0] = self.path_msg.poses[self.w].pose.orientation.x  
-            self.q[1] = self.path_msg.poses[self.w].pose.orientation.y  
-            self.q[2] = self.path_msg.poses[self.w].pose.orientation.z 
-            self.q[3] = self.path_msg.poses[self.w].pose.orientation.w 
+                self.q[0] = self.path_msg.poses[self.w].pose.orientation.x  
+                self.q[1] = self.path_msg.poses[self.w].pose.orientation.y  
+                self.q[2] = self.path_msg.poses[self.w].pose.orientation.z 
+                self.q[3] = self.path_msg.poses[self.w].pose.orientation.w 
 
-            self.w += 1
+                self.w += 1
+            else:
+                self.w = 0
+                self.count += 1
         else:
-            self.w = 0
+            self.count = 0
             self.j.perform_trajectory = False
             self.moving_on_trajectory = False
 
@@ -189,6 +194,8 @@ def config_callback(config, level):
     Setpoint.vel_scaling_param = config.v_max_fcu/rate
     Setpoint.yaw_scaling_param = config.yaw_max_fcu/rate
     Setpoint.delta_scaling_param = config.v_max_tooltip/rate
+
+    Setpoint.loop_count = config.loop_count
 
     Setpoint.x_max_pos = config.x_max_pos
     Setpoint.x_max_neg = -config.x_max_neg
