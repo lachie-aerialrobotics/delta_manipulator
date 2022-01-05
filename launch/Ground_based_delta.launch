@@ -16,6 +16,4 @@
 
   <node name="Delta_forward_kinematics" pkg="delta_manipulator" type="Forward_kinematics.py" required="true" output="screen"/>
 
-  <!-- <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn = "false" output = "screen" args = "--perspective-file $(find delta_manipulator)/rqt/test.perspective"/> !-->
-
 </launch>
