@@ -98,8 +98,6 @@ class Setpoint:
         rate = rospy.get_param('/rate')
 
         self.moving_on_trajectory = False
-        self.done_yawing = False
-        self.done_translating = False
 
         #create class instance to store joystick buttons/axes
         self.j = Joystick()
@@ -134,6 +132,9 @@ class Setpoint:
         tip_msg.point.y = self.p[1]
         tip_msg.point.z = self.p[2]
 
+        print("Doing trajectory?:", self.j.perform_trajectory)
+        print("Moving to trajectory?:", self.moving_on_trajectory)
+
         #publish messages
         self.tip_sp_pub.publish(tip_msg)
 
@@ -158,17 +159,11 @@ class Setpoint:
 
         drone2traj_norm = drone2traj / np.linalg.norm(drone2traj)
 
-        self.done_yawing = True
 
         if np.linalg.norm(p_traj_start - self.p) > self.v_traj_drone / rate:
             self.p += drone2traj_norm * self.v_traj_drone / rate  
         else:
-            self.done_translating = True
-
-        if self.done_yawing and self.done_translating == True:
             self.moving_on_trajectory = True
-            self.done_yawing = False
-            self.done_translating = False
 
     def trajectory_follower(self):  
         if self.w < len(self.path_msg.poses):
