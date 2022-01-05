@@ -37,9 +37,9 @@ class Controller:
         pos_msg = PointStamped()
         pos_msg.header.frame_id = "manipulator"
         pos_msg.header.stamp = rospy.Time.now()
-        pos_msg.point.x = tip_sp_msg.pose.position.x
-        pos_msg.point.y = tip_sp_msg.pose.position.y
-        pos_msg.point.z = tip_sp_msg.pose.position.z
+        pos_msg.point.x = tip_sp_msg.point.x
+        pos_msg.point.y = tip_sp_msg.point.y
+        pos_msg.point.z = tip_sp_msg.point.z
         self.pub_tip_pos.publish(pos_msg) 
 
 def transform_msg(header, child, tx, ty, tz, rx, ry, rz, rw): #function populates transformStamped message
