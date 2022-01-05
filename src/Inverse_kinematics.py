@@ -174,5 +174,5 @@ class Controller: #init publishers and subscribers
         
 if __name__ == '__main__': #initialise node and run loop
     rospy.init_node('delta_inverse_kinematics', anonymous=True)
-    Controller().loop()
+    c = Controller()
     rospy.spin()
