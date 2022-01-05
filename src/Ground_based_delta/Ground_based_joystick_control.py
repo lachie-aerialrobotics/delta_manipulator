@@ -218,6 +218,7 @@ def config_callback(config, level):
     Setpoint.T1 = config.T1
     Setpoint.T2 = config.T2
     Setpoint.T3 = config.T3
+    print(T1)
     return config
 
 if __name__ == '__main__': #initialise node
