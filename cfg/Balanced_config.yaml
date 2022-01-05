@@ -8,6 +8,11 @@ manipulator:
   geometry/l:                  0.54535            #distal joint length in [m]
   geometry/L:                  0.42545             #proximal joint length in [m]
 
+  geometry/drone2base_x:       0.0             #offset of base of delta from CoM of drone in [m]
+  geometry/drone2base_z:       -0.2            #offset of base of delta from CoM of drone in [m]
+  geometry/nozzle:             0.0            #length of appendage from delta platform in [m]
+  geometry/base_pitch:         0.0               #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
+
 #dynamixel servo parameters
   servo/dir1:               false           #reverse servo 1 rotation direction?
   servo/dir2:               true            #reverse servo 2 rotation direction?
@@ -17,10 +22,7 @@ manipulator:
   tooltip/tip_init_x:         0.0             #initial x offset of delta tip from base in [m]
   tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
   tooltip/tip_init_z:         -0.6             #initial z offset of delta tip from base in [m]
-  tooltip/drone2base_x:       0.0             #offset of base of delta from CoM of drone in [m]
-  tooltip/drone2base_z:       -0.2            #offset of base of delta from CoM of drone in [m]
-  tooltip/nozzle:             0.0            #length of appendage from delta platform in [m]
-  tooltip/base_pitch:         0.0               #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
+  
 
 #mavros
 mavros:
