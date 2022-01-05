@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-from Servo_writer import servo
 import rospy
 import numpy as np
 from quaternion_functions import qv_mult, q_mult, q_conjugate
