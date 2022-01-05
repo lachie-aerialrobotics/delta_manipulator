@@ -1,10 +1,13 @@
 #! /usr/bin/env python
+from Servo_writer import TORQUE_DISABLE
 import rospy
 import numpy as np
 from quaternion_functions import qv_mult, q_mult, q_conjugate
 from geometry_msgs.msg import PoseStamped, PointStamped
 from sensor_msgs.msg import Joy
 from nav_msgs.msg import Path
+
+from delta_manipulator.msg import servo_angles
 
 from dynamic_reconfigure.server import Server
 from delta_manipulator.cfg import JoystickConfig
@@ -106,6 +109,7 @@ class Setpoint:
 
         #Publish target positions for drone and manipulator tooltip
         self.tip_sp_pub = rospy.Publisher('/tooltip/setpoint_position/global', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.servo_torque_pub = rospy.Publisher('/servo/torque_limits', PointStamped, queue_size=1, tcp_nodelay=True)
 
         #init dynamic reconfigure server
         srv = Server(JoystickConfig, config_callback)
@@ -134,8 +138,17 @@ class Setpoint:
         tip_msg.point.y = self.p[1]
         tip_msg.point.z = self.p[2]
 
-        #publish messages
+        #publish message
         self.tip_sp_pub.publish(tip_msg)
+
+        torque_msg = servo_angles()
+        torque_msg.header.stamp = rospy.Time.now()
+        torque_msg.header.frame_id = "servos"
+        torque_msg.theta1 = self.T1
+        torque_msg.theta2 = self.T2
+        torque_msg.theta3 = self.T3
+
+        self.servo_torque_pub.publish(torque_msg)
 
     def delta_joystick_control(self):
         self.p += qv_mult(self.q, np.asarray([self.j.Pitch_axis * self.vel_scaling_param,
@@ -202,6 +215,10 @@ def config_callback(config, level):
     Setpoint.y_max_pos = config.y_max_pos
     Setpoint.y_max_neg = -config.y_max_neg
     Setpoint.z_max = config.z_max
+
+    Setpoint.T1 = config.T1
+    Setpoint.T2 = config.T2
+    Setpoint.T3 = config.T3
     return config
 
 if __name__ == '__main__': #initialise node

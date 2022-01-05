@@ -211,10 +211,8 @@ class servo:
 def callback(event):
     position_ping(servo().pos)
     publish_positions()
-    # current_ping(servo().cur)
+    current_ping(servo().cur)
     
-
-
 if __name__ == '__main__':
     # Control table address
     ADDR_PRO_TORQUE_ENABLE      = 64               # Control table address is different in Dynamixel model
@@ -246,7 +244,7 @@ if __name__ == '__main__':
     groupBulkWrite, groupBulkRead, portHandler, packetHandler = Initialise()
     servo_angle_pub = rospy.Publisher('/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) # servo angle publisher
     servo_angle_sub = rospy.Subscriber('/servo/setpoint_angles', servo_angles, servo.position_callback, tcp_nodelay=True) #target angle subscriber
-    # servo_current_sub = rospy.Subscriber(robot_name+'/servo/current_limits', servo_angles, servo.current_callback) #current limit subscriber
+    servo_current_sub = rospy.Subscriber('/servo/current_limits', servo_angles, servo.current_callback) #current limit subscriber
     rospy.Timer(rospy.Duration(0.01), callback)
 
     rospy.spin()
