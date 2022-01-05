@@ -95,6 +95,7 @@ def Initialise():
     return groupBulkWrite, groupBulkRead, portHandler, packetHandler
 
 def position_ping(servo_angle_sub): #servo_current_sub):
+    print("pinged position!")
     dxl_goal_position_1 = servo_angle_sub.theta1
     dxl_goal_position_2 = servo_angle_sub.theta2
     dxl_goal_position_3 = servo_angle_sub.theta3
@@ -128,6 +129,7 @@ def position_ping(servo_angle_sub): #servo_current_sub):
     groupBulkWrite.clearParam()
 
 def current_ping(servo_current_sub):
+    print("pinged current!")
     dxl_goal_current_1 = servo_current_sub.theta1
     dxl_goal_current_2 = servo_current_sub.theta2
     dxl_goal_current_3 = servo_current_sub.theta3
