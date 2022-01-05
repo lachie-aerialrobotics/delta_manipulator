@@ -85,9 +85,9 @@ class Joystick:
 
 class Setpoint:
     def __init__(self):
-        self.tip_init_x = rospy.get_param('/tooltip/tip_init_x')
-        self.tip_init_y = rospy.get_param('/tooltip/tip_init_y')
-        self.tip_init_z = rospy.get_param('/tooltip/tip_init_z')
+        self.tip_init_x = rospy.get_param('/manipulator/tooltip/tip_init_x')
+        self.tip_init_y = rospy.get_param('/manipulator/tooltip/tip_init_y')
+        self.tip_init_z = rospy.get_param('/manipulator/tooltip/tip_init_z')
 
         #default values
         self.q = np.asarray([0.0, 0.0, 0.0, 1.0])
