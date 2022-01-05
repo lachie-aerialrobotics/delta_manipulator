@@ -19,7 +19,7 @@
 # Author: Ryu Woon Jung (Leon)
 
 import rospy
-from contact_manipulator.msg import servo_angles
+from delta_manipulator.msg import servo_angles
 from dynamixel_sdk import *                    # Uses Dynamixel SDK library
 
 def Initialise():
