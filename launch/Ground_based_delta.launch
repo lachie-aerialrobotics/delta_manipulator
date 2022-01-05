@@ -13,6 +13,4 @@
 
   <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
 
-  <node name="Delta_forward_kinematics" pkg="delta_manipulator" type="Forward_kinematics.py" required="true" output="screen"/>
-
 </launch>
