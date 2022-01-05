@@ -147,6 +147,8 @@ class Setpoint:
         torque_msg.theta2 = self.T2
         torque_msg.theta3 = self.T3
 
+        print(torque_msg.theta1)
+
         self.servo_torque_pub.publish(torque_msg)
 
     def delta_joystick_control(self):
@@ -218,7 +220,6 @@ def config_callback(config, level):
     Setpoint.T1 = config.T1
     Setpoint.T2 = config.T2
     Setpoint.T3 = config.T3
-    print(config.T1)
     return config
 
 if __name__ == '__main__': #initialise node
