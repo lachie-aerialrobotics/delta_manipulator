@@ -157,8 +157,8 @@ class Setpoint:
         drone2traj_norm = drone2traj / np.linalg.norm(drone2traj)
 
 
-        if np.linalg.norm(p_traj_start - self.p) > self.v_traj_drone / rate:
-            self.p += drone2traj_norm * self.v_traj_drone / rate  
+        if np.linalg.norm(p_traj_start - self.p) > self.v_traj / rate:
+            self.p += drone2traj_norm * self.v_traj / rate  
         else:
             self.moving_on_trajectory = True
 
