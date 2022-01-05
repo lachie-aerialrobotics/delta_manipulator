@@ -134,6 +134,9 @@ class Setpoint:
 
         print("Doing trajectory?:", self.j.perform_trajectory)
         print("Moving to trajectory?:", self.moving_on_trajectory)
+        print(self.j.Pitch_axis)
+        print(self.j.Roll_axis)
+        print(self.j.Throt_axis)
 
         #publish messages
         self.tip_sp_pub.publish(tip_msg)
