@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 import rospy
 import numpy as np
-import message_filters
-import tf2_geometry_msgs
+
 import tf2_ros
-from tf2_geometry_msgs import PointStamped
+import tf2_geometry_msgs
+
 from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import PointStamped, PoseStamped, TransformStamped
 
