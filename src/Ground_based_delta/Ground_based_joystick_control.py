@@ -85,10 +85,13 @@ class Joystick:
 
 class Setpoint:
     def __init__(self):
+        self.tip_init_x = rospy.get_param('/tooltip/tip_init_x')
+        self.tip_init_y = rospy.get_param('/tooltip/tip_init_y')
+        self.tip_init_z = rospy.get_param('/tooltip/tip_init_z')
+
         #default values
         self.q = np.asarray([0.0, 0.0, 0.0, 1.0])
-        self.p = np.asarray([0.0, 0.0, 0.0])
-        self.t = 0.0
+        self.p = np.asarray([self.tip_init_x, self.tip_init_y, self.tip_init_z])
         self.w = 0
 
         #retrieve params from parameter server
@@ -98,8 +101,6 @@ class Setpoint:
         self.done_yawing = False
         self.done_translating = False
 
-        self.fcu2tip = np.asarray([0.0, 0.0, 0.0])
-
         #create class instance to store joystick buttons/axes
         self.j = Joystick()
 
@@ -107,7 +108,7 @@ class Setpoint:
         self.tip_sp_pub = rospy.Publisher('/tooltip/setpoint_position/global', PointStamped, queue_size=1, tcp_nodelay=True)
 
         #init dynamic reconfigure server
-        #srv = Server(JoystickConfig, config_callback)
+        srv = Server(JoystickConfig, config_callback)
 
         #Subscribe to joystick inputs
         self.joy_sub = rospy.Subscriber('/joy', Joy, self.j.joy_callback, tcp_nodelay=True)
@@ -202,6 +203,20 @@ class Setpoint:
 
     def path_callback(self, path_msg):
         self.path_msg = path_msg
+
+def config_callback(config, level): 
+    rate = rospy.get_param('/rate')
+
+    Setpoint.vel_scaling_param = config.v_max_fcu/rate
+    Setpoint.yaw_scaling_param = config.yaw_max_fcu/rate
+    Setpoint.delta_scaling_param = config.v_max_tooltip/rate
+
+    Setpoint.x_max_pos = config.x_max_pos
+    Setpoint.x_max_neg = -config.x_max_neg
+    Setpoint.y_max_pos = config.y_max_pos
+    Setpoint.y_max_neg = -config.y_max_neg
+    Setpoint.z_max = config.z_max
+    return config
 
 if __name__ == '__main__': #initialise node
     rospy.init_node('joystick_node', anonymous=True)
