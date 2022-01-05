@@ -5,7 +5,6 @@
 
   <node name="Example_trajectory_generator" pkg="delta_manipulator" type="Example_trajectory_generator.py" required="true" output="screen"/>
 
-  <node name="joystick_input_node" pkg="joy" type="joy_node" required="true" output="screen"/>
   <node name="Joystick_controller" pkg="delta_manipulator" type="Ground_based_joystick_control.py" required="true" output="screen"/>
 
   <node name="No_Stabilisation" pkg="delta_manipulator" type="No_Stabilisation.py" required="true" output="screen"/>
