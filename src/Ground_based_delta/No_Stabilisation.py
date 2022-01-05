@@ -17,7 +17,7 @@ class Controller:
             0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 1.0
         )
-        self.q = quaternion_from_euler(np.pi, 0.0, 0.0)
+        self.q = quaternion_from_euler(np.pi, 0.0, np.pi/2)
         tf_map2base = transform_msg(
             "map", "base_link",
             0.0, 0.0, 0.0,
