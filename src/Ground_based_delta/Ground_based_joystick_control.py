@@ -93,6 +93,7 @@ class Setpoint:
         self.q = np.asarray([0.0, 0.0, 0.0, 1.0])
         self.p = np.asarray([self.tip_init_x, self.tip_init_y, self.tip_init_z])
         self.w = 0
+        self.v_traj = 0.05
 
         #retrieve params from parameter server
         rate = rospy.get_param('/rate')
