@@ -2,7 +2,7 @@
 import rospy
 import numpy as np
 import message_filters
-from tf2_geometry_msgs.tf2_geometry_msgs import do_transform_point
+from tf2_geometry_msgs import do_transform_point
 import tf2_ros
 from tf2_geometry_msgs import PointStamped
 from tf.transformations import quaternion_from_euler
