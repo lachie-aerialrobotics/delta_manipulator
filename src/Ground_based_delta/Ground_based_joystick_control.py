@@ -132,12 +132,6 @@ class Setpoint:
         tip_msg.point.y = self.p[1]
         tip_msg.point.z = self.p[2]
 
-        print("Doing trajectory?:", self.j.perform_trajectory)
-        print("Moving to trajectory?:", self.moving_on_trajectory)
-        print(self.j.Pitch_axis)
-        print(self.j.Roll_axis)
-        print(self.j.Throt_axis)
-
         #publish messages
         self.tip_sp_pub.publish(tip_msg)
 
