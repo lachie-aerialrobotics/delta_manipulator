@@ -2,13 +2,18 @@
 import rospy
 import numpy as np
 import message_filters
+from tf2_geometry_msgs.tf2_geometry_msgs import do_transform_point
 import tf2_ros
+from tf2_geometry_msgs import PointStamped
 from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import PointStamped, PoseStamped, TransformStamped
 
 #script calculates required end-effector position of manipulator to stabilise base perturbations using tf2 frames
 class Controller:
     def __init__(self):
+        self.tfBuffer = tf2_ros.Buffer()
+        listener = tf2_ros.TransformListener(self.tfBuffer)
+
         #broadcast static frames
         br_static = tf2_ros.StaticTransformBroadcaster()
         tf_base2manip = transform_msg(
@@ -32,6 +37,8 @@ class Controller:
         self.tip_sp_sub = rospy.Subscriber('/tooltip/setpoint_position/global', PointStamped, self.callback, tcp_nodelay=True) 
 
     def callback(self, tip_sp_msg):        
+        trans = self.tfBuffer.lookup_transform('map', 'manipulator', rospy.Time(), rospy.Duration(0.5))
+        do_transform_point(tip_sp_msg, trans)
         #publish PointStamped message representing target of delta-manipulator relative to base
         pos_msg = PointStamped()
         pos_msg.header.frame_id = "manipulator"
