@@ -25,9 +25,9 @@ class delta:
 
     def callback_crrnt(self, force): #return servo current message
 
-        I1 = self.torque2current(force.point.x)
-        I2 = self.torque2current(force.point.y)
-        I3 = self.torque2current(force.point.z)
+        I1 = self.torque2current(force.theta1)
+        I2 = self.torque2current(force.theta2)
+        I3 = self.torque2current(force.theta3)
 
         crrnt_msg = ServoMsg(I1,I2,I3).msg
 
@@ -52,7 +52,7 @@ class ServoMsg: #class to assign values to servo_angles message format
 class Controller: #init publishers and subscribers
     def __init__(self):
         self.pub_crrnt = rospy.Publisher('/servo/current_limits', servo_angles, queue_size=1) # servo current publisher
-        self.sub_force = rospy.Subscriber('/servo/torque_limits', PointStamped, self.tip_callback) #target force subscriber
+        self.sub_force = rospy.Subscriber('/servo/torque_limits', servo_angles, self.tip_callback) #target force subscriber
         
     def tip_callback(self, sub_force): #callback calculates servo angles/torques
         crrnt = delta().callback_crrnt(sub_force)

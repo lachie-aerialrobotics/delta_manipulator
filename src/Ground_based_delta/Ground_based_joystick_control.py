@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+from Servo_writer import servo
 import rospy
 import numpy as np
 from quaternion_functions import qv_mult, q_mult, q_conjugate
@@ -108,7 +109,7 @@ class Setpoint:
 
         #Publish target positions for drone and manipulator tooltip
         self.tip_sp_pub = rospy.Publisher('/tooltip/setpoint_position/global', PointStamped, queue_size=1, tcp_nodelay=True)
-        self.servo_torque_pub = rospy.Publisher('/servo/torque_limits', PointStamped, queue_size=1, tcp_nodelay=True)
+        self.servo_torque_pub = rospy.Publisher('/servo/torque_limits', servo_angles, queue_size=1, tcp_nodelay=True)
 
         #init dynamic reconfigure server
         srv = Server(JoystickConfig, config_callback)
