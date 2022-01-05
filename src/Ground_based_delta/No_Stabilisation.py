@@ -16,11 +16,11 @@ class Controller:
             0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 1.0
         )
-    
+        q = quaternion_from_euler(np.pi, 0.0, 0.0)
         tf_map2base = transform_msg(
             "map", "base_link",
             0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 1.0
+            q[0], q[1], q[2], q[3]
         )
   
         br_static.sendTransform([tf_map2base, tf_base2manip])
