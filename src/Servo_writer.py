@@ -95,7 +95,6 @@ def Initialise():
     return groupBulkWrite, groupBulkRead, portHandler, packetHandler
 
 def position_ping(servo_angle_sub): #servo_current_sub):
-    print("pinged position!")
     dxl_goal_position_1 = servo_angle_sub.theta1
     dxl_goal_position_2 = servo_angle_sub.theta2
     dxl_goal_position_3 = servo_angle_sub.theta3
@@ -129,7 +128,6 @@ def position_ping(servo_angle_sub): #servo_current_sub):
     groupBulkWrite.clearParam()
 
 def current_ping(servo_current_sub):
-    print("pinged current!")
     dxl_goal_current_1 = servo_current_sub.theta1
     dxl_goal_current_2 = servo_current_sub.theta2
     dxl_goal_current_3 = servo_current_sub.theta3
@@ -203,17 +201,21 @@ def servo_angles_write(theta_1, theta_2, theta_3):
 class servo:
     pos = servo_angles()
     cur = servo_angles()
-    @staticmethod
-    def position_callback(servo_angle_sub):
-        servo.pos = servo_angle_sub
-    @staticmethod
-    def current_callback(servo_current_sub):
-        servo.cur = servo_current_sub
+    assign_currents = False
+    def position_callback(self,servo_angle_sub):
+        self.pos = servo_angle_sub
+    def current_callback(self,servo_current_sub):
+        if self.cur != servo_current_sub:
+            self.cur = servo_current_sub
+            self.assign_currents = True
+        else:
+            self.assign_current = False
 
 def callback(event):
-    position_ping(servo().pos)
+    position_ping(s.pos)
+    current_ping(s.cur)
     publish_positions()
-    current_ping(servo().cur)
+    
     
 if __name__ == '__main__':
     # Control table address
@@ -244,11 +246,13 @@ if __name__ == '__main__':
 
     rate = 100
 
+    s = servo()
+
     rospy.init_node('Servo_writer', anonymous=True)
     groupBulkWrite, groupBulkRead, portHandler, packetHandler = Initialise()
     servo_angle_pub = rospy.Publisher('/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) # servo angle publisher
-    servo_angle_sub = rospy.Subscriber('/servo/setpoint_angles', servo_angles, servo.position_callback, tcp_nodelay=True) #target angle subscriber
-    servo_current_sub = rospy.Subscriber('/servo/current_limits', servo_angles, servo.current_callback) #current limit subscriber
+    servo_angle_sub = rospy.Subscriber('/servo/setpoint_angles', servo_angles, s.position_callback, tcp_nodelay=True) #target angle subscriber
+    servo_current_sub = rospy.Subscriber('/servo/current_limits', servo_angles, s.current_callback, tcp_nodelay=True) #current limit subscriber
     rospy.Timer(rospy.Duration(1.0/rate), callback)
 
     rospy.spin()
