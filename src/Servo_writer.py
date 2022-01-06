@@ -212,7 +212,7 @@ class servo:
             self.assign_current = False
 
 def callback(event):
-    position_ping(s.pos)
+    #position_ping(s.pos)
     #current_ping(s.cur)
     publish_positions()
     
