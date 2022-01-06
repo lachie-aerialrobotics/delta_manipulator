@@ -83,17 +83,17 @@ def Initialise():
         rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL3_ID)
 
     # Add parameter storage for Dynamixel#1 present position
-    dxl_addparam_result = groupBulkRead.addParam(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_addparam_result = groupBulkRead.addParam(DXL1_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
     if dxl_addparam_result != True:
         rospy.loginfo("[ID:%03d] groupBulkRead addparam failed" % DXL1_ID)
 
     # Add parameter storage for Dynamixel#2 present position
-    dxl_addparam_result = groupBulkRead.addParam(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_addparam_result = groupBulkRead.addParam(DXL2_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
     if dxl_addparam_result != True:
         rospy.loginfo("[ID:%03d] groupBulkRead addparam failed" % DXL2_ID)
 
     # Add parameter storage for Dynamixel#3 present position
-    dxl_addparam_result = groupBulkRead.addParam(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_addparam_result = groupBulkRead.addParam(DXL3_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
     if dxl_addparam_result != True:
         rospy.loginfo("[ID:%03d] groupBulkRead addparam failed" % DXL3_ID)
     return groupBulkWrite, groupBulkRead, portHandler, packetHandler
@@ -194,8 +194,7 @@ def publish_positions():
     servo_angle_pub.publish(theta)
 
 def print_currents():
-    ADDR_PRO_PRESENT_CURRENT = 126
-    LEN_PRO_PRESENT_CURRENT = 2
+
     # GROUPBULKREAD is too slow to run at 100Hz (max seems to be about 60Hz). Possiby due to U2D2.
     # Bulkread present position
     dxl_comm_result = groupBulkRead.txRxPacket()
@@ -254,7 +253,7 @@ def callback(event):
         current_ping(s.cur)
         rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
     if cfg.readPositions == True:
-        publish_positions()
+        #publish_positions()
         print_currents()
 
 class cfg:
@@ -287,6 +286,9 @@ if __name__ == '__main__':
     LEN_PRO_GOAL_POSITION       = 4
     LEN_PRO_PRESENT_POSITION    = 4
     LEN_PRO_GOAL_CURRENT        = 2
+
+    ADDR_PRO_PRESENT_CURRENT = 126
+    LEN_PRO_PRESENT_CURRENT = 2
 
     # Protocol version
     PROTOCOL_VERSION            = 2.0               # See which protocol version is used in the Dynamixel
