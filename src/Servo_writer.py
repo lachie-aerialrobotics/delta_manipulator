@@ -213,7 +213,7 @@ class servo:
     def position_callback(self,servo_angle_sub):
         self.pos = servo_angle_sub
     def current_callback(self,servo_current_sub):
-        if self.cur != servo_current_sub:
+        if (self.cur.theta1 != servo_current_sub.theta1) or (self.cur.theta2 != servo_current_sub.theta2) or (self.cur.theta3 != servo_current_sub.theta3):
             self.cur = servo_current_sub
             self.assign_currents = True
         else:
