@@ -220,7 +220,8 @@ def callback(event):
     if s.assign_currents == True:
         current_ping(s.cur)
         rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
-    publish_positions()
+    if cfg.readPositions == True:
+        publish_positions()
 
 class cfg:
     rate = rospy.get_param('/rate')
