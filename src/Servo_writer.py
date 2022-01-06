@@ -242,7 +242,7 @@ if __name__ == '__main__':
     TORQUE_ENABLE               = 1                 # Value for enabling the torque
     TORQUE_DISABLE              = 0                 # Value for disabling the torque
 
-    rate = 50
+    rate = 100
 
     rospy.init_node('Servo_writer', anonymous=True)
     groupBulkWrite, groupBulkRead, portHandler, packetHandler = Initialise()
