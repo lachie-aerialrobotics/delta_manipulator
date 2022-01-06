@@ -193,6 +193,38 @@ def publish_positions():
     theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
     servo_angle_pub.publish(theta)
 
+def print_currents():
+    ADDR_PRO_PRESENT_CURRENT = 126
+    LEN_PRO_PRESENT_CURRENT = 2
+    # GROUPBULKREAD is too slow to run at 100Hz (max seems to be about 60Hz). Possiby due to U2D2.
+    # Bulkread present position
+    dxl_comm_result = groupBulkRead.txRxPacket()
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+
+    # Check if groupbulkread data of Dynamixel#1 is available
+    dxl_getdata_result = groupBulkRead.isAvailable(DXL1_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
+    if dxl_getdata_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL1_ID)
+
+    # Check if groupbulkread data of Dynamixel#2 is available
+    dxl_getdata_result = groupBulkRead.isAvailable(DXL2_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
+    if dxl_getdata_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL2_ID)
+
+    # Check if groupbulkread data of Dynamixel#3 is available
+    dxl_getdata_result = groupBulkRead.isAvailable(DXL3_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
+    if dxl_getdata_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL3_ID)
+
+    # Get present position value
+    dxl_present_position_1 = groupBulkRead.getData(DXL1_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
+    dxl_present_position_2 = groupBulkRead.getData(DXL2_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
+    dxl_present_position_3 = groupBulkRead.getData(DXL3_ID, ADDR_PRO_PRESENT_CURRENT, LEN_PRO_PRESENT_CURRENT)
+
+    theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
+    print(theta)
+
 
 def servo_angles_write(theta_1, theta_2, theta_3):
     theta = servo_angles()
@@ -223,6 +255,7 @@ def callback(event):
         rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
     if cfg.readPositions == True:
         publish_positions()
+        print_currents()
 
 class cfg:
     rate = rospy.get_param('/rate')
