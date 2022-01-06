@@ -242,12 +242,14 @@ if __name__ == '__main__':
     TORQUE_ENABLE               = 1                 # Value for enabling the torque
     TORQUE_DISABLE              = 0                 # Value for disabling the torque
 
+    rate = 50
+
     rospy.init_node('Servo_writer', anonymous=True)
     groupBulkWrite, groupBulkRead, portHandler, packetHandler = Initialise()
     servo_angle_pub = rospy.Publisher('/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) # servo angle publisher
     servo_angle_sub = rospy.Subscriber('/servo/setpoint_angles', servo_angles, servo.position_callback, tcp_nodelay=True) #target angle subscriber
     servo_current_sub = rospy.Subscriber('/servo/current_limits', servo_angles, servo.current_callback) #current limit subscriber
-    rospy.Timer(rospy.Duration(0.01), callback)
+    rospy.Timer(rospy.Duration(1.0/rate), callback)
 
     rospy.spin()
 
