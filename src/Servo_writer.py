@@ -262,8 +262,8 @@ if __name__ == '__main__':
     DXL1_ID                     = 1                 # Dynamixel#1 ID : 1
     DXL2_ID                     = 2                 # Dynamixel#1 ID : 2
     DXL3_ID                     = 3                 # Dynamixel#1 ID : 3
-    BAUDRATE                    = 3000000             # Dynamixel default baudrate : 57600
-    DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
+    BAUDRATE                    = rospy.get_param('/manipulator/servo/baud_rate')            # Dynamixel default baudrate : 57600
+    DEVICENAME                  = rospy.get_param('/manipulator/servo/port')    # Check which port is being used on your controller
 
     TORQUE_ENABLE               = 1                 # Value for enabling the torque
     TORQUE_DISABLE              = 0                 # Value for disabling the torque
@@ -271,7 +271,6 @@ if __name__ == '__main__':
     rate = cfg.rate
 
     s = servo()
-
     rospy.init_node('Servo_writer', anonymous=True)
     srv = Server(ServoConfig, config_callback)
     groupBulkWrite, groupBulkRead, portHandler, packetHandler = Initialise()
