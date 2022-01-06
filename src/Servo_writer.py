@@ -188,6 +188,7 @@ def publish_positions():
     theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
     servo_angle_pub.publish(theta)
     # may need to clear parameter storage here?
+    groupBulkRead.clearParam()
 
 def servo_angles_write(theta_1, theta_2, theta_3):
     theta = servo_angles()
