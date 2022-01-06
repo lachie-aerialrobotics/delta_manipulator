@@ -161,9 +161,9 @@ def current_ping(servo_current_sub):
 
 def publish_positions():
     # Bulkread present position and LED status
-    # dxl_comm_result = groupBulkRead.txRxPacket()
-    # if dxl_comm_result != COMM_SUCCESS:
-    #     rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    dxl_comm_result = groupBulkRead.txRxPacket()
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
 
     # # Check if groupbulkread data of Dynamixel#1 is available
     # dxl_getdata_result = groupBulkRead.isAvailable(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
