@@ -19,6 +19,10 @@ class cfg:
     b = sp / 2 - np.sqrt(3)/2 * wb
     c = wp - 0.5 * wb 
 
+    torque2current_gradient = rospy.get_param('manipulator/servo/ctrl_table/torque2current_gradient')
+    torque2current_intercept = rospy.get_param('manipulator/servo/ctrl_table/torque2current_intercept')
+    torque2current_unit = rospy.get_param('manipulator/servo/ctrl_table/torque2current_unit')
+
 class delta:
     def __init__(self):
         pass
@@ -130,7 +134,8 @@ class delta:
 
     def torque2current(self,T):
         #calculate servo current limit to achieve desired torque (taken from datasheet graph)
-        I = int((-0.99861 * abs(T) - 0.0286) *1000 / 2.69)
+        I = int((cfg.torque2current_gradient * abs(T) + cfg.torque2current_intercept) *1000 / cfg.torque2current_unit)
+        #I = int((-0.99861 * abs(T) - 0.0286) *1000 / 2.69)
         if I > 2047:
             I = 2047 #do not let current exceed limit
         return I

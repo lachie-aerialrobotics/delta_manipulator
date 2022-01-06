@@ -9,11 +9,14 @@ manipulator:
   geometry/L:                 0.2             #proximal joint length in [m]
 
 #dynamixel servo parameters
-  servo/dir1:                 false           #reverse servo 1 rotation direction?
-  servo/dir2:                 true            #reverse servo 2 rotation direction?
-  servo/dir3:                 false           #reverse servo 3 rotation direction?
-  servo/baud_rate:            3000000
-  servo/port:                 '/dev/ttyUSB0' 
+  servo/dir1:                       false           #reverse servo 1 rotation direction?
+  servo/dir2:                       true            #reverse servo 2 rotation direction?
+  servo/dir3:                       false           #reverse servo 3 rotation direction?
+  servo/baud_rate:                  3000000
+  servo/port:                       '/dev/ttyUSB0' 
+  servo/ctrl_table/torque2current_gradient:    -0.98841 #taken from XH540 control table
+  servo/ctrl_table/torque2current_intercept:   -0.0627  #taken from XH540 control table
+  servo/ctrl_table/torque2current_unit:        2.69     #taken from XH540 control table
 
 #uav geometry parameters (in fcu coordinate frame):
   tooltip/tip_init_x:         0.0             #initial x offset of delta tip from base in [m]
