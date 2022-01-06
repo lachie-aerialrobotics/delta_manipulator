@@ -26,6 +26,7 @@ from dynamic_reconfigure.server import Server
 from delta_manipulator.cfg import ServoConfig
 
 def Initialise():
+    rospy.loginfo("INITIALISING DYNAMIXELS.......")
     # Initialize PortHandler instance
     # Set the port path
     # Get methods and members of PortHandlerLinux or PortHandlerWindows
@@ -222,9 +223,6 @@ def callback(event):
         rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
     if cfg.readPositions == True:
         publish_positions()
-    else:
-        theta = servo_angles_write(2048, 2048, 2048)
-        servo_angle_pub.publish(theta)
 
 class cfg:
     rate = rospy.get_param('/rate')
@@ -234,9 +232,10 @@ def config_callback(config,level):
     if cfg.readPositions != config.readPositions:
         cfg.readPositions = config.readPositions
         if cfg.readPositions == True:
-            rospy.loginfo("READING SERVO POSITIONS: Servo communication rate will be capped to 60Hz")
+            rospy.loginfo("READING SERVO POSITIONS ENABLED: Servo communication rate capped to 60Hz")
             cfg.rate = 60
         elif cfg.readPositions == False:
+            rospy.loginfo("READING SERVO POSITIONS DISABLED: Servo communication rate is default")
             cfg.rate = rospy.get_param('/rate')
         
 
