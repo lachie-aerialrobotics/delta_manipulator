@@ -213,7 +213,7 @@ class servo:
 
 def callback(event):
     position_ping(s.pos)
-    current_ping(s.cur)
+    #current_ping(s.cur)
     publish_positions()
     
     
