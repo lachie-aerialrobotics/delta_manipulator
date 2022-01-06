@@ -55,7 +55,32 @@ def Initialise():
     else:
         rospy.loginfo("Failed to change the baudrate")
 
-    set_torque(TORQUE_ENABLE)
+        # Enable Dynamixel#1 Torque
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL1_ID)
+
+    # Enable Dynamixel#2 Torque
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL2_ID)
+
+    # Enable Dynamixel#3 Torque
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL3_ID)
 
     # Add parameter storage for Dynamixel#1 present position
     dxl_addparam_result = groupBulkRead.addParam(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
@@ -71,6 +96,7 @@ def Initialise():
     dxl_addparam_result = groupBulkRead.addParam(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
     if dxl_addparam_result != True:
         rospy.loginfo("[ID:%03d] groupBulkRead addparam failed" % DXL3_ID)
+
     return groupBulkWrite, groupBulkRead, portHandler, packetHandler
 
 def set_torque(torque):
