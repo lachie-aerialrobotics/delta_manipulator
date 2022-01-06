@@ -180,13 +180,13 @@ def publish_positions():
     # if dxl_getdata_result != True:
     #     rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL3_ID)
 
-    # # Get present position value
-    # dxl_present_position_1 = groupBulkRead.getData(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-    # dxl_present_position_2 = groupBulkRead.getData(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-    # dxl_present_position_3 = groupBulkRead.getData(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    # Get present position value
+    dxl_present_position_1 = groupBulkRead.getData(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_present_position_2 = groupBulkRead.getData(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_present_position_3 = groupBulkRead.getData(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
 
-    # theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
-    theta = servo_angles_write(2048, 2048, 2048)
+    theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
+    # theta = servo_angles_write(2048, 2048, 2048)
     servo_angle_pub.publish(theta)
     
 
