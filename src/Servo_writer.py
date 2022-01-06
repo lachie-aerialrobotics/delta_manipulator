@@ -245,16 +245,16 @@ if __name__ == '__main__':
     # Control table address
     ADDR_PRO_TORQUE_ENABLE      = 64               # Control table address is different in Dynamixel model
     ADDR_PRO_LED_RED            = 65
-    ADDR_PRO_GOAL_POSITION      = 116
-    #ADDR_PRO_PRESENT_POSITION   = 132
+    #ADDR_PRO_GOAL_POSITION      = 116
+    ADDR_PRO_PRESENT_POSITION   = 132
     ADDR_PRO_PRESENT_POSITION   = 102
     ADDR_PRO_GOAL_CURRENT       = 102
 
     # Data Byte Length
     LEN_PRO_LED_RED             = 1
     LEN_PRO_GOAL_POSITION       = 4
-    #LEN_PRO_PRESENT_POSITION    = 4
-    LEN_PRO_PRESENT_POSITION    = 2
+    LEN_PRO_PRESENT_POSITION    = 4
+    #LEN_PRO_PRESENT_POSITION    = 2
     LEN_PRO_GOAL_CURRENT        = 2
 
     # Protocol version
