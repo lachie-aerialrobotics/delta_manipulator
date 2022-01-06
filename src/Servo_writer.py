@@ -286,7 +286,7 @@ def callback(event):
         set_mode(cfg.servo_mode)
         set_torque(TORQUE_ENABLE)
         cfg.set_mode = False
-        if cfg.mode == 1:
+        if cfg.servo_mode == 1:
             current_ping(s.cur)
 
     position_ping(s.pos)
