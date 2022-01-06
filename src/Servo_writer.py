@@ -222,6 +222,9 @@ def callback(event):
         rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
     if cfg.readPositions == True:
         publish_positions()
+    else:
+        theta = servo_angles_write(2048, 2048, 2048)
+        servo_angle_pub.publish(theta)
 
 class cfg:
     rate = rospy.get_param('/rate')
