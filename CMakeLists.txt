@@ -55,6 +55,7 @@ find_package(catkin REQUIRED COMPONENTS
 generate_dynamic_reconfigure_options(
    cfg/Joystick_config.cfg
    cfg/Example_trajectory_config.cfg
+   cfg/Servo_config.cfg
 )
 
 add_message_files(

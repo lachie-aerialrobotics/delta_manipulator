@@ -22,6 +22,9 @@ import rospy
 from delta_manipulator.msg import servo_angles
 from dynamixel_sdk import *                    # Uses Dynamixel SDK library
 
+from dynamic_reconfigure.server import Server
+from delta_manipulator.cfg import ServoConfig
+
 def Initialise():
     # Initialize PortHandler instance
     # Set the port path
@@ -161,40 +164,34 @@ def current_ping(servo_current_sub):
 
 def publish_positions():
     # GROUPBULKREAD is too slow to run at 100Hz (max seems to be about 60Hz). Possiby due to U2D2.
-    # For now the workaround is to only read every 10th message
-    if s.callback_counter == 10:
-        # Bulkread present position
-        dxl_comm_result = groupBulkRead.txRxPacket()
-        if dxl_comm_result != COMM_SUCCESS:
-            rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    # Bulkread present position
+    dxl_comm_result = groupBulkRead.txRxPacket()
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
 
-        # Check if groupbulkread data of Dynamixel#1 is available
-        dxl_getdata_result = groupBulkRead.isAvailable(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-        if dxl_getdata_result != True:
-            rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL1_ID)
+    # Check if groupbulkread data of Dynamixel#1 is available
+    dxl_getdata_result = groupBulkRead.isAvailable(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    if dxl_getdata_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL1_ID)
 
-        # Check if groupbulkread data of Dynamixel#2 is available
-        dxl_getdata_result = groupBulkRead.isAvailable(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-        if dxl_getdata_result != True:
-            rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL2_ID)
+    # Check if groupbulkread data of Dynamixel#2 is available
+    dxl_getdata_result = groupBulkRead.isAvailable(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    if dxl_getdata_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL2_ID)
 
-        # Check if groupbulkread data of Dynamixel#3 is available
-        dxl_getdata_result = groupBulkRead.isAvailable(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-        if dxl_getdata_result != True:
-            rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL3_ID)
+    # Check if groupbulkread data of Dynamixel#3 is available
+    dxl_getdata_result = groupBulkRead.isAvailable(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    if dxl_getdata_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkRead getdata failed" % DXL3_ID)
 
-        # Get present position value
-        dxl_present_position_1 = groupBulkRead.getData(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-        dxl_present_position_2 = groupBulkRead.getData(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
-        dxl_present_position_3 = groupBulkRead.getData(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    # Get present position value
+    dxl_present_position_1 = groupBulkRead.getData(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_present_position_2 = groupBulkRead.getData(DXL2_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
+    dxl_present_position_3 = groupBulkRead.getData(DXL3_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
 
-        theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
-        servo_angle_pub.publish(theta)
+    theta = servo_angles_write(dxl_present_position_1, dxl_present_position_2, dxl_present_position_3)
+    servo_angle_pub.publish(theta)
 
-        s.callback_counter = 0
-
-    s.callback_counter += 1
-    
 
 def servo_angles_write(theta_1, theta_2, theta_3):
     theta = servo_angles()
@@ -209,7 +206,6 @@ class servo:
     pos = servo_angles()
     cur = servo_angles()
     assign_currents = False
-    callback_counter = 0
     def position_callback(self,servo_angle_sub):
         self.pos = servo_angle_sub
     def current_callback(self,servo_current_sub):
@@ -225,8 +221,23 @@ def callback(event):
         current_ping(s.cur)
         rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
     publish_positions()
-    
-    
+
+class cfg:
+    rate = rospy.get_param('/rate')
+    readPositions = False
+
+def config_callback(config,level):  
+    if cfg.readPositions != config.readPositions:
+        cfg.readPositions = config.readPositions
+        if cfg.readPositions == True:
+            rospy.loginfo("READING SERVO POSITIONS: Servo communication rate will be capped to 60Hz")
+            cfg.rate = 60
+        elif cfg.readPositions == False:
+            cfg.rate = rospy.get_param('/rate')
+        
+
+    return config
+       
 if __name__ == '__main__':
     # Control table address
     ADDR_PRO_TORQUE_ENABLE      = 64               # Control table address is different in Dynamixel model
@@ -254,11 +265,12 @@ if __name__ == '__main__':
     TORQUE_ENABLE               = 1                 # Value for enabling the torque
     TORQUE_DISABLE              = 0                 # Value for disabling the torque
 
-    rate = 100
+    rate = cfg.rate
 
     s = servo()
 
     rospy.init_node('Servo_writer', anonymous=True)
+    srv = Server(ServoConfig, config_callback)
     groupBulkWrite, groupBulkRead, portHandler, packetHandler = Initialise()
     servo_angle_pub = rospy.Publisher('/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) # servo angle publisher
     servo_angle_sub = rospy.Subscriber('/servo/setpoint_angles', servo_angles, s.position_callback, tcp_nodelay=True) #target angle subscriber
