@@ -309,7 +309,7 @@ def config_callback(config,level):
     if cfg.readPositions != config.readPositions:
         cfg.readPositions = config.readPositions
         if cfg.readPositions == True:
-            rospy.loginfo("READING SERVO POSITIONS ENABLED: Servo communication rate capped to 60Hz")
+            rospy.loginfo("READING SERVO POSITIONS ENABLED: Servo communication rate capped to 60Hz because reading is hard")
             cfg.rate = 60
         elif cfg.readPositions == False:
             rospy.loginfo("READING SERVO POSITIONS DISABLED: Servo communication rate is default")
