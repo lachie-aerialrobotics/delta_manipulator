@@ -55,32 +55,7 @@ def Initialise():
     else:
         rospy.loginfo("Failed to change the baudrate")
 
-    # Enable Dynamixel#1 Torque
-    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
-    if dxl_comm_result != COMM_SUCCESS:
-        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    elif dxl_error != 0:
-        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
-    else:
-        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL1_ID)
-
-    # Enable Dynamixel#2 Torque
-    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
-    if dxl_comm_result != COMM_SUCCESS:
-        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    elif dxl_error != 0:
-        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
-    else:
-        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL2_ID)
-
-    # Enable Dynamixel#3 Torque
-    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
-    if dxl_comm_result != COMM_SUCCESS:
-        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    elif dxl_error != 0:
-        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
-    else:
-        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL3_ID)
+    set_torque(TORQUE_ENABLE)
 
     # Add parameter storage for Dynamixel#1 present position
     dxl_addparam_result = groupBulkRead.addParam(DXL1_ID, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION)
@@ -97,6 +72,34 @@ def Initialise():
     if dxl_addparam_result != True:
         rospy.loginfo("[ID:%03d] groupBulkRead addparam failed" % DXL3_ID)
     return groupBulkWrite, groupBulkRead, portHandler, packetHandler
+
+def set_torque(torque):
+    # Enable Dynamixel#1 Torque
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_TORQUE_ENABLE, torque)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL1_ID)
+
+    # Enable Dynamixel#2 Torque
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_TORQUE_ENABLE, torque)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL2_ID)
+
+    # Enable Dynamixel#3 Torque
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_TORQUE_ENABLE, torque)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d has been successfully connected" % DXL3_ID)
 
 def position_ping(servo_angle_sub): #servo_current_sub):
     dxl_goal_position_1 = servo_angle_sub.theta1
@@ -216,17 +219,63 @@ class servo:
         else:
             self.assign_currents = False
 
+def set_mode(mode):
+    if mode == 0:
+        MODE = 3 #position control mode
+    elif mode == 1:
+        MODE = 5 #Current based position mode
+
+    rospy.loginfo("SWITCHING MODES...")
+
+    # Change Dynamixel#1 Mode
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_OPERATING_MODE, MODE)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d mode has been successfully changed" % DXL1_ID)
+
+    # Change Dynamixel#2 Mode
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_OPERATING_MODE, MODE)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d mode has been successfully changed" % DXL2_ID)
+
+    # Change Dynamixel#3 Mode
+    dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_OPERATING_MODE, MODE)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d mode has been successfully changed" % DXL3_ID)
+
 def callback(event):
+    if cfg.set_mode == True:
+        set_torque(TORQUE_DISABLE)
+        set_mode(cfg.servo_mode)
+        set_torque(TORQUE_ENABLE)
+        cfg.set_mode = False
+
     position_ping(s.pos)
-    if s.assign_currents == True:
-        current_ping(s.cur)
-        rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
+
+    if cfg.servo_mode == 1:
+        if s.assign_currents == True:
+            current_ping(s.cur)
+            rospy.loginfo("SERVO TORQUE LIMITS CHANGED")
+    
     if cfg.readPositions == True:
         publish_positions()
 
 class cfg:
     rate = rospy.get_param('/rate')
     readPositions = False
+    servo_mode = 0
+    set_mode = False
 
 def config_callback(config,level):  
     if cfg.readPositions != config.readPositions:
@@ -237,7 +286,10 @@ def config_callback(config,level):
         elif cfg.readPositions == False:
             rospy.loginfo("READING SERVO POSITIONS DISABLED: Servo communication rate is default")
             cfg.rate = rospy.get_param('/rate')
-        
+
+    if cfg.servo_mode != config.servo_mode: 
+        cfg.servo_mode = config.servo_mode
+        cfg.set_mode = True
 
     return config
        
@@ -247,14 +299,13 @@ if __name__ == '__main__':
     ADDR_PRO_LED_RED            = 65
     ADDR_PRO_GOAL_POSITION      = 116
     ADDR_PRO_PRESENT_POSITION   = 132
-    #ADDR_PRO_PRESENT_POSITION   = 102
     ADDR_PRO_GOAL_CURRENT       = 102
+    ADDR_PRO_OPERATING_MODE     = 11
 
     # Data Byte Length
     LEN_PRO_LED_RED             = 1
     LEN_PRO_GOAL_POSITION       = 4
     LEN_PRO_PRESENT_POSITION    = 4
-    #LEN_PRO_PRESENT_POSITION    = 2
     LEN_PRO_GOAL_CURRENT        = 2
 
     # Protocol version
