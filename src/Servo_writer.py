@@ -286,6 +286,8 @@ def callback(event):
         set_mode(cfg.servo_mode)
         set_torque(TORQUE_ENABLE)
         cfg.set_mode = False
+        if cfg.mode == 1:
+            current_ping(s.cur)
 
     position_ping(s.pos)
 
@@ -301,7 +303,7 @@ class cfg:
     rate = rospy.get_param('/rate')
     readPositions = False
     servo_mode = 0
-    set_mode = False
+    set_mode = True
 
 def config_callback(config,level):  
     if cfg.readPositions != config.readPositions:
@@ -356,6 +358,7 @@ if __name__ == '__main__':
     servo_angle_pub = rospy.Publisher('/servo/detected_angles', servo_angles, queue_size=1, tcp_nodelay=True) # servo angle publisher
     servo_angle_sub = rospy.Subscriber('/servo/setpoint_angles', servo_angles, s.position_callback, tcp_nodelay=True) #target angle subscriber
     servo_current_sub = rospy.Subscriber('/servo/current_limits', servo_angles, s.current_callback, tcp_nodelay=True) #current limit subscriber
+
     rospy.Timer(rospy.Duration(1.0/rate), callback)
 
     rospy.spin()
