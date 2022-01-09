@@ -97,6 +97,7 @@ class Setpoint:
     def setpoint_callback(self, event):
         if self.reset_trajectory:
             self.reset_traj()
+            rospy.loginfo("TRAJECTORY RESET")
 
         #fly either from trajectory or joystick inputs
         if self.fly_trajectory == True:
@@ -219,6 +220,9 @@ class Setpoint:
     def trajectory_sp_lookup(self):  
         if self.Aligned:
             if self.index < len(self.path_msg.poses):
+                if self.index == 0:
+                    rospy.loginfo("Starting trajectory...")
+
                 self.p[0] = self.path_msg.poses[self.index].pose.position.x  
                 self.p[1] = self.path_msg.poses[self.index].pose.position.y  
                 self.p[2] = self.path_msg.poses[self.index].pose.position.z 
@@ -234,6 +238,7 @@ class Setpoint:
                 self.index += 1
             else:
                 self.reset_traj()
+                rospy.loginfo("Completed trajectory!")
 
 def press(bttn): #register button press
     return bool(bttn)
