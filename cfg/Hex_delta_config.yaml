@@ -1,6 +1,4 @@
 #config file for Hexacopter with sideways delta_arm
-rate:                         100             #ros rate in [Hz]
-
 #manipulator geometry parameters:
 manipulator:
   geometry/sp:                0.06            #size of platform (see kinematics paper) in [m]
@@ -19,9 +17,9 @@ manipulator:
   servo/ctrl_table/torque2current_unit:        2.69     #taken from XH540 control table
 
 #uav geometry parameters (in fcu coordinate frame):
-  tooltip/tip_init_x:         0.0             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_x:         0.6             #initial x offset of delta tip from base in [m]
   tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
-  tooltip/tip_init_z:         0.6             #initial z offset of delta tip from base in [m]
+  tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
 
 
 

@@ -4,17 +4,16 @@
   <include file="$(find px4)/launch/mavros_posix_sitl.launch" />
 
   <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Hex_delta_config.yaml" />
   <rosparam file="$(find delta_manipulator)/cfg/Sim_config.yaml" />
  
-  <node name="joystick_input_node" pkg="joy" type="joy_node" required="true" output="screen"/>
-  <node name="joystick_trajectory_node" pkg="delta_manipulator" type="Joystick_control.py" required="true" output="screen"/>
+  <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/>
+  <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
   
   <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
+  <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
 
   <node name="Simulated_delta" pkg="delta_manipulator" type="Simulated_delta.py" required="true" output="screen"/>
-  <node name="Delta_forward_kinematics" pkg="delta_manipulator" type="Forward_kinematics.py" required="true" output="screen"/>
-
-  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn = "false" output = "screen" args = "--perspective-file $(find delta_manipulator)/rqt/test.perspective"/>
 
 </launch>

@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Path1
         - /Path2
       Splitter Ratio: 0.5
     Tree Height: 877
@@ -288,7 +289,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /path
+      Topic: /path/drone
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -343,7 +344,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.9519665241241455
+      Distance: 7.83774995803833
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -359,9 +360,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7347987294197083
+      Pitch: 0.9147988557815552
       Target Frame: <Fixed Frame>
-      Yaw: 2.4154012203216553
+      Yaw: 2.2304017543792725
     Saved: ~
 Window Geometry:
   Displays:

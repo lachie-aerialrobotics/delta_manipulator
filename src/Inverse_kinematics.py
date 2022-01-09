@@ -135,7 +135,6 @@ class delta:
     def torque2current(self,T):
         #calculate servo current limit to achieve desired torque (taken from datasheet graph)
         I = int((cfg.torque2current_gradient * abs(T) + cfg.torque2current_intercept) *1000 / cfg.torque2current_unit)
-        #I = int((-0.99861 * abs(T) - 0.0286) *1000 / 2.69)
         if I > 2047:
             I = 2047 #do not let current exceed limit
         return I
@@ -160,22 +159,11 @@ class ServoMsg: #class to assign values to servo_angles message format
 class Controller: #init publishers and subscribers
     def __init__(self):
         self.pub_ang = rospy.Publisher('/servo/setpoint_angles', servo_angles, queue_size=1) # servo angle publisher
-        # self.pub_crrnt = rospy.Publisher(robot_name+'/servo/setpoint_currents', servo_angles, queue_size=1) # servo current publisher
-
         self.sub_pos = rospy.Subscriber('/tooltip/setpoint_position/local', PointStamped, self.tip_callback) #target angle subscriber
-        # self.sub_force = message_filters.Subscriber(robot_name+'/servo/setpoint_torques', PointStamped) #target force subscriber
-
-    # def loop(self):
-    #     ts = message_filters.ApproximateTimeSynchronizer([self.sub_pos#, self.sub_force
-    #         ], 1, 100)
-    #     ts.registerCallback(self.tip_callback)
         
-    def tip_callback(self, sub_pos#, sub_force
-            ): #callback calculates servo angles/torques
+    def tip_callback(self, sub_pos): #callback calculates servo angles/torques
         ang = delta().callback_ang(sub_pos)
         self.pub_ang.publish(ang)
-        # crrnt = delta().callback_crrnt(sub_force)
-        # self.pub_crrnt.publish(crrnt)
         
 if __name__ == '__main__': #initialise node and run loop
     rospy.init_node('delta_inverse_kinematics', anonymous=True)
