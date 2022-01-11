@@ -1,11 +1,4 @@
  <launch>
-
-  <?ignore
-    =========================================================
-                        MavRos
-    =========================================================
-  ?>
-
   <!-- example launch script for PX4 based FCU's -->
 
   <arg name="fcu_url" default="/dev/ttyTHS2:921600" />
@@ -13,8 +6,6 @@
   <arg name="tgt_system" default="1" />
   <arg name="tgt_component" default="1" />
   <arg name="log_output" default="screen" />
-  <!--arg name="fcu_protocol" default="v2.0" /-->
-  <!--arg name="respawn_mavros" default="false" /-->
 
   <include file="$(find mavros)/launch/node.launch">
 
@@ -30,20 +21,12 @@
     <!--arg name="respawn_mavros" default="$(arg respawn_mavros)" /-->
   </include>
 
-  <param name="/mavros/conn/timesync_rate" value="0.0"/>
-
-  <?ignore
-    =========================================================
-                           Vicon
-    =========================================================
- ?>
+  <!-- <param name="/mavros/conn/timesync_rate" value="0.0"/> -->
   
   <arg name="object_name" default="hexacopter" />
-  <!-- <node ns="$(arg object_name)" name="vrpn_client" type="ros_vrpn_client" pkg="ros_vrpn_client" output="screen"> -->
-  <node name="vrpn_client" type="ros_vrpn_client" pkg="ros_vrpn_client" output="screen">
+  <node ns="$(arg object_name)" name="vrpn_client" type="ros_vrpn_client" pkg="ros_vrpn_client" output="screen">
     <rosparam file="$(find delta_manipulator)/cfg/Vicon_config.yaml" />
   </node>
-
 
   <node name="vicon_msg_converter" pkg="delta_manipulator" type="Vicon_msg_converter.py" required="true" output="screen"/>
 

@@ -20,3 +20,6 @@
     outlier_rejection_subsequent_maximum_count:         50.0
     output_minimal_quaternions:                         false
     output_minimal_quaternions:                         false
+
+  mavros:
+    conn/timesync_rate:                                 0.0
