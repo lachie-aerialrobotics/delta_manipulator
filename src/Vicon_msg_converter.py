@@ -23,6 +23,7 @@ class Converter:
         mavros_pose_msg.pose.orientation.z = vicon_tf_msg.transform.rotation.z
         mavros_pose_msg.pose.orientation.w = vicon_tf_msg.transform.rotation.w
 
+        print(mavros_pose_msg)
         #publish
         self.mavros_pose_pub.publish(mavros_pose_msg)
 
