@@ -300,6 +300,7 @@ def callback(event):
         publish_positions()
 
 class cfg:
+    rate = 100
     readPositions = False
     servo_mode = 0
     set_mode = True
