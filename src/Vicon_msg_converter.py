@@ -28,6 +28,6 @@ class Converter:
         self.mavros_pose_pub.publish(mavros_pose_msg)
 
 if __name__ == '__main__': #initialise node
-    rospy.init_node('joystick_node', anonymous=True)
+    rospy.init_node('Vicon_msg_converter', anonymous=True)
     c = Converter()
     rospy.spin()
