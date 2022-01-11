@@ -12,7 +12,6 @@ class Converter:
 
     def callback(self, vicon_tf_msg):
         #assign TransformStamped message to PoseStamped
-        vicon_tf_msg = TransformStamped()
         mavros_pose_msg = PoseStamped()
         mavros_pose_msg.header.frame_id = "base_link"
         mavros_pose_msg.header.stamp = rospy.Time.now()
