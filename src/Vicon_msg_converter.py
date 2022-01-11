@@ -24,7 +24,7 @@ class Converter:
         mavros_pose_msg.pose.orientation.w = vicon_tf_msg.transform.rotation.w
 
         #publish
-        self.mavros_pose_pub(mavros_pose_msg)
+        self.mavros_pose_pub.publish(mavros_pose_msg)
 
 if __name__ == '__main__': #initialise node
     rospy.init_node('joystick_node', anonymous=True)
