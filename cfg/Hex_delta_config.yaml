@@ -15,6 +15,7 @@ manipulator:
   servo/ctrl_table/torque2current_gradient:    -0.98841 #taken from XH540 control table
   servo/ctrl_table/torque2current_intercept:   -0.0627  #taken from XH540 control table
   servo/ctrl_table/torque2current_unit:        2.69     #taken from XH540 control table
+  servo/read_positions:             false
 
 #uav geometry parameters (in fcu coordinate frame):
   tooltip/tip_init_x:         0.6             #initial x offset of delta tip from base in [m]

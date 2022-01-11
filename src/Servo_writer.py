@@ -306,16 +306,15 @@ class cfg:
     set_mode = True
 
 def config_callback(config,level):  
+    rospy.set_param("/manipulator/servo/read_positions", config.readPositions)
     if cfg.readPositions != config.readPositions:
         cfg.readPositions = config.readPositions
         if cfg.readPositions == True:
             rospy.loginfo("READING SERVO POSITIONS ENABLED: Servo communication rate capped to 60Hz because reading is hard")
             cfg.rate = 60
-            rospy.set_param("/manipulator/servo/read_positions", True)
         elif cfg.readPositions == False:
             rospy.loginfo("READING SERVO POSITIONS DISABLED: Servo communication rate is default")
             cfg.rate = rospy.get_param('/rate')
-            rospy.set_param("/manipulator/servo/read_positions", False)
 
     if cfg.servo_mode != config.servo_mode: 
         cfg.servo_mode = config.servo_mode
