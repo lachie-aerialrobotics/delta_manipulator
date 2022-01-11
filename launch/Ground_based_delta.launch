@@ -3,6 +3,9 @@
 <launch>
   <rosparam file="$(find delta_manipulator)/cfg/Hex_delta_config.yaml" />
 
+  <rosparam param="rate">100</rosparam>
+
+
   <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/>
   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
 
