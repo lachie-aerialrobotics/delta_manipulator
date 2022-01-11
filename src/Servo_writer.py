@@ -300,7 +300,6 @@ def callback(event):
         publish_positions()
 
 class cfg:
-    rate = rospy.get_param('/rate/main')
     readPositions = False
     servo_mode = 0
     set_mode = True
