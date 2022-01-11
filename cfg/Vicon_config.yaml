@@ -3,7 +3,7 @@
   vrpn_server_ip:                                       "192.168.0.100"
   vrpn_coordinate_system:                               "vicon"
   timestamping_system:                                  "ros"
-  verbose:                                              true
+  verbose:                                              false
 
   translational_estimator:
     kp:                                                 0.5

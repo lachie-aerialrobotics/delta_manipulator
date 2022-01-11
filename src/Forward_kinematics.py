@@ -21,13 +21,13 @@ class Controller:
         self.b = self.sp / 2 - np.sqrt(3)/2 * self.wb
         self.c = self.wp - 0.5 * self.wb 
 
-        readPositions = rospy.get_param("/manipulator/servo/read_positions")
+        readPositions = rospy.get_param("/manipulator/servo/read_positions")        
         if readPositions == True:
-            self.sub_servo_angles_sp = rospy.Subscriber('/servo/detected_angles', servo_angles, self.callback, tcp_nodelay=True) 
-            self.pub_tip_pos = rospy.Publisher('/tooltip/detected_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
+            self.sub_servo_angles_sp = rospy.Subscriber('/servo/detected_angles', servo_angles, self.callback, tcp_nodelay=True)    
         elif readPositions == False:
             self.sub_servo_angles_sp = rospy.Subscriber('/servo/setpoint_angles', servo_angles, self.callback, tcp_nodelay=True) 
-            self.pub_tip_pos = rospy.Publisher('/tooltip/setpoint_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
+        
+        self.pub_tip_pos = rospy.Publisher('/tooltip/detected_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
 
         self.pubBaseJoint1Point = rospy.Publisher('/manipulator/joint/base/1', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubBaseJoint2Point = rospy.Publisher('/manipulator/joint/base/2', PointStamped, queue_size=1, tcp_nodelay=True)
