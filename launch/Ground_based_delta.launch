@@ -9,6 +9,9 @@
     manipulator/geometry/drone2base_x:       0.0       
     manipulator/geometry/drone2base_z:       0.0
     manipulator/geometry/base_pitch:         0.0    
+    tooltip/tip_init_x:         0.0          
+    tooltip/tip_init_y:         0.0         
+    tooltip/tip_init_z:         0.0         
   </rosparam>
 
 

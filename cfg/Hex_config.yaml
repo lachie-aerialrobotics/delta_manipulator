@@ -8,5 +8,7 @@ manipulator:
   geometry/drone2base_z:       0.05            #offset of base of delta from CoM of drone in [m]
   geometry/base_pitch:         90              #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
 
-
-
+#uav geometry parameters (in fcu coordinate frame):
+  tooltip/tip_init_x:         0.6             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
+  tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
