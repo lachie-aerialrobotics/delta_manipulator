@@ -8,11 +8,5 @@ manipulator:
   geometry/drone2base_z:       0.05            #offset of base of delta from CoM of drone in [m]
   geometry/base_pitch:         90              #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
 
-#mavros
-mavros:
-  local_position/tf/send:     true            #send tf data from drone
-  fcu_url:                    "udp://:14540@localhost:14557"
-  #gcs_url:                    "udp://:14540@localhost:14557"
-
 
 

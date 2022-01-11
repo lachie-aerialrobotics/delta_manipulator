@@ -28,6 +28,4 @@
     <rosparam file="$(find delta_manipulator)/cfg/Vicon_config.yaml" />
   </node>
 
-  <node name="vicon_msg_converter" pkg="delta_manipulator" type="Vicon_msg_converter.py" required="true" output="screen"/>
-
 </launch>
