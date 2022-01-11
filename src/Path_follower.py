@@ -5,9 +5,6 @@ from quaternion_functions import qv_mult, q_mult, q_conjugate
 from geometry_msgs.msg import PoseStamped, PointStamped
 from sensor_msgs.msg import Joy
 from nav_msgs.msg import Path
-from std_msgs.msg import Bool
-
-from delta_manipulator.msg import axes
 
 from dynamic_reconfigure.server import Server
 from delta_manipulator.cfg import JoystickConfig

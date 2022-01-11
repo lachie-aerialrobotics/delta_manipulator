@@ -14,12 +14,5 @@ mavros:
   fcu_url:                    "udp://:14540@localhost:14557"
   #gcs_url:                    "udp://:14540@localhost:14557"
 
-#dynamixels
-# dynamixel:
-#   port:
-
-#todo: set servo params from this launch file
-#rewrite dynamixel code with config options
-
 
 
