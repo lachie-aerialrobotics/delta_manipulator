@@ -28,6 +28,6 @@
     <rosparam file="$(find delta_manipulator)/cfg/Vicon_config.yaml" />
   </node>
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2vicon" args="1 0 0 0 0 0 1 map vicon" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="1 0 0 0 0 0 1 $(arg object_name) base_link" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2vicon" args="0 0 0 0 0 0 1 map vicon" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 $(arg object_name) base_link" />
 </launch>
