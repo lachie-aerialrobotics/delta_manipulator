@@ -6,9 +6,9 @@ from geometry_msgs.msg import PoseStamped, TransformStamped
 class Converter:
     def __init__(self):   
         #Publish pose
-        self.mavros_pose_pub = rospy.Publisher('/hexacopter/vrpn_client/raw_transform', PoseStamped, queue_size=1, tcp_nodelay=True)
+        self.mavros_pose_pub = rospy.Publisher('/hexacopter/vrpn_client/raw_transform', TransformStamped, queue_size=1, tcp_nodelay=True)
         #Subscribe to transform
-        self.vicon_tf_sub = rospy.Subscriber('/mavros/vision_pose/pose', TransformStamped, self.callback, tcp_nodelay=True)
+        self.vicon_tf_sub = rospy.Subscriber('/mavros/vision_pose/pose', PoseStamped, self.callback, tcp_nodelay=True)
 
     def callback(self, vicon_tf_msg):
         #assign TransformStamped message to PoseStamped
