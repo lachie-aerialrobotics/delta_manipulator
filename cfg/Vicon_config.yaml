@@ -1,10 +1,4 @@
-#Params needed to stream vicon data to mavros
-  fcu_url:                                              "/dev/ttyTHS2:921600"
-  gcs_url:                                              "udp://@192.168.0.192"
-  tgt_system:                                           1
-  tgt_component:                                        1
-  log_output:                                           "screen"
-
+#Params for vrpn_client
   object_name:                                          "hexacopter"
   vrpn_server_ip:                                       "192.168.0.100"
   vrpn_coordinate_system:                               "vicon"
@@ -26,6 +20,3 @@
     outlier_rejection_subsequent_maximum_count:         50.0
     output_minimal_quaternions:                         false
     output_minimal_quaternions:                         false
-
-mavros:
-  conn/timesync_rate:                                   0.0
