@@ -3,7 +3,13 @@
 <launch>
   <rosparam file="$(find delta_manipulator)/cfg/Hex_delta_config.yaml" />
 
-  <rosparam param="rate">100</rosparam>
+  <rosparam>
+    rate: 100
+    manipulator/geometry/nozzle:             0.0
+    manipulator/geometry/drone2base_x:       0.0       
+    manipulator/geometry/drone2base_z:       0.0
+    manipulator/geometry/base_pitch:         0.0    
+  </rosparam>
 
 
   <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/>
