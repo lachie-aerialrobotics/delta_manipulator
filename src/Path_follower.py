@@ -261,7 +261,7 @@ def config_callback(config, level):
     Setpoint.y_max_pos = config.y_max_pos
     Setpoint.y_max_neg = config.y_max_neg
     Setpoint.z_max = config.z_max
-    Setpoint.loop_count = config.loop_count
+    Setpoint.loop_count = config.repeats
     return config
 
 if __name__ == '__main__': #initialise node
