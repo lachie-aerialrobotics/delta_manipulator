@@ -1,3 +1,7 @@
-#config for joystick control and gazebo sim
+#config for  gazebo sim
 joy_node/dev: "/dev/input/js0"
 use_sim_time: true
+
+mavros:
+  conn/timesync_rate:                                 0.0
+  local_position/tf/send:                             true

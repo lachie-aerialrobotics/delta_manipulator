@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!-- Simulated Hex+delta arm -->
 <launch>
+<!-- TODO: Add options to retract delta and to turn stabilisation on/off -->
+  <include file="$(find px4)/launch/mavros_posix_sitl.launch" />
 
-  <include file="$(find delta_manipulator)/launch/Vicon.launch" />
-
-  <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Balanced_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Sim_config.yaml" />
  
   <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/>
   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
@@ -12,6 +13,7 @@
   <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
   <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
-  <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
+
+  <node name="Simulated_delta" pkg="delta_manipulator" type="Simulated_delta.py" required="true" output="screen"/>
 
 </launch>

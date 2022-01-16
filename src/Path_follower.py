@@ -64,25 +64,25 @@ class Setpoint:
         #assign required axes to variables with sensible names (float between -1.0 and 1.0)
         Yaw_axis = joy_msg.axes[0]
         Throt_axis = joy_msg.axes[1]
-        LTrigger_axis = joy_msg.axes[2]
+        # LTrigger_axis = joy_msg.axes[2]
         Roll_axis = joy_msg.axes[3]
         Pitch_axis = joy_msg.axes[4]
-        RTrigger_axis = joy_msg.axes[5]
-        DPadHoriz_axis = joy_msg.axes[6]
-        DPadVert_axis = joy_msg.axes[7]
+        # RTrigger_axis = joy_msg.axes[5]
+        # DPadHoriz_axis = joy_msg.axes[6]
+        # DPadVert_axis = joy_msg.axes[7]
 
         #assign required buttons to variables with sensible names (int 0 or 1)
         A_bttn = joy_msg.buttons[0]
         B_bttn = joy_msg.buttons[1]
-        X_bttn = joy_msg.buttons[2]
-        Y_bttn = joy_msg.buttons[3]
-        LShoulder_bttn = joy_msg.buttons[4]
-        RShoulder_bttn = joy_msg.buttons[5]
-        Back_bttn = joy_msg.buttons[6]
-        Start_bttn = joy_msg.buttons[7]
-        Logo_bttn = joy_msg.buttons[8]
-        LStick_bttn = joy_msg.buttons[9]
-        RStick_bttn = joy_msg.buttons[10]
+        # X_bttn = joy_msg.buttons[2]
+        # Y_bttn = joy_msg.buttons[3]
+        # LShoulder_bttn = joy_msg.buttons[4]
+        # RShoulder_bttn = joy_msg.buttons[5]
+        # Back_bttn = joy_msg.buttons[6]
+        # Start_bttn = joy_msg.buttons[7]
+        # Logo_bttn = joy_msg.buttons[8]
+        # LStick_bttn = joy_msg.buttons[9]
+        # RStick_bttn = joy_msg.buttons[10]
 
         self.fly_trajectory = toggle(self.fly_trajectory, A_bttn)
         self.reset_trajectory = press(B_bttn)
@@ -143,7 +143,7 @@ class Setpoint:
         self.p += qv_mult(self.q, np.asarray([self.pitch_axis * self.vel_scaling_param,
                                                 self.roll_axis * self.vel_scaling_param,
                                                 self.throttle_axis * self.vel_scaling_param]))
-
+                                                
         self.manip_p = self.p + qv_mult(self.q, self.fcu2tip)
 
     def check_bounds(self): #ensure drone setpoint is inside bounding box

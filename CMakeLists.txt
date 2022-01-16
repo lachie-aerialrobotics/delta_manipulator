@@ -57,6 +57,7 @@ generate_dynamic_reconfigure_options(
    cfg/Path_config.cfg
    cfg/Servo_config.cfg
    cfg/Torque_config.cfg
+   cfg/Stabilisation_config.cfg
 )
 
 add_message_files(

@@ -7,6 +7,7 @@ from delta_manipulator.msg import servo_angles
 
 class Controller:
     def __init__(self): #init params and publishers and subscribers
+        self.rate = rospy.get_param('/rate')
         self.sp = rospy.get_param('/manipulator/geometry/sp')
         self.sb = rospy.get_param('/manipulator/geometry/sb')
         self.l = rospy.get_param('/manipulator/geometry/l')
@@ -21,30 +22,41 @@ class Controller:
         self.b = self.sp / 2 - np.sqrt(3)/2 * self.wb
         self.c = self.wp - 0.5 * self.wb 
 
-        readPositions = rospy.get_param("/manipulator/servo/read_positions")        
-        if readPositions == True:
-            self.sub_servo_angles_sp = rospy.Subscriber('/servo/detected_angles', servo_angles, self.callback, tcp_nodelay=True)    
-        elif readPositions == False:
-            self.sub_servo_angles_sp = rospy.Subscriber('/servo/setpoint_angles', servo_angles, self.callback, tcp_nodelay=True) 
-        
+        self.servo_sp_msg = servo_angles()
+
         self.pub_tip_pos = rospy.Publisher('/tooltip/detected_position/local', PointStamped, queue_size=1, tcp_nodelay=True) 
 
         self.pubBaseJoint1Point = rospy.Publisher('/manipulator/joint/base/1', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubBaseJoint2Point = rospy.Publisher('/manipulator/joint/base/2', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubBaseJoint3Point = rospy.Publisher('/manipulator/joint/base/3', PointStamped, queue_size=1, tcp_nodelay=True)
-
         self.pubElbowJoint1Point = rospy.Publisher('/manipulator/joint/elbow/1', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubElbowJoint2Point = rospy.Publisher('/manipulator/joint/elbow/2', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubElbowJoint3Point = rospy.Publisher('/manipulator/joint/elbow/3', PointStamped, queue_size=1, tcp_nodelay=True)
-
         self.pubPlatJoint1Point = rospy.Publisher('/manipulator/joint/platform/1', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubPlatJoint2Point = rospy.Publisher('/manipulator/joint/platform/2', PointStamped, queue_size=1, tcp_nodelay=True)
         self.pubPlatJoint3Point = rospy.Publisher('/manipulator/joint/platform/3', PointStamped, queue_size=1, tcp_nodelay=True)
 
-    def callback(self, servo_sp_msg):
-        thetb1 = servo_sp_msg.theta1
-        thetb2 = servo_sp_msg.theta2
-        thetb3 = servo_sp_msg.theta3
+        
+        self.sub_servo_angles_det = rospy.Subscriber('/servo/detected_angles', servo_angles, self.detected_callback, tcp_nodelay=True)    
+        self.sub_servo_angles_sp = rospy.Subscriber('/servo/setpoint_angles', servo_angles, self.setpoint_callback, tcp_nodelay=True) 
+        rospy.Timer(rospy.Duration(1.0/self.rate), self.callback)
+        
+
+
+    def detected_callback(self, servo_sp_msg):
+        self.readPositions = rospy.get_param("/manipulator/servo/read_positions")
+        if self.readPositions == True:
+            self.servo_sp_msg = servo_sp_msg
+
+    def setpoint_callback(self, servo_sp_msg):
+        self.readPositions = rospy.get_param("/manipulator/servo/read_positions")
+        if self.readPositions == False:
+            self.servo_sp_msg = servo_sp_msg
+
+    def callback(self, event):
+        thetb1 = self.servo_sp_msg.theta1
+        thetb2 = self.servo_sp_msg.theta2
+        thetb3 = self.servo_sp_msg.theta3
 
         solve, x, y, z = self.forwardKinematics(thetb1, thetb2, thetb3)
 

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!-- Launch file for running the delta-arm only !-->
 <launch>
-  <rosparam file="$(find delta_manipulator)/cfg/Hex_delta_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
 
   <rosparam>
-    rate: 100
     manipulator/geometry/nozzle:             0.0
     manipulator/geometry/drone2base_x:       0.0       
     manipulator/geometry/drone2base_z:       0.0
     manipulator/geometry/base_pitch:         0.0    
-    tooltip/tip_init_x:         0.0          
-    tooltip/tip_init_y:         0.0         
-    tooltip/tip_init_z:         0.0         
+    manipulator/tooltip/tip_init_x:          0.0          
+    manipulator/tooltip/tip_init_y:          0.0         
+    manipulator/tooltip/tip_init_z:          0.0         
   </rosparam>
 
 
@@ -23,6 +22,6 @@
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
   <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
 
-  <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
+  <node name="Servo_simulated" pkg="delta_manipulator" type="Simulated_delta.py" required="true" output="screen"/>
 
 </launch>

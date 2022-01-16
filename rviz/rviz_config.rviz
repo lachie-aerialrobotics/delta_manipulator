@@ -133,14 +133,14 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz/PointStamped
       Color: 78; 154; 6
-      Enabled: false
+      Enabled: true
       History Length: 1
       Name: PointStamped
       Queue Size: 10
       Radius: 0.10000000149011612
       Topic: /tooltip/detected_position/local
       Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/PointStamped
       Color: 204; 41; 204
@@ -344,7 +344,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.83774995803833
+      Distance: 3.6142523288726807
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -360,9 +360,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9147988557815552
+      Pitch: 0.7597987055778503
       Target Frame: <Fixed Frame>
-      Yaw: 2.2304017543792725
+      Yaw: 2.080401659011841
     Saved: ~
 Window Geometry:
   Displays:
