@@ -23,18 +23,13 @@
 
   <!-- <param name="/mavros/conn/timesync_rate" value="0.0"/> -->
   
-  <arg name="object_name_hex" default="hexacopter" />
-  <node ns="$(arg object_name_hex)" name="vrpn_client_hex" type="ros_vrpn_client" pkg="ros_vrpn_client" output="screen">
-    <rosparam file="$(find delta_manipulator)/cfg/Vicon_config.yaml" />
-  </node>
-
-  <arg name="object_name_tip" default="hex_tooltip" />
-  <node ns="$(arg object_name_tip)" name="vrpn_client_tip" type="ros_vrpn_client" pkg="ros_vrpn_client" output="screen">
+  <arg name="object_name" default="hexacopter" />
+  <node ns="$(arg object_name)" name="vrpn_client" type="ros_vrpn_client" pkg="ros_vrpn_client" output="screen">
     <rosparam file="$(find delta_manipulator)/cfg/Vicon_config.yaml" />
   </node>
 
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2vicon" args="0 0 0 0 0 0 1 map vicon" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 $(arg object_name_hex) base_link" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 $(arg object_name) base_link" />
 
   <node name="Vicon_msg_converter" pkg="delta_manipulator" type="Vicon_msg_converter.py" required="true" output="screen"/>
 </launch>
