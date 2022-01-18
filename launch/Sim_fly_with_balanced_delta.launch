@@ -15,5 +15,4 @@
   <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
 
   <node name="Simulated_delta" pkg="delta_manipulator" type="Simulated_delta.py" required="true" output="screen"/>
-
 </launch>
