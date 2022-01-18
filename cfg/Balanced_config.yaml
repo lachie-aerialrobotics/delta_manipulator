@@ -7,12 +7,12 @@ retract:                      true
 manipulator:
   geometry/nozzle:            0.0                #length of appendage from delta platform in [m]
   geometry/drone2base_x:      0.0                #offset of base of delta from CoM of drone in [m]
-  geometry/drone2base_z:      -0.7               #offset of base of delta from CoM of drone in [m]
-  geometry/base_roll:         0.0
-  geometry/base_pitch:        0.0                #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
-  geometry/base_yaw:          0.0 
+  geometry/drone2base_z:      -0.41               #offset of base of delta from CoM of drone in [m]
+  geometry/base_roll:         0.0                #rotation of delta_arm base in roll direction relative to drone body (0 is down, 90 is forward) in [degrees]
+  geometry/base_pitch:        0.0                #rotation of delta_arm base in pitch direction relative to drone body (0 is down, 90 is forward) in [degrees]
+  geometry/base_yaw:          90.0               #rotation of delta_arm base in yaw direction relative to drone body (0 is down, 90 is forward) in [degrees]
   geometry/sp:                0.09192            #size of platform (see kinematics paper) in [m]
-  geometry/sb:                0.57158            #size of base (see kinematics paper) in [m]
+  geometry/sb:                0.57158            #size of (see kinematics paper) in [m]
   geometry/l:                 0.54535            #distal joint length in [m]
   geometry/L:                 0.42545            #proximal joint length in [m]
 
@@ -22,16 +22,16 @@ manipulator:
   tooltip/tip_init_z:         -0.4            #initial z offset of delta tip from fcu in [m] (drone coordinates)
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/tip_retracted_y:    0.0             #y offset of delta tip from base when retracted in [m] (manipulator coordinates)
-  tooltip/tip_retracted_z:    -0.2            #z offset of delta tip from base when retracted in [m] (manipulator coordinates)
+  tooltip/tip_retracted_z:    -0.18           #z offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/v_max:              0.0             #init value
 
 #dynamixel servo parameters
-  servo/dir1:                                 true           #reverse servo 1 rotation direction?
-  servo/dir2:                                 false            #reverse servo 2 rotation direction?
-  servo/dir3:                                 true           #reverse servo 3 rotation direction?
-  servo/baud_rate:                            3000000
-  servo/port:                                 '/dev/ttyUSB0' 
-  servo/ctrl_table/torque2current_gradient:   -0.98841        #taken from XH540 control table
-  servo/ctrl_table/torque2current_intercept:  -0.0627         #taken from XH540 control table
-  servo/ctrl_table/torque2current_unit:       2.69            #taken from XH540 control table
-  servo/read_positions:                       false
+  servo/dir1:                                 true            #reverse servo 1 rotation direction?
+  servo/dir2:                                 false           #reverse servo 2 rotation direction?
+  servo/dir3:                                 true            #reverse servo 3 rotation direction?
+  servo/baud_rate:                            3000000         #baud rate (usually 3000000)
+  servo/port:                                 '/dev/ttyUSB0'  #USB port (usually /dev/ttyUSB0)
+  servo/ctrl_table/torque2current_gradient:   -0.98841        #taken from XH540 control table torque vs current graph
+  servo/ctrl_table/torque2current_intercept:  -0.0627         #taken from XH540 control table torque vs current graph
+  servo/ctrl_table/torque2current_unit:       2.69            #taken from XH540 control table torque vs current graph
+  servo/read_positions:                       false           #read back true positions of servos? (WARNING: slow, but might be useful for contact-based applications)
