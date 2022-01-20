@@ -22,5 +22,4 @@
     output_minimal_quaternions:                         false
 
   mavros:
-    conn/timesync_rate:                                 0.0
     local_position/tf/send:                             true
