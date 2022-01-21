@@ -5,19 +5,19 @@ retract:                      true
 
 #manipulator geometry parameters:
 manipulator:
-  geometry/nozzle:            0.15            #length of appendage from delta platform in [m]
-  geometry/drone2base_x:      0.3             #offset of base of delta from CoM of drone in [m]
-  geometry/drone2base_z:      0.05            #offset of base of delta from CoM of drone in [m]
+  geometry/nozzle:            0.00            #length of appendage from delta platform in [m]
+  geometry/drone2base_x:      0.33            #offset of base of delta from CoM of drone in [m]
+  geometry/drone2base_z:      0.08            #offset of base of delta from CoM of drone in [m]
   geometry/base_roll:         0.0
   geometry/base_pitch:        90.0            #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
   geometry/base_yaw:          -90.0
   geometry/sp:                0.06            #size of platform (see kinematics paper) in [m]
   geometry/sb:                0.34            #size of base (see kinematics paper) in [m]
   geometry/l:                 0.47            #distal joint length in [m]
-  geometry/L:                 0.2             #proximal joint length in [m]
+  geometry/L:                 0.12            #proximal joint length in [m]
 
 #uav geometry parameters (in fcu coordinate frame):
-  tooltip/tip_init_x:         0.7             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_x:         0.8             #initial x offset of delta tip from base in [m]
   tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
   tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
