@@ -190,7 +190,7 @@ class Setpoint:
 
             drone2traj = p_traj_start - self.p
 
-            if drone2traj != 0.0:
+            if np.linalg.norm(drone2traj) != 0.0:
                 drone2traj_norm = drone2traj / np.linalg.norm(drone2traj)
             else:
                 drone2traj_norm = np.asarray([0.0, 0.0, 1.0])
