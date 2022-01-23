@@ -37,6 +37,7 @@ class Setpoint:
         self.throttle_axis = 0.0
         self.fly_trajectory = False
         self.reset_trajectory = False
+        self.path_msg = None
     
 
         #Publish target positions for drone and manipulator tooltip
@@ -98,9 +99,13 @@ class Setpoint:
 
         #fly either from trajectory or joystick inputs
         if self.fly_trajectory == True:
-            self.check_traj_changed()
-            self.move_to_sp()
-            self.trajectory_sp_lookup()
+            if self.path_msg is not None:
+                self.check_traj_changed()
+                self.move_to_sp()
+                self.trajectory_sp_lookup()
+            else:
+                self.reset_traj()
+                rospy.logwarn("PATH MESSAGES NOT YET PUBLISHED")
         elif self.fly_trajectory == False:
             self.Aligned = False
             self.yawAligned = False
