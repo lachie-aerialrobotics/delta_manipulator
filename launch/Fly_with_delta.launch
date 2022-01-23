@@ -2,7 +2,10 @@
 <!-- Simulated Hex+delta arm -->
 <launch>
 
-  <include file="$(find delta_manipulator)/launch/Vicon.launch" />
+  <!-- <include file="$(find delta_manipulator)/launch/Vicon.launch" /> -->
+  <include file="$(find mocap_vicon)/launch/vicon.launch" />
+  <rosparam file="$(find delta_manipulator)/cfg/Kumar_vicon_config.yaml" />
+  <node name="Vicon_msg_converter" pkg="delta_manipulator" type="Kumar_msg_converter.py" required="true" output="screen"/>
 
   <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
  
