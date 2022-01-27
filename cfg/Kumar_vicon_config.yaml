@@ -2,8 +2,8 @@
   vicon:
     # model_list:                                         [hexacopter, hex_tooltip_1]
     model_list:                                         [hexacopter]
-    server_address:                                       "192.168.0.100"
-    publish_tf:                                          true
+    server_address:                                     "192.168.0.100"
+    publish_tf:                                         true
 
   mavros:
     local_position/tf/send:                             true
