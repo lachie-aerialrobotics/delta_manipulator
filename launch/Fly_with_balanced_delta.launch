@@ -32,7 +32,7 @@
 
   <rosparam file="$(find delta_manipulator)/cfg/Balanced_config.yaml" />
  
-  <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/>
+  <!-- <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/> -->
   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
   
   <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
