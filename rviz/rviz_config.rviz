@@ -6,6 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1
+        - /TF1/Frames1
         - /Path1
         - /Path2
       Splitter Ratio: 0.5
@@ -28,7 +30,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -58,25 +60,47 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         base_link:
           Value: true
         base_link_frd:
+          Value: false
+        camera_accel_frame:
+          Value: false
+        camera_accel_optical_frame:
+          Value: false
+        camera_fisheye1_frame:
+          Value: false
+        camera_fisheye1_optical_frame:
+          Value: false
+        camera_fisheye2_frame:
+          Value: false
+        camera_fisheye2_optical_frame:
+          Value: false
+        camera_gyro_frame:
+          Value: false
+        camera_gyro_optical_frame:
+          Value: false
+        camera_link:
+          Value: false
+        camera_odom_frame:
+          Value: false
+        camera_pose_frame:
           Value: true
         manipulator:
           Value: true
         map:
           Value: true
         map_ned:
-          Value: true
+          Value: false
         odom:
-          Value: true
+          Value: false
         odom_ned:
-          Value: true
+          Value: false
         platform:
           Value: true
         rplidar_link:
-          Value: true
+          Value: false
         tooltip:
           Value: true
       Marker Alpha: 1
@@ -87,18 +111,33 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          base_link:
-            base_link_frd:
-              {}
-            manipulator:
-              platform:
-                tooltip:
+          camera_odom_frame:
+            camera_pose_frame:
+              base_link:
+                base_link_frd:
                   {}
-            odom:
-              odom_ned:
-                {}
-              rplidar_link:
-                {}
+                manipulator:
+                  platform:
+                    tooltip:
+                      {}
+                odom:
+                  odom_ned:
+                    {}
+                  rplidar_link:
+                    {}
+              camera_link:
+                camera_accel_frame:
+                  camera_accel_optical_frame:
+                    {}
+                camera_fisheye1_frame:
+                  camera_fisheye1_optical_frame:
+                    {}
+                camera_fisheye2_frame:
+                  camera_fisheye2_optical_frame:
+                    {}
+                camera_gyro_frame:
+                  camera_gyro_optical_frame:
+                    {}
           map_ned:
             {}
       Update Interval: 0
@@ -344,7 +383,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.6142523288726807
+      Distance: 4.093404293060303
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -352,17 +391,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.049192748963832855
+        Y: 0.0638246014714241
+        Z: -0.03338395804166794
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7597987055778503
+      Pitch: 0.4747989773750305
       Target Frame: <Fixed Frame>
-      Yaw: 2.080401659011841
+      Yaw: 1.9704029560089111
     Saved: ~
 Window Geometry:
   Displays:
@@ -370,7 +409,7 @@ Window Geometry:
   Height: 1389
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001f700000465fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b000000b000fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000006e000004650000018200fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000015f00000465fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000006e000004650000013200fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000008d800000060fc0100000002fb0000000800540069006d00650100000000000008d80000057100fffffffb0000000800540069006d006501000000000000045000000000000000000000056a0000046500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000003cd00000465fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b000000b000fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000006e000004650000018200fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000015f00000465fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000006e000004650000013200fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000008d800000060fc0100000002fb0000000800540069006d00650100000000000008d80000057100fffffffb0000000800540069006d00650100000000000004500000000000000000000003940000046500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
