@@ -26,7 +26,7 @@
   <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2camera" args="0 0 0 3.142 0 0 map camera_odom_frame" />
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_camera_pose_2_intermediate1" args="0 0 0 3.142 0.524 0 camera_pose_frame intermediate1" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_intermediate1_2_intermediate2" args="0 0 0 2.094 0 0 intermediate1 intermediate2" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_intermediate1_2_intermediate2" args="0 0 0 -2.094 0 0 intermediate1 intermediate2" />
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_intermediate2_2_base_link" args="0.13 -0.18 0.0 0 0 0 intermediate2 base_link" />
   <node name="Realsense_msg_converter" pkg="delta_manipulator" type="realsense_msg_converter.py" required="true" output="screen"/>
   <!-- <include file="$(find delta_manipulator)/launch/Vicon.launch" /> -->
