@@ -87,6 +87,10 @@ Visualization Manager:
           Value: false
         camera_pose_frame:
           Value: true
+        intermediate1:
+          Value: false
+        intermediate2:
+          Value: false
         manipulator:
           Value: true
         map:
@@ -113,18 +117,6 @@ Visualization Manager:
         map:
           camera_odom_frame:
             camera_pose_frame:
-              base_link:
-                base_link_frd:
-                  {}
-                manipulator:
-                  platform:
-                    tooltip:
-                      {}
-                odom:
-                  odom_ned:
-                    {}
-                  rplidar_link:
-                    {}
               camera_link:
                 camera_accel_frame:
                   camera_accel_optical_frame:
@@ -138,6 +130,20 @@ Visualization Manager:
                 camera_gyro_frame:
                   camera_gyro_optical_frame:
                     {}
+              intermediate1:
+                intermediate2:
+                  base_link:
+                    base_link_frd:
+                      {}
+                    manipulator:
+                      platform:
+                        tooltip:
+                          {}
+                    odom:
+                      odom_ned:
+                        {}
+                      rplidar_link:
+                        {}
           map_ned:
             {}
       Update Interval: 0
@@ -383,7 +389,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.093404293060303
+      Distance: 1.3637398481369019
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -399,9 +405,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4747989773750305
+      Pitch: 0.3397959768772125
       Target Frame: <Fixed Frame>
-      Yaw: 1.9704029560089111
+      Yaw: 2.9754137992858887
     Saved: ~
 Window Geometry:
   Displays:
