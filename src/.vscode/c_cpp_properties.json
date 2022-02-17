@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/lachie/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/lachie/catkin_ws/src/contact_manipulator/include/**",
+        "/home/lachie/catkin_ws/src/DynamixelSDK/ros/dynamixel_sdk/include/**",
+        "/home/lachie/catkin_ws/src/dynamixel-workbench/dynamixel_workbench_controllers/include/**",
+        "/home/lachie/catkin_ws/src/dynamixel-workbench/dynamixel_workbench_operators/include/**",
+        "/home/lachie/catkin_ws/src/dynamixel-workbench/dynamixel_workbench_toolbox/include/**",
+        "/home/lachie/catkin_ws/src/motion_capture_system/mocap_base/include/**",
+        "/home/lachie/catkin_ws/src/motion_capture_system/mocap_qualisys/include/**",
+        "/home/lachie/catkin_ws/src/motion_capture_system/mocap_vicon/include/**",
+        "/home/lachie/catkin_ws/src/package_for_comms/include/**",
+        "/home/lachie/catkin_ws/src/ros_vrpn_client/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
