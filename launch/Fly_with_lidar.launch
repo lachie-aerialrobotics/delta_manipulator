@@ -27,7 +27,8 @@
     <arg name="metadata" value="$(arg metadata)" />
   </include>
 
-  <include file="$(find aloam_velodyne)/launch/aloam_velodyne_OS1-64.launch"/>
+  <!-- <include file="$(find aloam_velodyne)/launch/aloam_velodyne_OS1-64.launch"/> -->
+  <include file="$(find lio_sam)/launch/run.launch"/>
 
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2camera" args="0 0 0 0 0 0 1 map camera_init" />
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_odom2lidar" args="0 0 0 0 0 0 1 aft_mapped os_sensor" />
