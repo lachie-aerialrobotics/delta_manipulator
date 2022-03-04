@@ -23,6 +23,7 @@ manipulator:
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/tip_retracted_y:    0.0             #y offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/tip_retracted_z:    -0.5            #z offset of delta tip from base when retracted in [m] (manipulator coordinates)
+  tooltip/v_max:              0.0             #init value
 
 #dynamixel servo parameters
   servo/dir1:                                 false           #reverse servo 1 rotation direction?
