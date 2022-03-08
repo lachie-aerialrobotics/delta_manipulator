@@ -1,0 +1,19 @@
+digraph G {
+"manipulator" -> "platform"[label="Broadcaster: /Delta_forward_kinematics\nAverage rate: 100.203 Hz\nMost recent transform: 1646759004.672 ( 0.010 sec old)\nBuffer length: 5.259 sec\n"];
+"base_link" -> "manipulator"[label="Broadcaster: /Stabilizer\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"os_sensor" -> "base_link"[label="Broadcaster: /Lidar_msg_converter\nAverage rate: 10000.000 Hz\nMost recent transform: 1646758942.359 ( 62.323 sec old)\nBuffer length: 0.000 sec\n"];
+"map" -> "odom"[label="Broadcaster: /Lidar_msg_converter\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"camera_init" -> "aft_mapped"[label="Broadcaster: /alaserMapping\nAverage rate: 10.211 Hz\nMost recent transform: 20678.943 ( 1646738325.739 sec old)\nBuffer length: 4.799 sec\n"];
+"map" -> "camera_init"[label="Broadcaster: /transformmaptolidar\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "os_sensor"[label="Broadcaster: /Lidar_msg_converter\nAverage rate: 100.203 Hz\nMost recent transform: 1646759004.615 ( 0.067 sec old)\nBuffer length: 5.010 sec\n"];
+"os_sensor" -> "os_imu"[label="Broadcaster: /os_cloud_node\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"os_sensor" -> "os_lidar"[label="Broadcaster: /os_cloud_node\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"map" -> "map_ned"[label="Broadcaster: /mavros\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "odom_ned"[label="Broadcaster: /mavros\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "base_link_frd"[label="Broadcaster: /mavros\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+"platform" -> "tooltip"[label="Broadcaster: /Stabilizer\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1646759004.682 sec old)\nBuffer length: 0.000 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1646759004.682"[ shape=plaintext ] ;
+ }->"map";
+}
