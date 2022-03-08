@@ -70,6 +70,8 @@ Visualization Manager:
           Value: false
         camera_init:
           Value: false
+        lidar:
+          Value: true
         manipulator:
           Value: true
         map:
@@ -98,22 +100,23 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          camera_init:
-            aft_mapped:
-              {}
           map_ned:
             {}
           odom:
+            camera_init:
+              aft_mapped:
+                {}
             odom_ned:
               {}
             os_sensor:
-              base_link:
-                base_link_frd:
-                  {}
-                manipulator:
-                  platform:
-                    tooltip:
-                      {}
+              lidar:
+                base_link:
+                  base_link_frd:
+                    {}
+                  manipulator:
+                    platform:
+                      tooltip:
+                        {}
               os_imu:
                 {}
               os_lidar:
@@ -405,7 +408,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.1031417846679688
+      Distance: 12.527570724487305
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -421,9 +424,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3747965693473816
+      Pitch: 1.4647966623306274
       Target Frame: <Fixed Frame>
-      Yaw: 2.4386167526245117
+      Yaw: 2.2186191082000732
     Saved: ~
 Window Geometry:
   Displays:
