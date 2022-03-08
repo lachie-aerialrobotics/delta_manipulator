@@ -11,7 +11,7 @@ class Converter:
         self.mavros_pose_pub= rospy.Publisher('/mavros/vision_pose/pose', PoseStamped, queue_size=1, tcp_nodelay=True)
         
         #Subscribe to transform
-        self.lidar_pose_sub = rospy.Subscriber('/odometry/filtered', Odometry, self.callback, tcp_nodelay=True)
+        self.lidar_pose_sub = rospy.Subscriber('/aft_mapped_to_init', Odometry, self.callback, tcp_nodelay=True)
 
         #Subscribe to transform
         self.tfBuffer = tf2_ros.Buffer()
