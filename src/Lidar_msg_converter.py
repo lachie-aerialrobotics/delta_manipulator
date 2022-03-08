@@ -70,7 +70,7 @@ class Converter:
 
         
 
-    def transform_msg(header, child, tx, ty, tz, rx, ry, rz, rw): #function populates transformStamped message
+    def transform_msg(self, header, child, tx, ty, tz, rx, ry, rz, rw): #function populates transformStamped message
         t =  TransformStamped()
         t.header.stamp = rospy.Time.now()
         t.header.frame_id = header
