@@ -31,7 +31,7 @@
   <!-- <include file="$(find lio_sam)/launch/run.launch"/> -->
 
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2camera" args="0 0 0 0 0 0 1 map camera_init" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_odom2lidar" args="0 0 0 0 0 0 1 aft_mapped os_sensor" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_aft_mapped2os_sensor" args="0 0 0 0 0 0 1 aft_mapped os_sensor" />
   
   <node name="Lidar_msg_converter" pkg="delta_manipulator" type="Lidar_msg_converter.py" required="true" output="screen"/>
 
