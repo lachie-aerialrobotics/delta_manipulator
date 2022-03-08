@@ -25,8 +25,9 @@ class Converter:
         tf_odom2base_link = self.transform_msg("lidar", "base_link", lidar_offset_x, lidar_offset_y, lidar_offset_z, 0, 0, 0, 1)
         tf_map2odom = self.transform_msg("map", "odom", 0, 0, 0, 0, 0, 0, 1)
         tf_odom2os_sensor = self.transform_msg("odom", "os_sensor", 0, 0, 0, 0, 0, 0, 1)
+        tf_map2camera_init = self.transform_msg("map", "camera_init", 0, 0, 0, 0, 0, 0, 1)
   
-        br_static.sendTransform([tf_odom2base_link, tf_map2odom])
+        br_static.sendTransform([tf_odom2base_link, tf_map2odom, tf_odom2os_sensor, tf_map2camera_init])
         
     def callback(self, lidar_pose_msg):
         # #assign Odometry message to PoseStamped
