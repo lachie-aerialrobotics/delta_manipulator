@@ -13,6 +13,10 @@ class Converter:
         #Subscribe to transform
         self.lidar_pose_sub = rospy.Subscriber('/aft_mapped_to_init', Odometry, self.callback, tcp_nodelay=True)
 
+        #Subscribe to transform
+        self.tfBuffer = tf2_ros.Buffer()
+        listener = tf2_ros.TransformListener(self.tfBuffer)
+
         #broadcast map2odom
         br_static = tf2_ros.StaticTransformBroadcaster()
         lidar_offset_x = rospy.get_param('/manipulator/lidar_offset_x')
