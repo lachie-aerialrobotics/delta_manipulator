@@ -40,7 +40,7 @@ class Converter:
 
         #broadcast map2odom
         br = tf2_ros.TransformBroadcaster()
-        tf_map2odom = self.transform_msg(
+        tf_odom2os_sensor = self.transform_msg(
             "odom", "os_sensor",
             lidar_pose_msg.pose.pose.position.x, 
             lidar_pose_msg.pose.pose.position.y, 
@@ -51,7 +51,7 @@ class Converter:
             lidar_pose_msg.pose.pose.orientation.w
         )
   
-        br.sendTransform([tf_map2odom])
+        br.sendTransform([tf_odom2os_sensor])
 
         #assign TransformStamped message to PoseStamped
         try:   
