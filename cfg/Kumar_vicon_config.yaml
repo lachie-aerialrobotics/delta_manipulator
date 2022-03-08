@@ -1,9 +1,9 @@
 #Params for vrpn_client
   vicon:
-    model_list:                                         [hexacopter, hex_tooltip_1]
-    # model_list:                                         [hexacopter]
+    # model_list:                                         [hexacopter, hex_tooltip_1]
+    model_list:                                         [hexacopter]
     server_address:                                     "192.168.0.100"
     publish_tf:                                         false
 
-  mavros:
-    local_position/tf/send:                             false
+  # mavros:
+  #   local_position/tf/send:                             false

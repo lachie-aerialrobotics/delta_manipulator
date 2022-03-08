@@ -36,8 +36,8 @@
   <node name="Lidar_msg_converter" pkg="delta_manipulator" type="Lidar_msg_converter.py" required="true" output="screen"/>
 
   <!-- VICON -->
-  <!-- <include file="$(find mocap_vicon)/launch/vicon.launch" /> -->
-  <!-- <rosparam file="$(find delta_manipulator)/cfg/Kumar_vicon_config.yaml" /> -->
+  <include file="$(find mocap_vicon)/launch/vicon.launch" />
+  <rosparam file="$(find delta_manipulator)/cfg/Kumar_vicon_config.yaml" />
   <!-- <node name="Kumar_msg_converter" pkg="delta_manipulator" type="Kumar_msg_converter.py" required="true" output="screen"/> -->
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="transform_mocap2map" args="0 0 0 0 0 0 1 mocap map" /> -->
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 hexacopter base_link" /> -->
