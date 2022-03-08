@@ -26,7 +26,8 @@
     <arg name="sensor_hostname" value="$(arg sensor_hostname)" />
     <arg name="metadata" value="$(arg metadata)" />
   </include>
-
+  
+  <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
   <include file="$(find aloam_velodyne)/launch/aloam_velodyne_OS1-64.launch"/>
   <include file="$(find robot_localization)/launch/ekf_ouster_imu.launch"/>
   <!-- <include file="$(find lio_sam)/launch/run.launch"/> -->
@@ -42,7 +43,7 @@
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="transform_mocap2map" args="0 0 0 0 0 0 1 mocap map" /> -->
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 hexacopter base_link" /> -->
 
-  <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
+
 
   <!-- DELTA -->
   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
