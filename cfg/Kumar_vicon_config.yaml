@@ -3,7 +3,7 @@
     model_list:                                         [hexacopter, hex_tooltip_1]
     # model_list:                                         [hexacopter]
     server_address:                                     "192.168.0.100"
-    publish_tf:                                         true
+    publish_tf:                                         false
 
   mavros:
-    local_position/tf/send:                             true
+    local_position/tf/send:                             false
