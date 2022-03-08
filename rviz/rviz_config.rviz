@@ -63,33 +63,31 @@ Visualization Manager:
       Frames:
         All Enabled: false
         aft_mapped:
-          Value: true
+          Value: false
         base_link:
           Value: true
         base_link_frd:
           Value: false
         camera_init:
-          Value: true
+          Value: false
         manipulator:
           Value: true
         map:
           Value: true
         map_ned:
           Value: false
-        mocap:
-          Value: true
         odom:
           Value: false
         odom_ned:
           Value: false
         os_imu:
-          Value: true
+          Value: false
         os_lidar:
-          Value: true
+          Value: false
         os_sensor:
           Value: true
         platform:
-          Value: true
+          Value: false
         tooltip:
           Value: true
       Marker Alpha: 1
@@ -99,24 +97,27 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        mocap:
-          map:
-            base_link:
-              base_link_frd:
-                {}
-              manipulator:
-                platform:
-                  tooltip:
-                    {}
-            camera_init:
-              aft_mapped:
-                os_sensor:
-                  os_imu:
-                    {}
-                  os_lidar:
-                    {}
-            map_ned:
+        map:
+          camera_init:
+            aft_mapped:
               {}
+          map_ned:
+            {}
+          odom:
+            odom_ned:
+              {}
+            os_sensor:
+              base_link:
+                base_link_frd:
+                  {}
+                manipulator:
+                  platform:
+                    tooltip:
+                      {}
+              os_imu:
+                {}
+              os_lidar:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -404,7 +405,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 13.033544540405273
+      Distance: 2.1031417846679688
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -420,9 +421,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5297960638999939
+      Pitch: 0.3747965693473816
       Target Frame: <Fixed Frame>
-      Yaw: 5.463616847991943
+      Yaw: 2.4386167526245117
     Saved: ~
 Window Geometry:
   Displays:
