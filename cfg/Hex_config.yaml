@@ -15,9 +15,9 @@ manipulator:
   geometry/sb:                0.34            #size of base (see kinematics paper) in [m]
   geometry/l:                 0.47            #distal joint length in [m]
   geometry/L:                 0.12            #proximal joint length in [m]
-  lidar_offset_x:             0.0             #lidar offset relative to lidar [m]
+  lidar_offset_x:             -0.14             #lidar offset relative to lidar [m]
   lidar_offset_y:             0.0
-  lidar_offset_z:             0.0
+  lidar_offset_z:             -0.04
 
 #uav geometry parameters (in fcu coordinate frame):
   tooltip/tip_init_x:         0.5             #initial x offset of delta tip from base in [m]
