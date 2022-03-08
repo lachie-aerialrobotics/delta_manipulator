@@ -39,24 +39,12 @@ class Controller:
             self.q_fcu2base[0], self.q_fcu2base[1], self.q_fcu2base[2], self.q_fcu2base[3]
         )
 
-        tf_odom2lidar = transform_msg(
-            "odom", "rplidar_link",
-            0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 1.0
-        )
-
-        tf_fcu2odom = transform_msg(
-            "base_link", "odom",
-            0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 1.0
-        )
-
         tf_platform2tooltip = transform_msg(
             "platform", "tooltip",
             self.p_tooltip[0], self.p_tooltip[1], self.p_tooltip[2],
             0.0, 0.0, 0.0, 1.0
         )    
-        br_static.sendTransform([tf_fcu2base, tf_platform2tooltip, tf_fcu2odom, tf_odom2lidar])
+        br_static.sendTransform([tf_fcu2base, tf_platform2tooltip])
 
         #init dynamic reconfigure server
         self.srv = Server(StabilisationConfig, config_callback)
