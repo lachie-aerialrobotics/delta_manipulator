@@ -22,7 +22,7 @@ class Converter:
         lidar_offset_x = rospy.get_param('/manipulator/lidar_offset_x')
         lidar_offset_y = rospy.get_param('/manipulator/lidar_offset_y')
         lidar_offset_z = rospy.get_param('/manipulator/lidar_offset_z')
-        tf_odom2base_link = self.transform_msg("os/os_sensor", "base_link", lidar_offset_x, lidar_offset_y, lidar_offset_z, 0, 0, 0, 1)
+        tf_odom2base_link = self.transform_msg("os_sensor", "base_link", lidar_offset_x, lidar_offset_y, lidar_offset_z, 0, 0, 0, 1)
         tf_map2odom = self.transform_msg("map", "odom", 0, 0, 0, 0, 0, 0, 1)
         tf_map2camera_init = self.transform_msg("map", "camera_init", 0, 0, 0, 0, 0, 0, 1)
   
