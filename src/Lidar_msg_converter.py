@@ -23,10 +23,10 @@ class Converter:
         lidar_offset_y = rospy.get_param('/manipulator/lidar_offset_y')
         lidar_offset_z = rospy.get_param('/manipulator/lidar_offset_z')
         tf_odom2base_link = self.transform_msg("os_sensor", "base_link", lidar_offset_x, lidar_offset_y, lidar_offset_z, 0, 0, 0, 1)
-        tf_map2odom = self.transform_msg("map", "odom", 0, 0, 0, 0, 0, 0, 1)
-        tf_map2camera_init = self.transform_msg("base_link", "camera_init", 0, 0, 0, 0, 0, 0, 1)
+        # tf_map2odom = self.transform_msg("map", "odom", 0, 0, 0, 0, 0, 0, 1)
+        tf_map2camera_init = self.transform_msg("map", "camera_init", 0, 0, 0, 0, 0, 0, 1)
   
-        br_static.sendTransform([tf_odom2base_link, tf_map2odom, tf_map2camera_init])
+        br_static.sendTransform([tf_odom2base_link, tf_map2camera_init])
         
     def callback(self, lidar_pose_msg):
         # #assign Odometry message to PoseStamped
@@ -41,7 +41,7 @@ class Converter:
         #broadcast map2odom
         br = tf2_ros.TransformBroadcaster()
         tf_odom2os_sensor = self.transform_msg(
-            "odom", "os_sensor",
+            "camera_init", "os_sensor",
             lidar_pose_msg.pose.pose.position.x, 
             lidar_pose_msg.pose.pose.position.y, 
             lidar_pose_msg.pose.pose.position.z,
