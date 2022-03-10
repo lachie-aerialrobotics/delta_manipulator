@@ -138,5 +138,3 @@ if __name__ == '__main__': #initialise node
     rospy.init_node('delta_stabilisation_node', anonymous=True)
     c = Controller()
     rospy.spin()
-
-
