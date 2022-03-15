@@ -28,7 +28,7 @@ class Converter:
         self.mavros_pose_pub= rospy.Publisher('/mavros/vision_pose/pose', PoseStamped, queue_size=1, tcp_nodelay=True)
         
           
-    def callback(self, lidar_pose_msg):
+    def callback(self, lidar_odom_msg):
 
         # #broadcast map2odom
         # br = tf2_ros.TransformBroadcaster()
@@ -44,6 +44,10 @@ class Converter:
         # )
   
         # br.sendTransform([tf_odom2os_sensor])
+        lidar_pose_msg = PoseStamped()
+        lidar_pose_msg.header = lidar_odom_msg.header
+        lidar_pose_msg.pose = lidar_odom_msg.pose.pose
+
         try:
             tf_os_sensor2base_link = self.tfBuffer.lookup_transform('os_sensor', 'base_link', rospy.Time())
             rospy.loginfo_once("tf published :)")
