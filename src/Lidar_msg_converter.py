@@ -13,7 +13,7 @@ class Converter:
         lidar_offset_x = rospy.get_param('/manipulator/lidar_offset_x')
         lidar_offset_y = rospy.get_param('/manipulator/lidar_offset_y')
         lidar_offset_z = rospy.get_param('/manipulator/lidar_offset_z')
-        tf_base_link2os_sensor = self.transform_msg("base_link", "os_sensor", lidar_offset_x, lidar_offset_y, lidar_offset_z, 0, 0, 0, 1)
+        tf_base_link2os_sensor = self.transform_msg("os_sensor", "base_link", -lidar_offset_x, -lidar_offset_y, -lidar_offset_z, 0, 0, 0, 1)
         tf_map2camera_init = self.transform_msg("map", "camera_init", 0, 0, 0, 0, 0, 0, 1)
         tf_aft_mapped2os_sensor = self.transform_msg("aft_mapped", "os_sensor", 0, 0, 0, 0, 0, 0, 1)
         br_static.sendTransform([tf_base_link2os_sensor, tf_map2camera_init, tf_aft_mapped2os_sensor])
