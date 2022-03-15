@@ -25,9 +25,11 @@
   <!-- LIDAR -->
   <arg name="sensor_hostname" default="10.5.5.86" />
   <arg name="metadata" default="/home/jetson02/lidar_metadata/ouster_data.json" />
+  <arg name="lidar_mode" default="512x20" />
   <include file="$(find ouster_ros)/ouster.launch">
     <arg name="sensor_hostname" value="$(arg sensor_hostname)" />
     <arg name="metadata" value="$(arg metadata)" />
+    <arg name="lidar_mode" value="$(arg lidar_mode)" />
   </include>
 
  
