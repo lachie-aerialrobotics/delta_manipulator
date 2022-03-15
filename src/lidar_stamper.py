@@ -15,6 +15,8 @@ class Converter:
         lidar_point_msg_stamped = lidar_point_msg
         lidar_point_msg_stamped.header.stamp = rospy.Time.now()
 
+        self.lidar_pose_pub.publish(lidar_point_msg_stamped)
+
 if __name__ == '__main__': #initialise node
     rospy.init_node('Lidar_msg_stamper', anonymous=True)
     c = Converter()
