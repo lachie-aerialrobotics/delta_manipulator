@@ -15,7 +15,8 @@ class Converter:
         lidar_offset_z = rospy.get_param('/manipulator/lidar_offset_z')
         tf_base_link2os_sensor = self.transform_msg("base_link", "os_sensor", lidar_offset_x, lidar_offset_y, lidar_offset_z, 0, 0, 0, 1)
         tf_map2camera_init = self.transform_msg("map", "camera_init", 0, 0, 0, 0, 0, 0, 1)
-        br_static.sendTransform([tf_base_link2os_sensor, tf_map2camera_init])
+        tf_aft_mapped2os_sensor = self.transform_msg("aft_mapped", "os_sensor", 0, 0, 0, 0, 0, 0, 1)
+        br_static.sendTransform([tf_base_link2os_sensor, tf_map2camera_init, tf_aft_mapped2os_sensor])
 
         #Subscribe to transform
         self.lidar_pose_sub = rospy.Subscriber('/aft_mapped_to_init', Odometry, self.callback, tcp_nodelay=True)
@@ -44,14 +45,30 @@ class Converter:
         # )
   
         # br.sendTransform([tf_odom2os_sensor])
-        lidar_pose_msg = PoseStamped()
-        lidar_pose_msg.header = lidar_odom_msg.header
-        lidar_pose_msg.pose = lidar_odom_msg.pose.pose
+        # lidar_odom_msg = Odometry()
+        lidar_tf_msg = TransformStamped()
+        lidar_tf_msg.header = lidar_odom_msg.header
+        lidar_tf_msg.child_frame_id = lidar_odom_msg.child_frame_id
+        lidar_tf_msg.transform.translation = lidar_odom_msg.pose.pose.position
+        lidar_tf_msg.transform.rotation = lidar_odom_msg.pose.pose.orientation
+
+        br = tf2_ros.TransformBroadcaster()
+        br.sendTransform([lidar_tf_msg])
 
         try:
-            tf_os_sensor2base_link = self.tfBuffer.lookup_transform('os_sensor', 'base_link', rospy.Time())
+            tf_map2base_link = self.tfBuffer.lookup_transform('map', 'base_link', rospy.Time())
+            mavros_pose_msg = PoseStamped()
+            mavros_pose_msg.header.frame_id = "base_link"
+            mavros_pose_msg.header.stamp = rospy.Time.now()
+            mavros_pose_msg.pose.position.x = tf_map2base_link.transform.translation.x
+            mavros_pose_msg.pose.position.y = tf_map2base_link.transform.translation.y
+            mavros_pose_msg.pose.position.z = tf_map2base_link.transform.translation.z
+            mavros_pose_msg.pose.orientation.x = tf_map2base_link.transform.rotation.x
+            mavros_pose_msg.pose.orientation.y = tf_map2base_link.transform.rotation.y
+            mavros_pose_msg.pose.orientation.z = tf_map2base_link.transform.rotation.z
+            mavros_pose_msg.pose.orientation.w = tf_map2base_link.transform.rotation.w
             rospy.loginfo_once("tf published :)")
-            mavros_pose_msg = tf2_geometry_msgs.do_transform_pose(lidar_pose_msg, tf_os_sensor2base_link)
+            
             #publish
             self.mavros_pose_pub.publish(mavros_pose_msg)        
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
