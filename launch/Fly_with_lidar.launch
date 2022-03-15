@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <launch> 
-<rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
+
   <!-- MAVROS -->
 
   <arg name="fcu_url" default="/dev/ttyTHS2:921600" />
@@ -19,6 +19,8 @@
     <arg name="tgt_component" value="$(arg tgt_component)" />
     <arg name="log_output" value="$(arg log_output)" />
   </include>
+
+<rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
 
   <!-- LIDAR -->
   <arg name="sensor_hostname" default="10.5.5.86" />

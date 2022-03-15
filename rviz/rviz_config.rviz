@@ -11,6 +11,7 @@ Panels:
         - /Path1
         - /Path2
         - /Pose2
+        - /PointCloud21
         - /PointCloud21/Status1
       Splitter Ratio: 0.5
     Tree Height: 877
@@ -102,23 +103,13 @@ Visualization Manager:
           camera_init:
             aft_mapped:
               {}
-          map_ned:
-            {}
-          odom:
-            odom_ned:
-              {}
             os_sensor:
-              base_link:
-                base_link_frd:
-                  {}
-                manipulator:
-                  platform:
-                    tooltip:
-                      {}
               os_imu:
                 {}
               os_lidar:
                 {}
+          map_ned:
+            {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -373,7 +364,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /velodyne_cloud_registered
+      Topic: /os_cloud_node/points_stamped
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -406,7 +397,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 14.154945373535156
+      Distance: 15.596480369567871
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -422,9 +413,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0797970294952393
+      Pitch: 0.8047970533370972
       Target Frame: <Fixed Frame>
-      Yaw: 2.5886223316192627
+      Yaw: 4.513632774353027
     Saved: ~
 Window Geometry:
   Displays:
