@@ -6,7 +6,7 @@ from sensor_msgs.msg import PointCloud2
 class Converter:
     def __init__(self):   
         #Publish pose
-        self.mavros_pose_pub= rospy.Publisher('/os_cloud_node/points_stamped', PointCloud2, queue_size=1, tcp_nodelay=True)
+        self.lidar_pose_pub= rospy.Publisher('/os_cloud_node/points_stamped', PointCloud2, queue_size=1, tcp_nodelay=True)
         
         #Subscribe to transform
         self.lidar_pose_sub = rospy.Subscriber('/os_cloud_node/points', PointCloud2, self.callback, tcp_nodelay=True)
