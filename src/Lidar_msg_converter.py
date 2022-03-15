@@ -46,14 +46,14 @@ class Converter:
   
         # br.sendTransform([tf_odom2os_sensor])
         # lidar_odom_msg = Odometry()
-        lidar_tf_msg = TransformStamped()
-        lidar_tf_msg.header = lidar_odom_msg.header
-        lidar_tf_msg.child_frame_id = lidar_odom_msg.child_frame_id
-        lidar_tf_msg.transform.translation = lidar_odom_msg.pose.pose.position
-        lidar_tf_msg.transform.rotation = lidar_odom_msg.pose.pose.orientation
+        # lidar_tf_msg = TransformStamped()
+        # lidar_tf_msg.header = lidar_odom_msg.header
+        # lidar_tf_msg.child_frame_id = lidar_odom_msg.child_frame_id
+        # lidar_tf_msg.transform.translation = lidar_odom_msg.pose.pose.position
+        # lidar_tf_msg.transform.rotation = lidar_odom_msg.pose.pose.orientation
 
-        br = tf2_ros.TransformBroadcaster()
-        br.sendTransform([lidar_tf_msg])
+        # br = tf2_ros.TransformBroadcaster()
+        # br.sendTransform([lidar_tf_msg])
 
         try:
             tf_map2base_link = self.tfBuffer.lookup_transform('map', 'base_link', rospy.Time())
