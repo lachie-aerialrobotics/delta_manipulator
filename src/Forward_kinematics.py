@@ -63,7 +63,7 @@ class Controller:
         if solve == True:
             tip_pos_msg = PointStamped()
             tip_pos_msg.header.frame_id = "manipulator"
-            tip_pos_msg.header.stamp = rospy.Time.now()
+            tip_pos_msg.header.stamp = self.servo_sp_msg.header.stamp
             tip_pos_msg.point.x = x
             tip_pos_msg.point.y = y
             tip_pos_msg.point.z = z
@@ -72,7 +72,7 @@ class Controller:
             #broadcast tranform between platform and manipulator
             br_base2platform = tf2_ros.TransformBroadcaster()
             tf_base2platform = TransformStamped()
-            tf_base2platform.header.stamp = rospy.Time.now()
+            tf_base2platform.header.stamp = self.servo_sp_msg.header.stamp
             tf_base2platform.header.frame_id = "manipulator"
             tf_base2platform.child_frame_id = "platform"
             tf_base2platform.transform.translation.x = tip_pos_msg.point.x
@@ -217,7 +217,7 @@ class Controller:
 
         baseJoint1PointMsg = PointStamped()
         baseJoint1PointMsg.header.frame_id = "manipulator"
-        baseJoint1PointMsg.header.stamp = rospy.Time.now()
+        baseJoint1PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         baseJoint1PointMsg.point.x = Bx1
         baseJoint1PointMsg.point.y = By1
         baseJoint1PointMsg.point.z = Bz1
@@ -225,7 +225,7 @@ class Controller:
 
         baseJoint2PointMsg = PointStamped()
         baseJoint2PointMsg.header.frame_id = "manipulator"
-        baseJoint2PointMsg.header.stamp = rospy.Time.now()
+        baseJoint2PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         baseJoint2PointMsg.point.x = Bx2
         baseJoint2PointMsg.point.y = By2
         baseJoint2PointMsg.point.z = Bz2
@@ -233,7 +233,7 @@ class Controller:
 
         baseJoint3PointMsg = PointStamped()
         baseJoint3PointMsg.header.frame_id = "manipulator"
-        baseJoint3PointMsg.header.stamp = rospy.Time.now()
+        baseJoint3PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         baseJoint3PointMsg.point.x = Bx3
         baseJoint3PointMsg.point.y = By3
         baseJoint3PointMsg.point.z = Bz3
@@ -254,7 +254,7 @@ class Controller:
         
         elbowJoint1PointMsg = PointStamped()
         elbowJoint1PointMsg.header.frame_id = "manipulator"
-        elbowJoint1PointMsg.header.stamp = rospy.Time.now()
+        elbowJoint1PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         elbowJoint1PointMsg.point.x = Ex1
         elbowJoint1PointMsg.point.y = Ey1
         elbowJoint1PointMsg.point.z = Ez1
@@ -262,7 +262,7 @@ class Controller:
 
         elbowJoint2PointMsg = PointStamped()
         elbowJoint2PointMsg.header.frame_id = "manipulator"
-        elbowJoint2PointMsg.header.stamp = rospy.Time.now()
+        elbowJoint2PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         elbowJoint2PointMsg.point.x = Ex2
         elbowJoint2PointMsg.point.y = Ey2
         elbowJoint2PointMsg.point.z = Ez2
@@ -270,7 +270,7 @@ class Controller:
 
         elbowJoint3PointMsg = PointStamped()
         elbowJoint3PointMsg.header.frame_id = "manipulator"
-        elbowJoint3PointMsg.header.stamp = rospy.Time.now()
+        elbowJoint3PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         elbowJoint3PointMsg.point.x = Ex3
         elbowJoint3PointMsg.point.y = Ey3
         elbowJoint3PointMsg.point.z = Ez3
@@ -291,7 +291,7 @@ class Controller:
 
         platJoint1PointMsg = PointStamped()
         platJoint1PointMsg.header.frame_id = "manipulator"
-        platJoint1PointMsg.header.stamp = rospy.Time.now()
+        platJoint1PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         platJoint1PointMsg.point.x = Px1
         platJoint1PointMsg.point.y = Py1
         platJoint1PointMsg.point.z = Pz1
@@ -299,7 +299,7 @@ class Controller:
 
         platJoint2PointMsg = PointStamped()
         platJoint2PointMsg.header.frame_id = "manipulator"
-        platJoint2PointMsg.header.stamp = rospy.Time.now()
+        platJoint2PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         platJoint2PointMsg.point.x = Px2
         platJoint2PointMsg.point.y = Py2
         platJoint2PointMsg.point.z = Pz2
@@ -307,7 +307,7 @@ class Controller:
 
         platJoint3PointMsg = PointStamped()
         platJoint3PointMsg.header.frame_id = "manipulator"
-        platJoint3PointMsg.header.stamp = rospy.Time.now()
+        platJoint3PointMsg.header.stamp = self.servo_sp_msg.header.stamp
         platJoint3PointMsg.point.x = Px3
         platJoint3PointMsg.point.y = Py3
         platJoint3PointMsg.point.z = Pz3

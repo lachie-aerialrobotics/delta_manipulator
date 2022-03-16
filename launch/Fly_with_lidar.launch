@@ -25,11 +25,11 @@
   <!-- LIDAR -->
   <arg name="sensor_hostname" default="10.5.5.86" />
   <arg name="metadata" default="/home/jetson02/lidar_metadata/ouster_data.json" />
-  <!-- <arg name="lidar_mode" default="512x20" /> -->
+  <arg name="lidar_mode" default="512x20" />
   <include file="$(find ouster_ros)/ouster.launch">
     <arg name="sensor_hostname" value="$(arg sensor_hostname)" />
     <arg name="metadata" value="$(arg metadata)" />
-    <!-- <arg name="lidar_mode" value="$(arg lidar_mode)" /> -->
+    <arg name="lidar_mode" value="$(arg lidar_mode)" />
   </include>
 
  
@@ -46,7 +46,7 @@
   <include file="$(find mocap_vicon)/launch/vicon.launch" />
   <rosparam file="$(find delta_manipulator)/cfg/Kumar_vicon_config.yaml" />
   <!-- <node name="Kumar_msg_converter" pkg="delta_manipulator" type="Kumar_msg_converter.py" required="true" output="screen"/> -->
-  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="transform_mocap2map" args="0 0 0 0 0 0 1 mocap map" /> -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_mocap2map" args="0 0 0 0 0 0 1 mocap map" />
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 hexacopter base_link" /> -->
 
 
