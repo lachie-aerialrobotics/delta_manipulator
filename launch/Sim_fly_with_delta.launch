@@ -2,10 +2,21 @@
 <!-- Simulated Hex+delta arm -->
 <launch>
 
-  <include file="$(find px4)/launch/mavros_posix_sitl.launch" />
+  <include file="$(find px4)/launch/mavros_posix_sitl_hex.launch" />
 
   <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
   <rosparam file="$(find delta_manipulator)/cfg/Sim_config.yaml" />
+
+    <!-- LIDAR -->
+  <include file="$(find aloam_velodyne)/launch/aloam_velodyne_OS1-64.launch"/>
+  <!-- <include file="$(find robot_localization)/launch/ukf_ouster_imu.launch"/> -->
+  <!-- <include file="$(find lio_sam)/launch/run.launch"/> -->
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2world" args="0 0 0 0 0 0 1 map world" />
+  
+  <node name="Lidar_msg_stamper" pkg="delta_manipulator" type="lidar_stamper.py" required="true" output="screen"/>
+  <node name="Lidar_msg_converter" pkg="delta_manipulator" type="Lidar_msg_converter.py" required="true" output="screen"/>
+
  
   <!-- <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/> -->
   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>

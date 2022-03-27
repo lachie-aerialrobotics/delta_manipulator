@@ -82,15 +82,13 @@ Visualization Manager:
           Value: false
         odom_ned:
           Value: false
-        os_imu:
-          Value: false
-        os_lidar:
-          Value: false
         os_sensor:
           Value: true
         platform:
           Value: false
         tooltip:
+          Value: true
+        world:
           Value: true
       Marker Alpha: 1
       Marker Scale: 1
@@ -100,15 +98,18 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
+          base_link:
+            base_link_frd:
+              {}
+            manipulator:
+              {}
           camera_init:
             aft_mapped:
-              {}
-            os_sensor:
-              os_imu:
-                {}
-              os_lidar:
+              os_sensor:
                 {}
           map_ned:
+            {}
+          world:
             {}
       Update Interval: 0
       Value: true
@@ -344,14 +345,14 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
+        Max Value: -0.13677483797073364
+        Min Value: -0.2831961214542389
         Value: true
       Axis: Z
       Channel Name: intensity
       Class: rviz/PointCloud2
       Color: 255; 255; 255
-      Color Transformer: Intensity
+      Color Transformer: AxisColor
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
@@ -397,7 +398,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 15.596480369567871
+      Distance: 8.771364212036133
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -413,9 +414,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8047970533370972
+      Pitch: 0.2847972810268402
       Target Frame: <Fixed Frame>
-      Yaw: 4.513632774353027
+      Yaw: 3.8936283588409424
     Saved: ~
 Window Geometry:
   Displays:
