@@ -13,6 +13,8 @@ Panels:
         - /Pose2
         - /PointCloud21
         - /PointCloud21/Status1
+        - /RobotModel1
+        - /RobotModel1/Status1
       Splitter Ratio: 0.5
     Tree Height: 877
   - Class: rviz/Selection
@@ -33,7 +35,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -65,7 +67,7 @@ Visualization Manager:
       Frames:
         All Enabled: false
         aft_mapped:
-          Value: false
+          Value: true
         base_link:
           Value: true
         base_link_frd:
@@ -88,8 +90,6 @@ Visualization Manager:
           Value: false
         tooltip:
           Value: true
-        world:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -98,18 +98,9 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          base_link:
-            base_link_frd:
-              {}
-            manipulator:
-              {}
           camera_init:
-            aft_mapped:
-              os_sensor:
-                {}
-          map_ned:
             {}
-          world:
+          map_ned:
             {}
       Update Interval: 0
       Value: true
@@ -370,6 +361,22 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: ""
+      Name: RobotModel
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -398,7 +405,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.771364212036133
+      Distance: 6.74962854385376
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -414,9 +421,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2847972810268402
+      Pitch: 0.06979717314243317
       Target Frame: <Fixed Frame>
-      Yaw: 3.8936283588409424
+      Yaw: 4.373628616333008
     Saved: ~
 Window Geometry:
   Displays:

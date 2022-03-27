@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<robot name="Hex">
+    <link name='base_link'>    
+      <visual>
+        <geometry>
+          <mesh filename="package://delta_manipulator/rviz/meshes/Hex_noDelta.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="1.570796 0 0" xyz="-0.69 0.65 -0.25"/>
+      </visual>
+    </link>
+</robot>
+            <!-- <cylinder length="0.6" radius="0.2"/> -->

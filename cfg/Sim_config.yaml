@@ -4,4 +4,4 @@ use_sim_time: true
 
 mavros:
   conn/timesync_rate:                                 0.0
-  local_position/tf/send:                             true
+  local_position/tf/send:                             false
