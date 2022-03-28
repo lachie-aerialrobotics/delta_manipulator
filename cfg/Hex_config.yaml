@@ -20,7 +20,7 @@ manipulator:
   lidar_offset_z:             0.04
 
 #uav geometry parameters (in fcu coordinate frame):
-  tooltip/tip_init_x:         0.4             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_x:         0.45             #initial x offset of delta tip from base in [m]
   tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
   tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
