@@ -6,4 +6,4 @@
     publish_tf:                                         false
 
   mavros:
-    local_position/tf/send:                             true
+    local_position/tf/send:                             false
