@@ -35,7 +35,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -80,10 +80,16 @@ Visualization Manager:
           Value: true
         map_ned:
           Value: false
+        mocap:
+          Value: true
         odom:
           Value: false
         odom_ned:
           Value: false
+        os_imu:
+          Value: true
+        os_lidar:
+          Value: true
         os_sensor:
           Value: true
         platform:
@@ -97,11 +103,22 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          camera_init:
-            {}
-          map_ned:
-            {}
+        mocap:
+          map:
+            camera_init:
+              aft_mapped:
+                os_sensor:
+                  base_link:
+                    base_link_frd:
+                      {}
+                    manipulator:
+                      {}
+                  os_imu:
+                    {}
+                  os_lidar:
+                    {}
+            map_ned:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -336,8 +353,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: -0.13677483797073364
-        Min Value: -0.2831961214542389
+        Max Value: 5.807446002960205
+        Min Value: -2.069962739944458
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -345,7 +362,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -360,7 +377,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -371,6 +388,11 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: ""
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -405,7 +427,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.74962854385376
+      Distance: 6.421122074127197
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -421,9 +443,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.06979717314243317
+      Pitch: 0.22479583323001862
       Target Frame: <Fixed Frame>
-      Yaw: 4.373628616333008
+      Yaw: 3.0586376190185547
     Saved: ~
 Window Geometry:
   Displays:
