@@ -4,7 +4,6 @@
   <include file="$(find px4)/launch/mavros_posix_sitl_hex.launch" />
   <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
   <rosparam file="$(find delta_manipulator)/cfg/Sim_config.yaml" />
-  <param name="robot_description" textfile="$(find delta_manipulator)/rviz/Hex.urdf" />
 
     <!-- LIDAR -->
   <include file="$(find aloam_velodyne)/launch/aloam_velodyne_OS1-64.launch"/>
