@@ -192,6 +192,38 @@ def current_ping(servo_current_sub):
     # Clear bulkwrite parameter storage
     groupBulkWrite.clearParam()
 
+def velocity_ff_ping():
+    dxl_velocity_ff_1 = 0
+    dxl_velocity_ff_2 = 0
+    dxl_velocity_ff_3 = 0
+
+    param_velocity_ff_1 = [DXL_LOBYTE(dxl_velocity_ff_1), DXL_HIBYTE(dxl_velocity_ff_1)] 
+    param_velocity_ff_2 = [DXL_LOBYTE(dxl_velocity_ff_2), DXL_HIBYTE(dxl_velocity_ff_2)] 
+    param_velocity_ff_3 = [DXL_LOBYTE(dxl_velocity_ff_3), DXL_HIBYTE(dxl_velocity_ff_3)] 
+    # Add Dynamixel#1 goal current value to the Bulkwrite parameter storage
+    dxl_addparam_result = groupBulkWrite.addParam(DXL1_ID, ADDR_PRO_FEEDFORWARD_FIRST_GAIN, LEN_PRO_FEEDFORWARD_FIRST_GAIN, param_velocity_ff_1)
+    if dxl_addparam_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkWrite addparam feedforward 1st gain failed" % DXL1_ID)
+
+    # Add Dynamixel#2 goal current value to the Bulkwrite parameter storage
+    dxl_addparam_result = groupBulkWrite.addParam(DXL2_ID, ADDR_PRO_FEEDFORWARD_FIRST_GAIN, LEN_PRO_FEEDFORWARD_FIRST_GAIN, param_velocity_ff_2)
+    if dxl_addparam_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkWrite addparam feedforward 1st gain failed" % DXL2_ID)
+
+    # Add Dynamixel#3 goal current value to the Bulkwrite parameter storage
+    dxl_addparam_result = groupBulkWrite.addParam(DXL3_ID, ADDR_PRO_FEEDFORWARD_FIRST_GAIN, LEN_PRO_FEEDFORWARD_FIRST_GAIN, param_velocity_ff_3)
+    if dxl_addparam_result != True:
+        rospy.loginfo("[ID:%03d] groupBulkWrite addparam feedforward 1st gain failed" % DXL3_ID)
+
+    # Bulkwrite goal position and LED value
+    dxl_comm_result = groupBulkWrite.txPacket()
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+
+    # Clear bulkwrite parameter storage
+    groupBulkWrite.clearParam()
+
+
 def publish_positions():
     # GROUPBULKREAD is too slow to run at 100Hz (max seems to be about 60Hz). Possiby due to U2D2.
     # Bulkread present position
@@ -369,6 +401,7 @@ class cfg:
     posP = 800
     posI = 0
     posD = 0
+    sendFeedforwards = False
 
 def config_callback(config,level):  
     rospy.set_param("/manipulator/servo/read_positions", config.readPositions)
@@ -391,6 +424,8 @@ def config_callback(config,level):
         cfg.posD = config.posD
         cfg.set_gains = True
 
+    cfg.sendFeedforwards = config.sendFeedforwards
+
     return config
 
 def callback(event):
@@ -406,6 +441,9 @@ def callback(event):
         set_gains(cfg.posP, cfg.posI, cfg.posD)
         cfg.set_gains = False
 
+    if cfg.sendFeedforwards == True:
+        velocity_ff_ping(s.vel_ff)
+        
     position_ping(s.pos)
 
     if cfg.servo_mode == 1:
@@ -428,12 +466,14 @@ if __name__ == '__main__':
     ADDR_PRO_POSITION_P_GAIN    = 78
     ADDR_PRO_POSITION_I_GAIN    = 76
     ADDR_PRO_POSITION_D_GAIN    = 80
+    ADDR_PRO_FEEDFORWARD_FIRST_GAIN = 90
 
     # Data Byte Length
     LEN_PRO_LED_RED             = 1
     LEN_PRO_GOAL_POSITION       = 4
     LEN_PRO_PRESENT_POSITION    = 4
     LEN_PRO_GOAL_CURRENT        = 2
+    LEN_PRO_FEEDFORWARD_FIRST_GAIN = 2
 
     # Protocol version
     PROTOCOL_VERSION            = 2.0               # See which protocol version is used in the Dynamixel
