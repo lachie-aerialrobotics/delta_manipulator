@@ -442,7 +442,7 @@ def callback(event):
         cfg.set_gains = False
 
     if cfg.sendFeedforwards == True:
-        velocity_ff_ping(s.vel_ff)
+        velocity_ff_ping()
         
     position_ping(s.pos)
 
