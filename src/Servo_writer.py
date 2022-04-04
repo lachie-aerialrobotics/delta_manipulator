@@ -55,7 +55,7 @@ def Initialise():
     else:
         rospy.loginfo("Failed to change the baudrate")
 
-        # Enable Dynamixel#1 Torque
+    # Enable Dynamixel#1 Torque
     dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
     if dxl_comm_result != COMM_SUCCESS:
         rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
@@ -280,6 +280,119 @@ def set_mode(mode):
     else:
         rospy.loginfo("Dynamixel#%d mode has been successfully changed" % DXL3_ID)
 
+def set_gains(P,I,D):
+    rospy.loginfo("SETTING PID GAINS...")
+
+    # Change Dynamixel#1 Mode
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_POSITION_P_GAIN, P)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position P gain has been successfully changed" % DXL1_ID)
+
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_POSITION_I_GAIN, I)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position I gain has been successfully changed" % DXL1_ID)
+    
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL1_ID, ADDR_PRO_POSITION_D_GAIN, D)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position D gain has been successfully changed" % DXL1_ID)
+
+    #Change Dynamixel #2 Mode
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_POSITION_P_GAIN, P)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position P gain has been successfully changed" % DXL2_ID)
+
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_POSITION_I_GAIN, I)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position I gain has been successfully changed" % DXL2_ID)
+    
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL2_ID, ADDR_PRO_POSITION_D_GAIN, D)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position D gain has been successfully changed" % DXL2_ID)
+
+    #Change Dynamixel #3 Mode
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_POSITION_P_GAIN, P)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position P gain has been successfully changed" % DXL3_ID)
+
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_POSITION_I_GAIN, I)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position I gain has been successfully changed" % DXL3_ID)
+    
+    dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL3_ID, ADDR_PRO_POSITION_D_GAIN, D)
+    if dxl_comm_result != COMM_SUCCESS:
+        rospy.loginfo("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    elif dxl_error != 0:
+        rospy.loginfo("%s" % packetHandler.getRxPacketError(dxl_error))
+    else:
+        rospy.loginfo("Dynamixel#%d position D gain has been successfully changed" % DXL3_ID)
+
+
+
+class cfg:
+    rate = 100
+    readPositions = False
+    servo_mode = 0
+    set_mode = True
+    set_gains = True
+    posP = 800.0
+    posI = 0.0
+    posD = 0.0
+
+def config_callback(config,level):  
+    rospy.set_param("/manipulator/servo/read_positions", config.readPositions)
+    if cfg.readPositions != config.readPositions:
+        cfg.readPositions = config.readPositions
+        if cfg.readPositions == True:
+            rospy.loginfo("READING SERVO POSITIONS ENABLED: Servo communication rate capped to 60Hz because reading is slow")
+            cfg.rate = 60
+        elif cfg.readPositions == False:
+            rospy.loginfo("READING SERVO POSITIONS DISABLED: Servo communication rate is default")
+            cfg.rate = rospy.get_param('/rate')
+
+    if cfg.servo_mode != config.servo_mode: 
+        cfg.servo_mode = config.servo_mode
+        cfg.set_mode = True
+
+    if (cfg.posP != config.posP) or (cfg.posI != config.posI) or (cfg.posD != config.posD):
+        cfg.posP = config.posP
+        cfg.posI = config.posI
+        cfg.posD = config.posD
+        cfg.set_gains = True
+
+    return config
+
 def callback(event):
     if cfg.set_mode == True:
         set_torque(TORQUE_DISABLE)
@@ -288,6 +401,10 @@ def callback(event):
         cfg.set_mode = False
         if cfg.servo_mode == 1:
             current_ping(s.cur)
+
+    if cfg.set_gains == True:
+        set_gains(cfg.posP, cfg.posI, cfg.posD)
+        cfg.set_gains = False
 
     position_ping(s.pos)
 
@@ -299,29 +416,7 @@ def callback(event):
     if cfg.readPositions == True:
         publish_positions()
 
-class cfg:
-    rate = 100
-    readPositions = False
-    servo_mode = 0
-    set_mode = True
 
-def config_callback(config,level):  
-    rospy.set_param("/manipulator/servo/read_positions", config.readPositions)
-    if cfg.readPositions != config.readPositions:
-        cfg.readPositions = config.readPositions
-        if cfg.readPositions == True:
-            rospy.loginfo("READING SERVO POSITIONS ENABLED: Servo communication rate capped to 60Hz because reading is hard")
-            cfg.rate = 60
-        elif cfg.readPositions == False:
-            rospy.loginfo("READING SERVO POSITIONS DISABLED: Servo communication rate is default")
-            cfg.rate = rospy.get_param('/rate')
-
-    if cfg.servo_mode != config.servo_mode: 
-        cfg.servo_mode = config.servo_mode
-        cfg.set_mode = True
-
-    return config
-       
 if __name__ == '__main__':
     # Control table address
     ADDR_PRO_TORQUE_ENABLE      = 64               # Control table address is different in Dynamixel model
@@ -330,6 +425,9 @@ if __name__ == '__main__':
     ADDR_PRO_PRESENT_POSITION   = 132
     ADDR_PRO_GOAL_CURRENT       = 102
     ADDR_PRO_OPERATING_MODE     = 11
+    ADDR_PRO_POSITION_P_GAIN    = 78
+    ADDR_PRO_POSITION_I_GAIN    = 76
+    ADDR_PRO_POSITION_D_GAIN    = 80
 
     # Data Byte Length
     LEN_PRO_LED_RED             = 1
