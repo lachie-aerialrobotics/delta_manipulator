@@ -366,9 +366,9 @@ class cfg:
     servo_mode = 0
     set_mode = True
     set_gains = True
-    posP = 800.0
-    posI = 0.0
-    posD = 0.0
+    posP = 800
+    posI = 0
+    posD = 0
 
 def config_callback(config,level):  
     rospy.set_param("/manipulator/servo/read_positions", config.readPositions)
