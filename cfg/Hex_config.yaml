@@ -6,21 +6,23 @@ retract:                      true
 #manipulator geometry parameters:
 manipulator:
   geometry/nozzle:            0.00            #length of appendage from delta platform in [m]
-  geometry/drone2base_x:      0.33            #offset of base of delta from CoM of drone in [m]
-  geometry/drone2base_z:      0.08            #offset of base of delta from CoM of drone in [m]
+  geometry/drone2base_x:      0.3414            #offset of base of delta from CoM of drone in [m]
+  geometry/drone2base_z:      0.078            #offset of base of delta from CoM of drone in [m]
   geometry/base_roll:         0.0
   geometry/base_pitch:        90.0            #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
   geometry/base_yaw:          -90.0
-  geometry/sp:                0.06            #size of platform (see kinematics paper) in [m]
-  geometry/sb:                0.34            #size of base (see kinematics paper) in [m]
+  geometry/sp:                0.0676305            #size of platform (see kinematics paper) in [m]
+  geometry/sb:                0.47198            #size of base (see kinematics paper) in [m]
+  # geometry/sp:                0.06            #size of platform (see kinematics paper) in [m]
+  # geometry/sb:                0.34            #size of base (see kinematics paper) in [m]
   geometry/l:                 0.47            #distal joint length in [m]
-  geometry/L:                 0.12            #proximal joint length in [m]
-  lidar_offset_x:             0.14             #lidar offset relative to lidar [m]
+  geometry/L:                 0.18            #proximal joint length in [m]
+  lidar_offset_x:             0.13732             #lidar offset relative to lidar [m]
   lidar_offset_y:             0.0
-  lidar_offset_z:             0.04
+  lidar_offset_z:             0.069
 
 #uav geometry parameters (in fcu coordinate frame):
-  tooltip/tip_init_x:         0.45             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_x:         0.5             #initial x offset of delta tip from base in [m]
   tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
   tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
