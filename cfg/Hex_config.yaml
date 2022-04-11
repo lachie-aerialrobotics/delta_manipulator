@@ -22,12 +22,12 @@ manipulator:
   lidar_offset_z:             0.069
 
 #uav geometry parameters (in fcu coordinate frame):
-  tooltip/tip_init_x:         0.5             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_x:         0.45             #initial x offset of delta tip from base in [m]
   tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
   tooltip/tip_init_z:         0.0             #initial z offset of delta tip from base in [m]
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/tip_retracted_y:    0.0             #y offset of delta tip from base when retracted in [m] (manipulator coordinates)
-  tooltip/tip_retracted_z:    -0.5            #z offset of delta tip from base when retracted in [m] (manipulator coordinates)
+  tooltip/tip_retracted_z:    -0.45            #z offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/v_max:              0.0             #init value
 
 #dynamixel servo parameters
