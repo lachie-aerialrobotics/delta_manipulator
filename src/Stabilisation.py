@@ -106,7 +106,7 @@ class Controller:
         #broadcast tranform between platform and manipulator
         br_base2platform = tf2_ros.TransformBroadcaster()
         tf_base2platform = TransformStamped()
-        tf_base2platform.header.stamp = self.servo_sp_msg.header.stamp
+        tf_base2platform.header.stamp = rospy.Time.now()
         tf_base2platform.header.frame_id = "manipulator"
         tf_base2platform.child_frame_id = "platform"
         tf_base2platform.transform.translation.x = self.p_base2plat[0]
