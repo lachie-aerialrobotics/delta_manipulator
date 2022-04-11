@@ -162,8 +162,8 @@ class Setpoint:
             self.p[1] = self.y_max_neg
         if self.p[2] > self.z_max:
             self.p[2] = self.z_max
-        if self.p[2] < 0.0:
-            self.p[2] = 0.0
+        if self.p[2] < self.z_min:
+            self.p[2] = self.z_min
 
     def check_traj_changed(self):
         if self.path_msg.header.seq != self.traj_msg_seq:
@@ -269,6 +269,7 @@ def config_callback(config, level):
     Setpoint.y_max_pos = config.y_max_pos
     Setpoint.y_max_neg = config.y_max_neg
     Setpoint.z_max = config.z_max
+    Setpoint.z_min = -0.5
     return config
 
 if __name__ == '__main__': #initialise node
