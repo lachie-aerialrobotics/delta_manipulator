@@ -103,6 +103,21 @@ class Controller:
         pos_msg.point.z = self.p_base2plat[2]
         self.pub_tip_pos.publish(pos_msg) 
 
+        #broadcast tranform between platform and manipulator
+        br_base2platform = tf2_ros.TransformBroadcaster()
+        tf_base2platform = TransformStamped()
+        tf_base2platform.header.stamp = self.servo_sp_msg.header.stamp
+        tf_base2platform.header.frame_id = "manipulator"
+        tf_base2platform.child_frame_id = "platform"
+        tf_base2platform.transform.translation.x = self.p_base2plat[0]
+        tf_base2platform.transform.translation.y = self.p_base2plat[1]
+        tf_base2platform.transform.translation.z = self.p_base2plat[2]
+        tf_base2platform.transform.rotation.x = 0.0
+        tf_base2platform.transform.rotation.y = 0.0
+        tf_base2platform.transform.rotation.z = 0.0
+        tf_base2platform.transform.rotation.w = 1.0
+        br_base2platform.sendTransform(tf_base2platform)
+
     def speed_limiter(self, p, p_sp):
         p_diff = p_sp - p
         p_diff_norm = np.linalg.norm(p_diff)

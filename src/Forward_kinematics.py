@@ -82,7 +82,7 @@ class Controller:
             tf_base2platform.transform.rotation.y = 0.0
             tf_base2platform.transform.rotation.z = 0.0
             tf_base2platform.transform.rotation.w = 1.0
-            br_base2platform.sendTransform(tf_base2platform)
+            # br_base2platform.sendTransform(tf_base2platform)
 
             self.publish_joint_locations(thetb1, thetb2, thetb3, x, y, z)
 
