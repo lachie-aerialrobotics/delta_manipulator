@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!-- Launch file for running the delta-arm only !-->
 <launch>
-  <rosparam file="$(find delta_manipulator)/cfg/Balanced_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Zagreb_config.yaml" />
 
   <rosparam>
     rate: 100
