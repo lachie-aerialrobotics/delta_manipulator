@@ -9,8 +9,11 @@ from delta_manipulator.cfg import ExtruderConfig
 def config_callback(config, level): 
     rospy.loginfo("Updating extruder command")
 
-    resistance_msg = config.resistance
-    motor_msg = config.isMotorOn
+    resistance_msg = UInt16()
+    motor_msg = Bool()
+
+    resistance_msg.data = config.resistance
+    motor_msg.data = config.isMotorOn
 
     resistance_pub.publish(resistance_msg)
     motor_pub.publish(motor_msg)
