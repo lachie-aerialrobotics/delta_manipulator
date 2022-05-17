@@ -30,7 +30,7 @@
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2mocap" args="0 0 0 0 0 0 1 map mocap" />
   <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 hexacopter base_link" />
 
-  <rosparam file="$(find delta_manipulator)/cfg/Balanced_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Zagreb_config.yaml" />
  
   <!-- <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/> -->
   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
