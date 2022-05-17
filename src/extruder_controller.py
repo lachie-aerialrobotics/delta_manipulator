@@ -22,7 +22,7 @@ def config_callback(config, level):
 
 if __name__ == '__main__': #initialise node
     rospy.init_node('extruder_controller', anonymous=True)
-    resistance_pub = rospy.Publisher('/resistance', int, queue_size=1, tcp_nodelay=True)
-    motor_pub = rospy.Publisher('/motor_on', bool, queue_size=1, tcp_nodelay=True)
+    resistance_pub = rospy.Publisher('/resistance', UInt16, queue_size=1, tcp_nodelay=True)
+    motor_pub = rospy.Publisher('/motor_on', Bool, queue_size=1, tcp_nodelay=True)
     srv = Server(ExtruderConfig, config_callback)
     rospy.spin()
