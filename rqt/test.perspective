@@ -9,9 +9,9 @@
           "pretty-print": "           =   ]   =        ]   ="
         },
         "state": {
-          "repr(QByteArray.hex)": "QtCore.QByteArray(b'000000ff00000000fd000000010000000300000e7000000593fc0100000004fb0000004c007200710074005f0074006f007000690063005f005f0054006f0070006900630050006c007500670069006e005f005f0031005f005f0054006f007000690063005700690064006700650074010000000000000c1b0000000000000000fc00000000000002ed000002d900fffffffc0200000002fb0000006c007200710074005f007200650063006f006e006600690067007500720065005f005f0050006100720061006d005f005f0031005f005f005f0070006c007500670069006e0063006f006e007400610069006e00650072005f0074006f0070005f00770069006400670065007401000000270000043a0000012000fffffffb0000004c007200710074005f00740066005f0074007200650065005f005f0052006f0073005400660054007200650065005f005f0031005f005f0052006f007300540066005400720065006500550069010000046d0000014d0000010c00fffffffb00000026007200710074005f007200760069007a005f005f005200560069007a005f005f0031005f005f01000002f90000069d0000057100fffffffb00000042007200710074005f0070006c006f0074005f005f0050006c006f0074005f005f0031005f005f00440061007400610050006c006f007400570069006400670065007401000009a2000004ce0000020800ffffff00000e700000000000000004000000040000000800000008fc00000001000000030000000100000036004d0069006e0069006d0069007a006500640044006f0063006b00570069006400670065007400730054006f006f006c0062006100720000000000ffffffff0000000000000000')",
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'000000ff00000000fd000000010000000300000e7000000593fc0100000004fb0000004c007200710074005f0074006f007000690063005f005f0054006f0070006900630050006c007500670069006e005f005f0031005f005f0054006f007000690063005700690064006700650074010000000000000c1b0000000000000000fc000000000000037f000002d900fffffffc0200000002fb0000006c007200710074005f007200650063006f006e006600690067007500720065005f005f0050006100720061006d005f005f0031005f005f005f0070006c007500670069006e0063006f006e007400610069006e00650072005f0074006f0070005f00770069006400670065007401000000270000043a0000012000fffffffb0000004c007200710074005f00740066005f0074007200650065005f005f0052006f0073005400660054007200650065005f005f0031005f005f0052006f007300540066005400720065006500550069010000046d0000014d0000010c00fffffffb00000026007200710074005f007200760069007a005f005f005200560069007a005f005f0031005f005f010000038b000005c70000057100fffffffc0000095e000005120000032000fffffffc0200000002fb0000005a007200710074005f0069006d006100670065005f0076006900650077005f005f0049006d0061006700650056006900650077005f005f0031005f005f0049006d00610067006500560069006500770057006900640067006500740100000027000003770000014700fffffffb00000042007200710074005f0070006c006f0074005f005f0050006c006f0074005f005f0031005f005f00440061007400610050006c006f007400570069006400670065007401000003aa00000210000000f600ffffff00000e700000000000000004000000040000000800000008fc00000001000000030000000100000036004d0069006e0069006d0069007a006500640044006f0063006b00570069006400670065007400730054006f006f006c0062006100720000000000ffffffff0000000000000000')",
           "type": "repr(QByteArray.hex)",
-          "pretty-print": "                 Lrqt_topic__TopicPlugin__1__TopicWidget                                                                              ' :                                              m M                               q                                               p                                                      "
+          "pretty-print": "                 Lrqt_topic__TopicPlugin__1__TopicWidget                                                                              ' :                                              m M                               q               Zrqt_image_view__ImageView__1__ImageViewWidget          Brqt_plot__Plot__1__DataPlotWidget                            6MinimizedDockWidgetsToolbar        "
         }
       },
       "groups": {
@@ -29,7 +29,7 @@
     "pluginmanager": {
       "keys": {
         "running-plugins": {
-          "repr": "{'rqt_plot/Plot': [1], 'rqt_reconfigure/Param': [1], 'rqt_rviz/RViz': [1], 'rqt_tf_tree/RosTfTree': [1]}",
+          "repr": "{'rqt_image_view/ImageView': [1], 'rqt_plot/Plot': [1], 'rqt_reconfigure/Param': [1], 'rqt_rviz/RViz': [1], 'rqt_tf_tree/RosTfTree': [1]}",
           "type": "repr"
         }
       },
@@ -121,6 +121,73 @@
             }
           }
         },
+        "plugin__rqt_image_view__ImageView__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__ImageViewWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'Image View'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            },
+            "plugin": {
+              "keys": {
+                "dynamic_range": {
+                  "repr": "False",
+                  "type": "repr"
+                },
+                "max_range": {
+                  "repr": "10.0",
+                  "type": "repr"
+                },
+                "mouse_pub_topic": {
+                  "repr": "'/usb_cam/image_raw/decompressed_mouse_left'",
+                  "type": "repr"
+                },
+                "num_gridlines": {
+                  "repr": "0",
+                  "type": "repr"
+                },
+                "publish_click_location": {
+                  "repr": "False",
+                  "type": "repr"
+                },
+                "rotate": {
+                  "repr": "0",
+                  "type": "repr"
+                },
+                "smooth_image": {
+                  "repr": "False",
+                  "type": "repr"
+                },
+                "toolbar_hidden": {
+                  "repr": "False",
+                  "type": "repr"
+                },
+                "topic": {
+                  "repr": "'/usb_cam/image_raw/decompressed'",
+                  "type": "repr"
+                },
+                "zoom1": {
+                  "repr": "False",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        },
         "plugin__rqt_launch__Launch__1": {
           "keys": {},
           "groups": {
@@ -167,15 +234,15 @@
                   "type": "repr"
                 },
                 "topics": {
-                  "repr": "['/servo/setpoint_angles/theta1', '/servo/setpoint_angles/theta2', '/servo/setpoint_angles/theta3', '/servo/detected_angles/theta1', '/servo/detected_angles/theta2', '/servo/detected_angles/theta3']",
+                  "repr": "['/servo/setpoint_angles/theta1', '/servo/setpoint_angles/theta2', '/servo/setpoint_angles/theta3']",
                   "type": "repr"
                 },
                 "x_limits": {
-                  "repr": "[63.418582916259766, 64.41858291625977]",
+                  "repr": "[-11240114.268704176, -11240113.268704176]",
                   "type": "repr"
                 },
                 "y_limits": {
-                  "repr": "[-0.03832165948275823, 2547.0]",
+                  "repr": "[-0.03832165948275823, 2805.0]",
                   "type": "repr"
                 }
               },
@@ -274,7 +341,7 @@
                   "type": "repr"
                 },
                 "selected_nodes": {
-                  "repr": "['/Stabilizer', '/Servo_writer']",
+                  "repr": "['/Stabilizer']",
                   "type": "repr"
                 },
                 "splitter": {

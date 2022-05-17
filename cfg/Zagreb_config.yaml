@@ -1,0 +1,37 @@
+#config file for Hexacopter with sideways delta_arm
+rate:                         100             #ros rate in [Hz]
+stabilise:                    false           #initial value
+retract:                      true
+
+#manipulator geometry parameters:
+manipulator:
+  geometry/nozzle:            0.0            #length of appendage from delta platform in [m]
+  geometry/drone2base_x:      0.0            #offset of base of delta from CoM of drone in [m]
+  geometry/drone2base_z:      -0.17125            #offset of base of delta from CoM of drone in [m]
+  geometry/base_roll:         0.0
+  geometry/base_pitch:        0.0            #rotation of delta_arm base in pitch direction (0 is down, 90 is forward) in [degrees]
+  geometry/base_yaw:          90.0
+  geometry/sp:                0.0676305            #size of platform (see kinematics paper) in [m]
+  geometry/sb:                0.33082            #size of base (see kinematics paper) in [m]
+  geometry/l:                 0.23824            #distal joint length in [m]
+  geometry/L:                 0.14            #proximal joint length in [m]
+
+#uav geometry parameters (in fcu coordinate frame):
+  tooltip/tip_init_x:         0.0             #initial x offset of delta tip from base in [m]
+  tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
+  tooltip/tip_init_z:         -0.105             #initial z offset of delta tip from base in [m]
+  tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
+  tooltip/tip_retracted_y:    0.0             #y offset of delta tip from base when retracted in [m] (manipulator coordinates)
+  tooltip/tip_retracted_z:    -0.230            #z offset of delta tip from base when retracted in [m] (manipulator coordinates)
+  tooltip/v_max:              0.0             #init value
+
+#dynamixel servo parameters
+  servo/dir1:                                 false           #reverse servo 1 rotation direction?
+  servo/dir2:                                 true            #reverse servo 2 rotation direction?
+  servo/dir3:                                 false           #reverse servo 3 rotation direction?
+  servo/baud_rate:                            3000000
+  servo/port:                                 '/dev/ttyUSB0' 
+  servo/ctrl_table/torque2current_gradient:   -0.98841        #taken from XH540 control table
+  servo/ctrl_table/torque2current_intercept:  -0.0627         #taken from XH540 control table
+  servo/ctrl_table/torque2current_unit:       2.69            #taken from XH540 control table
+  servo/read_positions:                       false                   
