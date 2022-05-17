@@ -50,4 +50,6 @@
     <param name="baud"              type="int"                  value="57600"/>
     </node>
 
+  <node name="Extruder_controller" pkg="delta_manipulator" type="extruder_controller.py" required="true" output="screen"/>
+
 </launch>
