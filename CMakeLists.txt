@@ -58,6 +58,7 @@ generate_dynamic_reconfigure_options(
    cfg/Servo_config.cfg
    cfg/Torque_config.cfg
    cfg/Stabilisation_config.cfg
+   cfg/Extruder_config.cfg
 )
 
 add_message_files(
