@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 import rospy
 import numpy as np
-from std_msgs import int, bool
+from std_msgs.msg import UInt16, Bool
 
 from dynamic_reconfigure.server import Server
 from delta_manipulator.cfg import ExtruderConfig
 
 def config_callback(config, level): 
-    rospy.loginfo("Updating motor command")
+    rospy.loginfo("Updating extruder command")
 
     resistance_msg = config.resistance
     motor_msg = config.isMotorOn
