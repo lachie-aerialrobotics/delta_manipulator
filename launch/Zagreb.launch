@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!-- Simulated Hex+delta arm -->
+<launch>
+  <!-- example launch script for PX4 based FCU's -->
+
+  <arg name="fcu_url" default="/dev/ttyTHS2:921600" />
+  <!-- <arg name="fcu_url" default="/dev/ttyUSB0:921600" /> -->
+  <arg name="gcs_url" default="udp://@192.168.0.192" />
+  <arg name="tgt_system" default="1" />
+  <arg name="tgt_component" default="1" />
+  <arg name="log_output" default="screen" />
+
+  <include file="$(find mavros)/launch/node.launch">
+
+    <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
+    <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+
+    <arg name="fcu_url" value="$(arg fcu_url)" />
+    <arg name="gcs_url" value="$(arg gcs_url)" />
+    <arg name="tgt_system" value="$(arg tgt_system)" />
+    <arg name="tgt_component" value="$(arg tgt_component)" />
+    <arg name="log_output" value="$(arg log_output)" />
+    <!--arg name="fcu_protocol" value="$(arg fcu_protocol)" /-->
+    <!--arg name="respawn_mavros" default="$(arg respawn_mavros)" /-->
+  </include>
+  <!-- <include file="$(find delta_manipulator)/launch/Vicon.launch" /> -->
+  <include file="$(find mocap_vicon)/launch/vicon.launch" />
+  <rosparam file="$(find delta_manipulator)/cfg/Kumar_vicon_config.yaml" />
+  <node name="Kumar_msg_converter" pkg="delta_manipulator" type="Kumar_msg_converter.py" required="true" output="screen"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_map2mocap" args="0 0 0 0 0 0 1 map mocap" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="transform_hex2base_link" args="0 0 0 0 0 0 1 hexacopter base_link" />
+
+  <rosparam file="$(find delta_manipulator)/cfg/Balanced_config.yaml" />
+ 
+  <!-- <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/> -->
+  <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
+  
+  <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
+  <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
+  <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
+  <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
+
+</launch>
