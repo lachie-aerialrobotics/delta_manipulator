@@ -1,7 +1,7 @@
 #Params for vrpn_client
   object_name:                                          "hexacopter"
-  vrpn_server_ip:                                       "192.168.0.100"
-  vrpn_coordinate_system:                               "vicon"
+  vrpn_server_ip:                                       "192.168.1.50"
+  vrpn_coordinate_system:                               "optitrack"
   timestamping_system:                                  "ros"
   verbose:                                              false
 
