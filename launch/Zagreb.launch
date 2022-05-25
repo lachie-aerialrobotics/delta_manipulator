@@ -8,12 +8,11 @@
   <rosparam file="$(find delta_manipulator)/cfg/Zagreb_config.yaml" />
  
   <!-- <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/> -->
-  <!-- <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
-  
+  <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
   <node name="Stabilizer" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
   <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
-  <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/> !-->
+  <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
 
   <!-- EXTRUDER !-->
   <node name="extruder_node"        pkg="rosserial_python"      type="serial_node.py">
