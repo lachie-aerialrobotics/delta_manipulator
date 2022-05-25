@@ -41,8 +41,8 @@ def config_callback(config, level):
         p = shape(a, theta, config.drone_mode)
         p = p + np.asarray([config.x_traj, config.y_traj, config.h_traj]) #shift from origin
 
-        # p_manip = qv_mult(q, shape(a_manip, theta_manip, config.delta_mode) + init_manip) + p
-        p_manip = shape(a_manip, theta_manip, config.delta_mode) + np.asarray([0, 0, config.h_traj_delta])
+        p_manip = qv_mult(q, shape(a_manip, theta_manip, config.delta_mode) + init_manip) + p
+        # p_manip = shape(a_manip, theta_manip, config.delta_mode) + np.asarray([0, 0, config.h_traj_delta])
 
         pose = PoseStamped()
         pose.header.frame_id = path_msg.header.frame_id
