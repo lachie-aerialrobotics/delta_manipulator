@@ -15,11 +15,11 @@
   <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
 
   <!-- EXTRUDER !-->
-  <!-- <node name="extruder_node"        pkg="rosserial_python"      type="serial_node.py">
+  <node name="extruder_node"        pkg="rosserial_python"      type="serial_node.py">
     <param name="port"              type="string"               value="/dev/ttyACM0"/>
     <param name="baud"              type="int"                  value="57600"/>
     </node>
 
-  <node name="Extruder_controller" pkg="delta_manipulator" type="extruder_controller.py" required="true" output="screen"/> -->
+  <node name="Extruder_controller" pkg="delta_manipulator" type="extruder_controller.py" required="true" output="screen"/>
 
 </launch>
