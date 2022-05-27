@@ -1,4 +1,7 @@
 #! /usr/bin/env python
+from audioop import ratecv
+
+from pyrsistent import VT
 import rospy
 import numpy as np
 from quaternion_functions import qv_mult, q_mult, q_conjugate
@@ -38,10 +41,10 @@ def config_callback(config, level):
 
     while theta < 2 * np.pi * config.repeats:   
         q = np.asarray([0.0, 0.0, np.sin(config.yaw_traj), np.cos(config.yaw_traj)])
-        p = shape(a, theta, config.drone_mode)
+        p = shape(a, theta, config.v_traj, config.drone_mode)
         p = p + np.asarray([config.x_traj, config.y_traj, config.h_traj]) #shift from origin
 
-        p_manip = qv_mult(q, shape(a_manip, theta_manip, config.delta_mode) + init_manip) + p
+        p_manip = qv_mult(q, shape(a_manip, theta_manip, config.v_traj_delta, config.delta_mode) + init_manip) + p
         # p_manip = shape(a_manip, theta_manip, config.delta_mode) + np.asarray([0, 0, config.h_traj_delta])
 
         pose = PoseStamped()
@@ -77,7 +80,7 @@ def config_callback(config, level):
 
     return config
 
-def shape(a, t, mode):
+def shape(a, t, v, mode):
     p = np.asarray([0.0, 0.0, 0.0]) #default value of pose quaternion
 
     if mode == 0: #static position hold
@@ -109,13 +112,14 @@ def shape(a, t, mode):
         p[1] = a * np.sin(t)
         p[2] = 0.0
     elif mode == 7: #line in x (linear)
-        p[0] = t * a
+        p[0] = v * 1/rospy.get_param('/rate')
         p[1] = 0.0
         p[2] = 0.0
     elif mode == 8: #line in x (linear)
         p[0] = 0.0
-        p[1] = t * a
+        p[1] = v * 1/rospy.get_param('/rate')
         p[2] = 0.0
+
     return p
 
 if __name__ == '__main__': #initialise node
