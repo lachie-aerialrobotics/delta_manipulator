@@ -1,7 +1,4 @@
 #! /usr/bin/env python
-from audioop import ratecv
-
-from pyrsistent import VT
 import rospy
 import numpy as np
 from quaternion_functions import qv_mult, q_mult, q_conjugate
