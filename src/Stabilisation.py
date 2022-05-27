@@ -91,7 +91,9 @@ class Controller:
             p_tip_sp = np.asarray([tip_sp_msg.point.x, tip_sp_msg.point.y, tip_sp_msg.point.z])
             sp_p_base2plat = qv_mult(self.q_base_conj, (-self.p_base + p_tip_sp)) - self.p_tooltip
 
-        sp_p_base2plat = self.speed_limiter(self.p_base2plat, sp_p_base2plat)
+        if self.limit_speed == True:
+            sp_p_base2plat = self.speed_limiter(self.p_base2plat, sp_p_base2plat)
+        
         self.p_base2plat = sp_p_base2plat
         
         #publish PointStamped message representing target of delta-manipulator relative to base
@@ -132,6 +134,7 @@ def config_callback(config, level):
     Controller.v_max = config.v_max_tooltip
     Controller.stabilise = config.stabilise
     Controller.retract = config.retract
+    Controller.limit_speed = config.limit_speed
     return config
 
 
