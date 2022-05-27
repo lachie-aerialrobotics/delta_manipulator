@@ -108,7 +108,14 @@ def shape(a, t, mode):
         p[0] = a * np.sin(t) * np.cos(t)
         p[1] = a * np.sin(t)
         p[2] = 0.0
-
+    elif mode == 7: #line in x (linear)
+        p[0] = t * a
+        p[1] = 0.0
+        p[2] = 0.0
+    elif mode == 8: #line in x (linear)
+        p[0] = 0.0
+        p[1] = t * a
+        p[2] = 0.0
     return p
 
 if __name__ == '__main__': #initialise node
