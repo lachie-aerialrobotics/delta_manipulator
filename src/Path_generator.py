@@ -109,12 +109,12 @@ def shape(a, t, v, mode):
         p[1] = a * np.sin(t)
         p[2] = 0.0
     elif mode == 7: #line in x (linear)
-        p[0] = v * 1/rospy.get_param('/rate')
+        p[0] = a * t / (2 * np.pi)
         p[1] = 0.0
         p[2] = 0.0
     elif mode == 8: #line in x (linear)
         p[0] = 0.0
-        p[1] = v * 1/rospy.get_param('/rate')
+        p[1] = a * t / (2 * np.pi)
         p[2] = 0.0
 
     return p
