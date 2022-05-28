@@ -30,7 +30,7 @@ class Setpoint:
             new_position.header.stamp = path_msg.header.stamp
             new_position.pose.position.x = path_msg.poses[index].pose.position.x + self.tip_init_x 
             new_position.pose.position.y = path_msg.poses[index].pose.position.y + self.tip_init_y
-            new_position.pose.position.z = path_msg.poses[index].pose.position.z + self.tip_init_z  
+            new_position.pose.position.z = path_msg.poses[index].pose.position.z + self.tip_init_z -0.17125  
             manip_path_msg.poses.append(new_position)
             index += 1
         rospy.loginfo("Completed computing delta trajectory!")
