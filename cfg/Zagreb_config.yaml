@@ -18,7 +18,7 @@ manipulator:
 
 #uav geometry parameters (in fcu coordinate frame):
   tooltip/tip_init_x:         0.0             #initial x offset of delta tip from base in [m]
-  tooltip/tip_init_y:         0.0             #initial y offset of delta tip from base in [m]
+  tooltip/tip_init_y:         0.04             #initial y offset of delta tip from base in [m]
   tooltip/tip_init_z:         -0.200             #initial z offset of delta tip from base in [m]
   tooltip/tip_retracted_x:    0.0             #x offset of delta tip from base when retracted in [m] (manipulator coordinates)
   tooltip/tip_retracted_y:    0.0             #y offset of delta tip from base when retracted in [m] (manipulator coordinates)
