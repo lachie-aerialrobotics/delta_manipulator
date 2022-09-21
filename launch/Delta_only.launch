@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!-- Launch file for running the delta-arm only !-->
 <launch>
-  <rosparam file="$(find delta_manipulator)/cfg/Zagreb_config.yaml" />
+  <rosparam file="$(find delta_manipulator)/cfg/Hex_config.yaml" />
 
   <rosparam>
     rate: 100
@@ -15,13 +15,13 @@
   </rosparam>
 
 
-  <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/>
-  <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/>
+<!--   <node name="Path_generator" pkg="delta_manipulator" type="Path_generator.py" required="true" output="screen"/> -->
+<!--   <node name="Path_follower" pkg="delta_manipulator" type="Path_follower.py" required="true" output="screen"/> -->
 
-  <node name="Stabilisation" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/>
+<!--   <node name="Stabilisation" pkg="delta_manipulator" type="Stabilisation.py" required="true" output="screen"/> -->
   
   <node name="Delta_inv_kinematics" pkg="delta_manipulator" type="Inverse_kinematics.py" required="true" output="screen"/>
-  <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/>
+<!--   <node name="Force_kinematics" pkg="delta_manipulator" type="Force_kinematics.py" required="true" output="screen"/> -->
 
   <node name="Servo_writer" pkg="delta_manipulator" type="Servo_writer.py" required="true" output="screen"/>
 
